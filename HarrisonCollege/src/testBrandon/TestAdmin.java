@@ -1,7 +1,7 @@
 package testBrandon;
 
 import static org.junit.Assert.*;
-import model.Hdepartment;
+import model.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,143 +11,194 @@ import brandon.Admin;
 
 public class TestAdmin {
 	Hdepartment department;
+	Hdepartment department2;
+	Hcours course;
+	Hcours course2;
+	Hclassroom classroom;
+	Hmajor major;
+	Hclass hclass;
+	Hofficial instructor;
 	@Before
 	public void setUp() throws Exception {
-		department = DBUtil.createQuery("select h from Hdepartment where h.departmentId = 111",Hdepartment.class).getSingleResult();
+		department = DBUtil.createQuery("select h from Hdepartment h where h.departmentId = 111",Hdepartment.class).getSingleResult();
+		course = DBUtil.createQuery("select h from Hcours h where h.courseId = 1", Hcours.class).getSingleResult();
+		department2 = DBUtil.createQuery("select h from Hdepartment h where h.departmentId = 222",Hdepartment.class).getSingleResult();
+		classroom = DBUtil.createQuery("select h from Hclassroom h where h.classroomId = 20", Hclassroom.class).getSingleResult();
+		major = DBUtil.createQuery("select h from Hmajor h where h.majorId = 100", Hmajor.class).getSingleResult();
+		hclass = DBUtil.createQuery("select h from Hclass h where h.classId = 1234", Hclass.class).getSingleResult();
+		course2 = DBUtil.createQuery("select h from Hcours h where h.courseId = 2", Hcours.class).getSingleResult();
+		instructor = DBUtil.createQuery("select h from Hofficial h where h.officialId=12", Hofficial.class).getSingleResult();
 	}
 
 	@Test
 	public void testCreateCourse() {		
-		Admin.createCourse(1, department, "Modern Physics", 3);
+	//	Admin.createCourse(1, department, "Modern Physics", 3);
 	}
 
-	@Test
+	@Test 
 	public void testUpdateCourseHcoursInt() {
-		fail("Not yet implemented");
+		
+	//	Admin.updateCourse(course, 4);
 	}
 
 	@Test
 	public void testUpdateCourseHcoursString() {
-		fail("Not yet implemented");
+	//	Admin.updateCourse(course, "english");
 	}
 
 	@Test
 	public void testUpdateCourseHcoursHdepartment() {
-		fail("Not yet implemented");
+	//	Admin.updateCourse(course, department2);
 	}
 
 	@Test
 	public void testDisableCourse() {
-		fail("Not yet implemented");
+		//Admin.disableCourse(course);
 	}
 
 	@Test
 	public void testEnableCourse() {
-		fail("Not yet implemented");
+		//Admin.enableCourse(course);
 	}
 
 	@Test
 	public void testCreateClassroom() {
-		fail("Not yet implemented");
+		//Admin.createClassroom(20, "COM", 30, 123);
 	}
 
 	@Test
-	public void testUpdateClassroomHclassroomStringInt() {
-		fail("Not yet implemented");
+	public void testUpdateClassroomBuilding() {
+	//	Admin.updateClassroom(classroom, "building", "McAllister");
 	}
-
+	
 	@Test
-	public void testUpdateClassroomHclassroomString() {
-		fail("Not yet implemented");
+	public void testUpdateClassroomCapacity() {
+	//	Admin.updateClassroom(classroom, "capacity", 20);
+	}
+	
+	@Test
+	public void testUpdateClassroomRoomNumber() {
+	//	Admin.updateClassroom(classroom, "roomNumber", 13);
 	}
 
 	@Test
 	public void testDisableClassroom() {
-		fail("Not yet implemented");
+		//Admin.disableClassroom(classroom);
 	}
 
 	@Test
 	public void testEnableClassroom() {
-		fail("Not yet implemented");
+		//Admin.enableClassroom(classroom);
 	}
 
 	@Test
 	public void testCreateDepartment() {
-		fail("Not yet implemented");
+	//	Admin.createDepartment(23, "COM", "Communications");
 	}
 
 	@Test
-	public void testUpdateDepartment() {
-		fail("Not yet implemented");
+	public void testUpdateDepartmentName() {
+	//	Admin.updateDepartment(department, "name", "Department 1");
+	}
+	
+	@Test
+	public void testUpdateDepartmentCode() {
+	//	Admin.updateDepartment(department, "code", "uno");
 	}
 
 	@Test
 	public void testDisableDepartment() {
-		fail("Not yet implemented");
+		//Admin.disableDepartment(department);
 	}
 
 	@Test
 	public void testEnableDepartment() {
-		fail("Not yet implemented");
+		//Admin.enableDepartment(department);
 	}
 
 	@Test
 	public void testCreateMajor() {
-		fail("Not yet implemented");
+		//Admin.createMajor(100, department, "Engineering Physics");
 	}
 
 	@Test
-	public void testUpdateMajorHmajorString() {
-		fail("Not yet implemented");
+	public void testUpdateMajorName() {
+		//Admin.updateMajor(major, "name", "Math and Physics");
 	}
 
 	@Test
-	public void testUpdateMajorHmajorHdepartment() {
-		fail("Not yet implemented");
+	public void testUpdateMajorDepartment() {
+	//	Admin.updateMajor(major, "department", department2);
 	}
 
 	@Test
 	public void testDisableMajor() {
-		fail("Not yet implemented");
+	//	Admin.disableMajor(major);
 	}
 
 	@Test
 	public void testEnableMajor() {
-		fail("Not yet implemented");
+		Admin.enableMajor(major);
 	}
 
 	@Test
 	public void testCreateClass() {
-		fail("Not yet implemented");
+	//	Admin.createClass(1234, course, "MWF", "9:30", "10:30", "Spring", "2015");
 	}
 
-	@Test
+	@Test //Still need to fix how new id is created
 	public void testAddClasstoSemester() {
-		fail("Not yet implemented");
+	//	Admin.addClasstoSemester(hclass, "Spring", "2016");
 	}
 
 	@Test
-	public void testUpdateClassHclassStringObject() {
-		fail("Not yet implemented");
+	public void testUpdateClassDay() {
+		//Admin.updateClass(hclass, "day", "TH");
 	}
-
+	
 	@Test
-	public void testUpdateClassHclassString() {
-		fail("Not yet implemented");
+	public void testUpdateClassEndTime() {
+		//Admin.updateClass(hclass, "endtime", "12:30");
 	}
-
+	
+	@Test
+	public void testUpdateClassStartTime() {
+		//Admin.updateClass(hclass, "starttime", "11:30");
+	}
+	
+	@Test
+	public void testUpdateClassClassroom() {
+		//Admin.updateClass(hclass, "classroom", classroom);
+	}
+	
+	@Test
+	public void testUpdateClassCourse() {
+		//Admin.updateClass(hclass, "course", course2);
+	}
+	@Test
+	public void testUpdateClassSemester() {
+	//	Admin.updateClass(hclass, "semester", "Fall");
+	}
+	@Test
+	public void testUpdateClassYear() {
+	//	Admin.updateClass(hclass, "year", "2014");
+	}
+	
+	
 	@Test
 	public void testAddInstructorToClass() {
-		fail("Not yet implemented");
+	//	Admin.addInstructorToClass(hclass, instructor);
 	}
 
 	@Test
 	public void testChangeUserType() {
-		fail("Not yet implemented");
+		//TODO
+	//	Admin.changeUserType(instructor, "advisor");
 	}
 
 	@Test
 	public void testOverrideEnrollment() {
+		//TODO
 		fail("Not yet implemented");
 	}
 
