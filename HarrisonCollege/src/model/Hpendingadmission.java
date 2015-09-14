@@ -23,11 +23,6 @@ public class Hpendingadmission implements Serializable {
 
 	private String permissions;
 
-	//bi-directional many-to-one association to Huser
-	@ManyToOne
-	@JoinColumn(name="USER_ID")
-	private Huser huser;
-
 	public Hpendingadmission() {
 	}
 
@@ -55,12 +50,5 @@ public class Hpendingadmission implements Serializable {
 		this.permissions = permissions;
 	}
 
-	public Huser getHuser() {
-		return this.huser;
-	}
-
-	public void setHuser(Huser huser) {
-		this.huser = huser;
-	}
 
 }
