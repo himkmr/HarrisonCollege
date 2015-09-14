@@ -20,8 +20,20 @@ public class Hpendingadmission implements Serializable {
 
 	@Column(name="\"MESSAGE\"")
 	private String message;
-
+	
+	@Column(name="USER_ID")
+	private long userid;
+	
+	@Column(name="PERMISSIONS")
 	private String permissions;
+
+	public long getUserid() {
+		return userid;
+	}
+
+	public void setUserid(long userid) {
+		this.userid = userid;
+	}
 
 	public Hpendingadmission() {
 	}
