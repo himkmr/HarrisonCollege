@@ -37,12 +37,12 @@ public class DBUtil {
 		return tQuery;
 	}
 
-	public static <T> void updateDB(TypedQuery<T> tQuery) {
+	public static <T> void updateDB(Object T) {
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		try {
 			trans.begin();
-			tQuery.executeUpdate();
+			em.merge(T);
 			trans.commit();
 			System.out.println("UPDATED!");
 		} catch (Exception e) {
