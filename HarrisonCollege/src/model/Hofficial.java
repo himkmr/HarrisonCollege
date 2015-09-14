@@ -31,12 +31,12 @@ public class Hofficial implements Serializable {
 
 	//bi-directional many-to-one association to Hdepartment
 	@ManyToOne
-	@JoinColumn(name="DEPARTMENT_ID")
+	@JoinColumn(name="DEPARTMENT_ID", insertable=false, updatable=false)
 	private Hdepartment hdepartment;
 
 	//bi-directional one-to-one association to Huser
 	@OneToOne
-	@JoinColumn(name="OFFICIAL_ID")
+	@JoinColumn(name="OFFICIAL_ID", insertable=false, updatable=false)
 	private Huser huser;
 
 	public Hofficial() {
