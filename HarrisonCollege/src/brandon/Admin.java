@@ -50,9 +50,6 @@ public class Admin {
 		DBUtil.updateDB(uQuery);
 	}
 
-	public static void listCourse() {
-		// TODO
-	}
 
 	// disable course
 	public static void disableCourse(Hcours course) {
@@ -62,6 +59,7 @@ public class Admin {
 		DBUtil.updateDB(uQuery);
 	}
 
+	//enable course
 	public static void enableCourse(Hcours course) {
 		String qString = "update Hcours h set h.enabled = \'yes\' where courseId =:id";
 		TypedQuery<Hcours> uQuery = DBUtil.createQuery(qString, Hcours.class)
@@ -81,25 +79,15 @@ public class Admin {
 		DBUtil.addToDB(classroom);
 	}
 
-	// update capacity or roomNumber for classroom
-	public static void updateClassroom(Hclassroom classroom, String capOrRoom,
-			int cap) {
-		String param;
-		if (capOrRoom.equalsIgnoreCase("capacity")) {
-			param = "capacity";
-		} else if (capOrRoom.equalsIgnoreCase("roomNumber")) {
-			param = "roomNumber";
-		} else {
-			System.err
-					.println("Error, String must be either capacity or roomNumber");
-			return;
-		}
+	// update capacity or roomNumber for classroom parameter must be either of these. will be validated at a higher level
+	public static void updateClassroom(Hclassroom classroom, String parameter,
+			int value) {
 
-		String qString = "update Hclassroom h set h." + param
+		String qString = "update Hclassroom h set h." + parameter
 				+ " =:param where courseId =:id";
 		TypedQuery<Hclassroom> uQuery = DBUtil
 				.createQuery(qString, Hclassroom.class)
-				.setParameter("param", param)
+				.setParameter("param", value)
 				.setParameter("id", classroom.getClassroomId());
 		DBUtil.updateDB(uQuery);
 	}
@@ -124,6 +112,7 @@ public class Admin {
 		DBUtil.updateDB(uQuery);
 	}
 
+	//enable classroom
 	public static void enableClassroom(Hclassroom classroom) {
 		String qString = "update Hclassroom h set h.enabled = \'yes\' where courseId =:id";
 		TypedQuery<Hclassroom> uQuery = DBUtil.createQuery(qString,
@@ -132,9 +121,7 @@ public class Admin {
 		DBUtil.updateDB(uQuery);
 	}
 
-	public static void listClassroom() {
-		// TODO
-	}
+	
 
 	// create a department
 	public static void createDepartment(long id, String code, String name) {
@@ -230,79 +217,112 @@ public class Admin {
 		DBUtil.updateDB(uQuery);
 	}
 
-	// add class to schedule for current or later semester
-	public static void addToSchedule(Hclass addClass, String semester) {
-		addClass.setSemester(semester);
-		DBUtil.addToDB(addClass);
+	// create a new class 
+	public static void createClass(long id,  Hcours course, String day, String starttime, String endtime, String semester, String year) {
+		Hclass newClass = new Hclass();
+		newClass.setClassId(id);
+		newClass.setDay(day);
+		newClass.setEnabled("yes");
+		newClass.setEndtime(endtime);
+		newClass.setHcours(course);
+		newClass.setSemester(semester);
+		newClass.setStarttime(starttime);
+		newClass.setYear(year);
+		DBUtil.addToDB(newClass);
+	}
+	
+	//add previous class to a new semester
+	public static void addClasstoSemester(Hclass hclass, String semester){
+		long classId=0; //need to decide how to change classId
+		hclass.setClassId(classId);
+		hclass.setSemester(semester);
+		DBUtil.addToDB(hclass);
+	}
+	
+	//test for using Object as generic. If working change other updates to match this
+	public static void updateClass(Hclass hclass, String parameter, Object value){
+		
+		String q = "update Hclass h set h."+parameter+" = :param";
+		TypedQuery<Hclass> query = DBUtil.createQuery(q, Hclass.class).setParameter("param", value);
+		DBUtil.updateDB(query);
+	}
+	
+	public static void updateClass(Hclass hclass, String endtime){
+		String q = "update Hclass h set h.endtime = :endtime";
+		TypedQuery<Hclass> query = DBUtil.createQuery(q, Hclass.class);
+		DBUtil.updateDB(query);
+	}
+	
+	public static void addInstructorToClass(Hclass hclass, Hofficial instructor){
+		String qString = "update Hclassr h set h.official =:official where classId =:id";
+		TypedQuery<Hmajor> uQuery = DBUtil.createQuery(qString, Hmajor.class)
+				.setParameter("official", instructor)
+				.setParameter("id", hclass.getClassId());
+		DBUtil.updateDB(uQuery);
 	}
 
-	// remove class from schedule for current or later semester
-	public static void removeFromSchedule() {
-		//TODO
-	}
 
 	// change a new users type to(student, instructor advisor or administrator)
 	public static void changeUserType(Huser user, String permission) {
-		//TODO
+		// TODO
 	}
 
 	// override maximum enrollment hold
 	public static void overrideEnrollment() {
-		//TODO
+		// TODO
 	}
 
 	// view a list of all students taught by an instructor
-	
-	  public List<model.Hstudent> studTaughtByInstr(Hofficial instructor) {
-		  List<Hstudent> students = new ArrayList<Hstudent>();
-		  for(Hclass h: instructor.getHclasses()){
-			  for(Hclassenrollment e : h.getHclassenrollments()){
-				  students.add(e.getHstudent());
-			  }
-		  }
-		  return students;
-	  }
-	  
-	  // view a list of all instructors that have taught a course
-	  public List<model.Hofficial> instrTaughtClass(Hcours course) {
-		  List<Hofficial> instructors = new ArrayList<Hofficial>();
-		  for(Hclass h : course.getHclasses()){
-			  instructors.add(h.getHofficial());
-		  }
-		  return instructors;
-	  }
-	  
-	  // view a list of all classes of a course 
-	 public static List<model.Hclass> classesByCourse(Hcours course) {
+	public List<model.Hstudent> studTaughtByInstr(Hofficial instructor) {
+		List<Hstudent> students = new ArrayList<Hstudent>();
+		for (Hclass h : instructor.getHclasses()) {
+			for (Hclassenrollment e : h.getHclassenrollments()) {
+				students.add(e.getHstudent());
+			}
+		}
+		return students;
+	}
+
+	// view a list of all instructors that have taught a course
+	public List<model.Hofficial> instrTaughtClass(Hcours course) {
+		List<Hofficial> instructors = new ArrayList<Hofficial>();
+		for (Hclass h : course.getHclasses()) {
+			instructors.add(h.getHofficial());
+		}
+		return instructors;
+	}
+
+	// view a list of all classes of a course
+	public static List<model.Hclass> classesByCourse(Hcours course) {
 		return course.getHclasses();
-	 }
-	 
-	 // view a list of all classrooms used by a course 
-	  public static List<model.Hclassroom> classroomsByCourse(Hcours course) {
-		  List<Hclassroom> classrooms = new ArrayList<Hclassroom>();
-		  for(Hclass h : course.getHclasses()){
-			  classrooms.add(h.getHclassroom());
-		  }
-		  return classrooms;
-	  }
-	  
-	  // view a list of all classrooms used by an instructor 
-	  public static List<model.Hclassroom> classroomsByInstr(Hofficial instructor) {
+	}
+
+	// view a list of all classrooms used by a course
+	public static List<model.Hclassroom> classroomsByCourse(Hcours course) {
 		List<Hclassroom> classrooms = new ArrayList<Hclassroom>();
-		for(Hclass h : instructor.getHclasses()){
+		for (Hclass h : course.getHclasses()) {
 			classrooms.add(h.getHclassroom());
 		}
-		  return classrooms;
-		  
-	  }
-	  
-	  // view a list of all classrooms used by a student 
-	  public static List<model.Hclassroom> classroomsByStudent(Hstudent student) {
-		  List<Hclassroom> classrooms = new ArrayList<Hclassroom>();
-		  for(Hclassenrollment h : student.getHclassenrollments()){
-			  classrooms.add(h.getHclass().getHclassroom());
-		  }
-		  return classrooms;
-	  }
-	 
+		return classrooms;
+	}
+
+	// view a list of all classrooms used by an instructor
+	public static List<model.Hclassroom> classroomsByInstr(Hofficial instructor) {
+		List<Hclassroom> classrooms = new ArrayList<Hclassroom>();
+		for (Hclass h : instructor.getHclasses()) {
+			classrooms.add(h.getHclassroom());
+		}
+		return classrooms;
+
+	}
+
+	// view a list of all classrooms used by a student
+	public static List<model.Hclassroom> classroomsByStudent(Hstudent student) {
+		List<Hclassroom> classrooms = new ArrayList<Hclassroom>();
+		for (Hclassenrollment h : student.getHclassenrollments()) {
+			classrooms.add(h.getHclass().getHclassroom());
+		}
+		return classrooms;
+	}
+
 }
