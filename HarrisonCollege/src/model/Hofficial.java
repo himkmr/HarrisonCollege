@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -20,6 +22,9 @@ public class Hofficial implements Serializable {
 	private long officialId;
 
 	@Column(name="OFFICE_NUMBER")
+	@SequenceGenerator(name="OFFICE_GENERATOR", sequenceName="HOFFICIALS_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="OFFICE_GENERATOR")
+
 	private int officeNumber;
 
 	@Column(name="\"TYPE\"")
@@ -31,12 +36,12 @@ public class Hofficial implements Serializable {
 
 	//bi-directional many-to-one association to Hdepartment
 	@ManyToOne
-	@JoinColumn(name="DEPARTMENT_ID", insertable=false, updatable=false)
+	@JoinColumn(name="DEPARTMENT_ID")
 	private Hdepartment hdepartment;
 
 	//bi-directional one-to-one association to Huser
 	@OneToOne
-	@JoinColumn(name="OFFICIAL_ID", insertable=false, updatable=false)
+	@PrimaryKeyJoinColumn(name="OFFICIAL_ID")
 	private Huser huser;
 
 	public Hofficial() {

@@ -2,6 +2,7 @@ package brandon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.TypedQuery;
 
@@ -22,6 +23,58 @@ public class Admin {
 		DBUtil.addToDB(course);
 	}
 
+	public static void acceptAdmission(Hpendingadmission admission){
+		String[] info = admission.getMessage().split(",");
+		Huser user = new Huser();
+		user.setName(info[0]);
+		user.setPassword(info[1]);
+		user.setPermissions(admission.getPermissions());
+		user.setUserId(admission.getUserid());
+		DBUtil.addToDB(user);
+		String permission = user.getPermissions().toLowerCase();
+				
+		if(permission.equals("student")){ 
+			System.out.println(permission);
+			Hstudent student = new Hstudent();
+			System.out.println(user.getUserId());
+			student.setStudentId(user.getUserId());
+			System.out.println(info[2]);
+			student.setMajor(getMajor(info[2]));
+			
+			student.setEntryYear(info[3]);
+			DBUtil.addToDB(student);
+		}
+		else{ 
+			Hofficial official = new Hofficial();
+			official.setOfficialId(user.getUserId());
+			official.setHdepartment(getDepartment(info[2]));
+			//official.setOfficeNumber(genOfficeNumber());
+			official.setType(permission);
+			DBUtil.addToDB(official);
+		}
+	}
+	
+	
+	public static Hdepartment getDepartment(String name){
+		String q = "select h from Hdepartment h where h.name like :name";
+		return DBUtil.createQuery(q,Hdepartment.class).setParameter("name", name).getSingleResult();
+	}
+	
+	public static Hmajor getMajor(String name){
+		String q = "select h from Hmajor h where h.name like :name";
+		return DBUtil.createQuery(q,Hmajor.class).setParameter("name", name).getSingleResult();
+	}
+	
+
+	private static boolean findOfficeNum(int random){
+		
+		if(DBUtil.createQuery("select h from Hofficial h where h.officeNumber =:random", Hofficial.class)
+				.setParameter("random", random).getResultList().size() > 0)
+			return true;
+		else return false;
+		
+	}
+	
 	// update credit hours for course
 	public static void updateCourse(Hcours course, int hours) {
 		course.setCreditHours(hours);
@@ -301,5 +354,7 @@ public class Admin {
 		}
 		return classrooms;
 	}
+	
+	
 
 }
