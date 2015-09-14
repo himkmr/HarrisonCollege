@@ -38,14 +38,14 @@ public class TestAdmin {
 
 	@Test
 	public void testAcceptAdmissionStudent() {	
-	//	System.out.println(admissionStudent.getMessage());
-		//Admin.acceptAdmission(admissionStudent);
+		System.out.println(admissionStudent.getMessage());
+		Admin.acceptAdmission(admissionStudent);
 	}
 	
 	@Test
 	public void testAcceptAdmissionInstructor() {	
-		System.out.println(admissionInstructor.getMessage());
-		Admin.acceptAdmission(admissionInstructor);
+		//System.out.println(admissionInstructor.getMessage());
+	//	Admin.acceptAdmission(admissionInstructor);
 	}
 	
 	@Test

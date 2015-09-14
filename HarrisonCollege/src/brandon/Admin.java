@@ -48,7 +48,6 @@ public class Admin {
 			Hofficial official = new Hofficial();
 			official.setOfficialId(user.getUserId());
 			official.setHdepartment(getDepartment(info[2]));
-			//official.setOfficeNumber(genOfficeNumber());
 			official.setType(permission);
 			DBUtil.addToDB(official);
 		}
@@ -65,15 +64,6 @@ public class Admin {
 		return DBUtil.createQuery(q,Hmajor.class).setParameter("name", name).getSingleResult();
 	}
 	
-
-	private static boolean findOfficeNum(int random){
-		
-		if(DBUtil.createQuery("select h from Hofficial h where h.officeNumber =:random", Hofficial.class)
-				.setParameter("random", random).getResultList().size() > 0)
-			return true;
-		else return false;
-		
-	}
 	
 	// update credit hours for course
 	public static void updateCourse(Hcours course, int hours) {
