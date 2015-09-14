@@ -20,6 +20,8 @@ public class Hmajor implements Serializable {
 
 	private String enabled;
 
+	private String name;
+
 	//bi-directional many-to-one association to Hdepartment
 	@ManyToOne
 	@JoinColumn(name="DEPARTMENT_ID")
@@ -42,6 +44,14 @@ public class Hmajor implements Serializable {
 
 	public void setEnabled(String enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Hdepartment getHdepartment() {
