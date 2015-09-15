@@ -59,9 +59,7 @@ public class Admin {
 	}
 	
 	public static void deletePending(Hpendingadmission admission){
-		
-		String q = "Delete from Hpendingadmission h where h.pendingId=:id";
-		DBUtil.delete(DBUtil.createQuery(q, Hpendingadmission.class).setParameter("id",admission.getPendingId()));
+		DBUtil.delete(admission);
 	}
 	
 	public static Hdepartment getDepartment(String name){

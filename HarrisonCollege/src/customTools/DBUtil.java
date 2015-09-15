@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 public class DBUtil {
-	private static final EntityManagerFactory emf = Persistence
+	public static final EntityManagerFactory emf = Persistence
 			.createEntityManagerFactory("HarrisonCollege");
 
 	public static EntityManagerFactory getEmFactory() {
@@ -42,12 +42,13 @@ public class DBUtil {
 		return em.find(className, pk);
 	}
 	
-	public static <T> void delete(TypedQuery<T> q){
+	public static <T> void delete(T q){
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		trans.begin();
 		try {
-			q.executeUpdate();
+			T toBeRemoved =  em.merge(q);
+			em.remove(toBeRemoved);
 			trans.commit();
 		} catch (Exception e) {
 			System.out.println("ROLLBACK ");
