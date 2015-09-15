@@ -58,6 +58,11 @@ public class Admin {
 		}
 	}
 	
+	public static void deletePending(Hpendingadmission admission){
+		
+		String q = "Delete from Hpendingadmission h where h.pendingId=:id";
+		DBUtil.delete(DBUtil.createQuery(q, Hpendingadmission.class).setParameter("id",admission.getPendingId()));
+	}
 	
 	public static Hdepartment getDepartment(String name){
 		String q = "select h from Hdepartment h where h.name like :name";

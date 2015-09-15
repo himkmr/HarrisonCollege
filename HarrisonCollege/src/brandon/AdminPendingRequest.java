@@ -31,9 +31,10 @@ public class AdminPendingRequest extends HttpServlet {
 	 * list pending admissions and allow for denial or acceptance
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		displayPending();
+		request.setAttribute("pending", displayPending());
 		getServletContext().getRequestDispatcher("/AdminPendingRequest.jsp").forward(request, response);
-		}
+		
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +47,8 @@ public class AdminPendingRequest extends HttpServlet {
 		List<Hpendingadmission> admissions = Admin.getPendingAdmissions();
 		StringBuilder pending = new StringBuilder();
 		for(Hpendingadmission a : admissions){
-			pending.append("<li class=\"list-group-item\">"+ a.getMessage() + "</li>");
+			System.out.println(a.getMessage());
+			pending.append("<li class=\"list-group-item\">"+ a.getMessage() + "<a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=accept\" class=\"btn btn-info\" role=\"button\">Accept</a><a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=decline\" class=\"btn btn-info\" role=\"button\">Decline</a></li>");
 		}
 		return pending.toString();
 	}

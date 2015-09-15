@@ -41,6 +41,23 @@ public class DBUtil {
 		EntityManager em = emf.createEntityManager();
 		return em.find(className, pk);
 	}
+	
+	public static <T> void delete(TypedQuery<T> q){
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try {
+			q.executeUpdate();
+			trans.commit();
+		} catch (Exception e) {
+			System.out.println("ROLLBACK ");
+			e.printStackTrace();
+			trans.rollback();
+		} finally {
+			em.close();
+		}
+
+	}
 
 	public static <T> void updateDB(Object T) {
 		EntityManager em = emf.createEntityManager();
