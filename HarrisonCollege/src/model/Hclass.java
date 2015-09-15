@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -17,6 +19,8 @@ public class Hclass implements Serializable {
 
 	@Id
 	@Column(name="CLASS_ID")
+	@SequenceGenerator(name="CLASS_GENERATOR", sequenceName="HCLASSES_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CLASS_GENERATOR")
 	private long classId;
 
 	@Column(name="\"DAY\"")
