@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import brandon.Admin;
 import customTools.DBUtil;
+import model.Hmajor;
 import model.Hpendingadmission;
 import model.Hstudent;
 import model.Huser;
@@ -49,11 +51,12 @@ public class SignUpStudent extends HttpServlet {
 		String permissions = user.getPermissions();
 		String password = user.getPassword();
 		String name = user.getName();
-	
+		
+		Hmajor major_obj = Admin.getMajor(major);
 		//create a HStudent
 		Hstudent student = new Hstudent();
 		student.setEntryYear(entryYear);
-		student.setMajor(major);
+		student.setMajor(major_obj);
 		student.setStudentId(userid);
 	
 		
