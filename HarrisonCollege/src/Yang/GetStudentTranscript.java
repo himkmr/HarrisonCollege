@@ -53,7 +53,7 @@ public class GetStudentTranscript extends HttpServlet {
 		String alert="";
 		
 		if(!user.getPermissions().equalsIgnoreCase("student")){
-			alert = "Please log in as a student...";
+				alert = "Please log in as a student...";
 		}else{
 			TypedQuery<Hstudent> q1 = DBUtil.createQuery("SELECT h FROM Hstudent h where h.huser = ?1",Hstudent.class).setParameter(1, user);
 			Hstudent stu = new Hstudent();
@@ -65,6 +65,8 @@ public class GetStudentTranscript extends HttpServlet {
 			}else{
 				yearList = q2.getResultList();
 				for(int i=0;i<yearList.size();i++){
+					double totalGrade = 0;
+					int countCreditHours = 0;
 					String thisYear = yearList.get(i);
 					TypedQuery<Hclassenrollment> q3 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hclass.year = ?1 and h.hclass.semester = ?2 and h.hstudent = ?3 and h.enrolled = ?4",Hclassenrollment.class)
 							.setParameter(1, thisYear).setParameter(2, "fall").setParameter(3, stu).setParameter(4, "yes");
@@ -81,10 +83,14 @@ public class GetStudentTranscript extends HttpServlet {
 										 +"</td><td>"+theseEnrollments.get(j).getGrade()
 										 +"</td><td>"+theseEnrollments.get(j).getHclass().getHcours().getCreditHours()
 										 +"</td></tr>";
+								totalGrade += getScore(theseEnrollments.get(j).getGrade()) * theseEnrollments.get(j).getHclass().getHcours().getCreditHours();
+								countCreditHours += theseEnrollments.get(j).getHclass().getHcours().getCreditHours();
 						}
 						fullList += "</tbody></table>";
+						fullList += "<p>GPA: "+totalGrade/countCreditHours+"</p>";
 					}
-					
+					totalGrade = 0;
+					countCreditHours = 0;
 					TypedQuery<Hclassenrollment> q4 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hclass.year = ?1 and h.hclass.semester = ?2 and h.hstudent = ?3 and h.enrolled = ?4",Hclassenrollment.class)
 							.setParameter(1, thisYear).setParameter(2, "spring").setParameter(3, stu).setParameter(4, "yes");
 					if(!q4.getResultList().isEmpty()){
@@ -100,10 +106,14 @@ public class GetStudentTranscript extends HttpServlet {
 										 +"</td><td>"+theseEnrollments.get(j).getGrade()
 										 +"</td><td>"+theseEnrollments.get(j).getHclass().getHcours().getCreditHours()
 										 +"</td></tr>";
+								totalGrade += getScore(theseEnrollments.get(j).getGrade()) * theseEnrollments.get(j).getHclass().getHcours().getCreditHours();
+								countCreditHours += theseEnrollments.get(j).getHclass().getHcours().getCreditHours();
 						}
 						fullList += "</tbody></table>";
+						fullList += "<p>GPA: "+totalGrade/countCreditHours+"</p>";
 					}
 				}
+				fullList += "<a href=\"BuyTranscript.jsp\">Buy</a>";
 			}
 		}
 
@@ -126,6 +136,22 @@ public class GetStudentTranscript extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+	}
+	
+	public int getScore(String grade){
+		int gradeInt = 0;
+		if(grade.equalsIgnoreCase("A")){
+			gradeInt = 95;
+		}else if(grade.equalsIgnoreCase("B")){
+			gradeInt = 85;
+		}else if(grade.equalsIgnoreCase("C")){
+			gradeInt = 75;
+		}else if(grade.equalsIgnoreCase("D")){
+			gradeInt = 65;
+		}else if(grade.equalsIgnoreCase("E")){
+			gradeInt = 55;
+		}
+		return gradeInt;
 	}
 
 }
