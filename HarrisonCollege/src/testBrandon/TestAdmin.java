@@ -18,6 +18,8 @@ public class TestAdmin {
 	Hmajor major;
 	Hclass hclass;
 	Hofficial instructor;
+	Hpendingadmission admissionStudent;
+	Hpendingadmission admissionInstructor;
 	@Before
 	public void setUp() throws Exception {
 		department = DBUtil.createQuery("select h from Hdepartment h where h.departmentId = 111",Hdepartment.class).getSingleResult();
@@ -28,8 +30,24 @@ public class TestAdmin {
 		hclass = DBUtil.createQuery("select h from Hclass h where h.classId = 1234", Hclass.class).getSingleResult();
 		course2 = DBUtil.createQuery("select h from Hcours h where h.courseId = 2", Hcours.class).getSingleResult();
 		instructor = DBUtil.createQuery("select h from Hofficial h where h.officialId=12", Hofficial.class).getSingleResult();
+		admissionStudent = DBUtil.createQuery("select h from Hpendingadmission h where h.pendingId=11", Hpendingadmission.class).getSingleResult();
+		admissionInstructor = DBUtil.createQuery("select h from Hpendingadmission h where h.pendingId=123", Hpendingadmission.class).getSingleResult();
+
 	}
 
+
+	@Test
+	public void testAcceptAdmissionStudent() {	
+	//	System.out.println(admissionStudent.getMessage());
+		//Admin.acceptAdmission(admissionStudent);
+	}
+	
+	@Test
+	public void testAcceptAdmissionInstructor() {	
+		System.out.println(admissionInstructor.getMessage());
+		Admin.acceptAdmission(admissionInstructor);
+	}
+	
 	@Test
 	public void testCreateCourse() {		
 	//	Admin.createCourse(1, department, "Modern Physics", 3);
@@ -138,7 +156,7 @@ public class TestAdmin {
 
 	@Test
 	public void testEnableMajor() {
-		Admin.enableMajor(major);
+	//	Admin.enableMajor(major);
 	}
 
 	@Test

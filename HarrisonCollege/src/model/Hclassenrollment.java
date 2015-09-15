@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -16,6 +17,8 @@ public class Hclassenrollment implements Serializable {
 
 	@Id
 	@Column(name="CLASSENROLLMENTS_ID")
+	@SequenceGenerator(name="ENROLLMENT_GENERATOR", sequenceName="HCLASSENROLLMENTS_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ENROLLMENT_GENERATOR")
 	private long classenrollmentsId;
 
 	private String enrolled;

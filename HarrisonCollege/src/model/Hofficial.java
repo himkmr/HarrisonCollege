@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -20,6 +22,9 @@ public class Hofficial implements Serializable {
 	private long officialId;
 
 	@Column(name="OFFICE_NUMBER")
+	@SequenceGenerator(name="OFFICE_GENERATOR", sequenceName="HOFFICIALS_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="OFFICE_GENERATOR")
+
 	private int officeNumber;
 
 	@Column(name="\"TYPE\"")
