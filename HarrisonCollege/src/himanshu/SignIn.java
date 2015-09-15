@@ -2,6 +2,7 @@ package himanshu;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -42,6 +43,16 @@ public class SignIn extends HttpServlet {
 		Huser success = Authentication.authenticate_user(userid, password);
 		if(success!=null)	//if there is a Huser object
 		{
+
+			int month = Calendar.getInstance().get(Calendar.MONTH); 
+			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+			String sem=null;
+			if(month >= 0 && month <= 4 )
+				sem = "spring";
+			else
+				sem= "fall";
+			request.getSession().setAttribute("currentYear", currentYear);	
+			request.getSession().setAttribute("currentSemester", sem);	
 			request.getSession().setAttribute("User", success);	
 			String message = "Succesfully Signed In!";
 			request.setAttribute("message", message);
