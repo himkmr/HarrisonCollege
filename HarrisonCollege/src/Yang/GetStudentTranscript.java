@@ -150,6 +150,8 @@ public class GetStudentTranscript extends HttpServlet {
 			gradeInt = 65;
 		}else if(grade.equalsIgnoreCase("E")){
 			gradeInt = 55;
+		}else if(grade.equalsIgnoreCase("W")){
+			gradeInt=0;
 		}
 		return gradeInt;
 	}
