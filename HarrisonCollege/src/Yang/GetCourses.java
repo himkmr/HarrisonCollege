@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import model.Hclass;
 import model.Hclassenrollment;
 import model.Hcours;
+import model.Hdepartment;
 import model.Hmajor;
 import model.Huser;
 import customTools.DBUtil;
@@ -47,19 +48,22 @@ public class GetCourses extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(true);
-		Huser user = (Huser) session.getAttribute("User");
+		//Huser user = (Huser) session.getAttribute("User");
 		String action = request.getParameter("action");
 		String fullList = "";
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
+		//currentYear="2014";
+		//currentSemester="fall";
 		String alert="";
 		
 	//1. Get All Courses
 			if(action.equalsIgnoreCase("GetAllCourses")){
+				
 				TypedQuery<Hcours> q = DBUtil.createQuery("SELECT h FROM Hcours h",Hcours.class);
 				List<Hcours> courseList;
 				if(q.getResultList().isEmpty()){
-					alert = "You don't have any course!";
+					alert = "No course in database!";
 				}else{
 					courseList = q.getResultList();
 					fullList = "<table class=\"table table-hover\"><thead><tr>"
@@ -112,74 +116,34 @@ public class GetCourses extends HttpServlet {
 				}
 	//3. Get current class of a specific subject			
 			}else if(action.equalsIgnoreCase("GetCurrentClassSubject")){
-				String selectedSubject = request.getParameter("subject");
-				TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.hclass.semester = ?1 and h.hclass.year = ?2 and h.hclass.hcours.subject = ?3",Hclass.class)
-						.setParameter(1, currentSemester).setParameter(2, currentYear).setParameter(3, selectedSubject);
-				List<Hclass> classList;
+				TypedQuery<Hcours> q = DBUtil.createQuery("SELECT h.hcours FROM Hclass h where h.semester = ?1 and h.year = ?2",Hcours.class)
+						.setParameter(1, currentSemester).setParameter(2, currentYear);
+				List<Hcours> courseList;
 				if(q.getResultList().isEmpty()){
-					alert = "You don't have any class for now!";
+					alert = "No course in database!";
 				}else{
-					classList = q.getResultList();
-					fullList = "<table class=\"table table-hover\"><thead><tr>"
-							+ "<th>Course</th>"
-							+ "<th>Instructor</th>"
-							+ "<th>Class Room</th>"
-							+ "<th>Semester</th>"
-							+ "<th>Year</th>"
-							+ "<th>Day</th>"
-							+ "<th>Start Time</th>"
-							+ "<th>End Time</th>"
-							+ "<th>Enabled</th>"
-							+ "</tr></thead><tbody>";
-					for(int i=0;i<classList.size();i++){
-						fullList += "<tr><td>"+classList.get(i).getHcours().getSubject()
-								 +"</td><td>"+classList.get(i).getHofficial().getHuser().getName()
-								 +"</td><td>"+classList.get(i).getHclassroom().getBuilding()+"\t"+classList.get(i).getHclassroom().getRoomNumber()
-								 +"</td><td>"+classList.get(i).getSemester()
-								 +"</td><td>"+classList.get(i).getYear()
-								 +"</td><td>"+classList.get(i).getDay()
-								 +"</td><td>"+classList.get(i).getStarttime()
-								 +"</td><td>"+classList.get(i).getEndtime()
-								 +"</td><td>"+classList.get(i).getEnabled()
-								 +"</td></tr>";
-					}
-					fullList += "</tbody></table>";
+					courseList = q.getResultList();
+				fullList = "<ul>";
+				for(int i=0;i<courseList.size();i++){
+					fullList +="<li><a href=\"GetSubjectClass?subjectName="+courseList.get(i).getSubject().replace(" ", "%20")+"\">"+courseList.get(i).getSubject()+"</a></li>";
+				}
+				fullList += "</ul>";
 				}
 	//4. Get current classes by instructor			
 			}else if(action.equalsIgnoreCase("GetCurrentClassInstructor")){
-				//Use official ID 
-				String selectedInstructor = request.getParameter("instructor");
-				TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.hclass.semester = ?1 and h.hclass.year = ?2 and h.hclass.hofficial.officialId = ?3",Hclass.class)
-						.setParameter(1, currentSemester).setParameter(2, currentYear).setParameter(3, selectedInstructor);
-				List<Hclass> classList;
+				TypedQuery<String> q = DBUtil.createQuery("SELECT distinct (h.hofficial.huser.name) FROM Hclass h where h.semester = ?1 and h.year = ?2",String.class)
+						.setParameter(1, currentSemester).setParameter(2, currentYear);
+				List<String> instructorList;
 				if(q.getResultList().isEmpty()){
-					alert = "You don't have any class for now!";
+					alert = "No instructor in database!";
 				}else{
-					classList = q.getResultList();
-					fullList = "<table class=\"table table-hover\"><thead><tr>"
-							+ "<th>Course</th>"
-							+ "<th>Instructor</th>"
-							+ "<th>Class Room</th>"
-							+ "<th>Semester</th>"
-							+ "<th>Year</th>"
-							+ "<th>Day</th>"
-							+ "<th>Start Time</th>"
-							+ "<th>End Time</th>"
-							+ "<th>Enabled</th>"
-							+ "</tr></thead><tbody>";
-					for(int i=0;i<classList.size();i++){
-						fullList += "<tr><td>"+classList.get(i).getHcours().getSubject()
-								 +"</td><td>"+classList.get(i).getHofficial().getHuser().getName()
-								 +"</td><td>"+classList.get(i).getHclassroom().getBuilding()+"\t"+classList.get(i).getHclassroom().getRoomNumber()
-								 +"</td><td>"+classList.get(i).getSemester()
-								 +"</td><td>"+classList.get(i).getYear()
-								 +"</td><td>"+classList.get(i).getDay()
-								 +"</td><td>"+classList.get(i).getStarttime()
-								 +"</td><td>"+classList.get(i).getEndtime()
-								 +"</td><td>"+classList.get(i).getEnabled()
-								 +"</td></tr>";
-					}
-					fullList += "</tbody></table>";
+					instructorList = q.getResultList();
+				fullList = "<ul>";
+				for(int i=0;i<instructorList.size();i++){
+					fullList +="<li><a href=\"GetInstructorClass?instructorName="+instructorList.get(i)+"\">"+instructorList.get(i)+"</a></li>";
+				}
+				fullList += "</ul>";
+				
 				}
 	//5. Get classes at a specific time
 			}else if(action.equalsIgnoreCase("GetClassSpecificTime")){
@@ -217,57 +181,52 @@ public class GetCourses extends HttpServlet {
 					}
 					fullList += "</tbody></table>";
 			}
-	//6. Get Courses from a department
+	//6. Get department list
 		}else if(action.equalsIgnoreCase("GetCourseDepartment")){
-			//Use the department ID
-			String departmentID = request.getParameter("department");
-			TypedQuery<Hcours> q = DBUtil.createQuery("SELECT h FROM Hcours h where h.hdepartment.departmentId = ?1",Hcours.class)
-					.setParameter(1, departmentID);
-			List<Hcours> courseList;
+			TypedQuery<String> q = DBUtil.createQuery("SELECT distinct (h.hdepartment.name) FROM Hcours h",String.class);
+			List<String> deptList;
 			if(q.getResultList().isEmpty()){
-				alert = "You don't have any class for the criteria!";
+				alert = "No department in database!";
 			}else{
-				courseList = q.getResultList();
-				fullList = "<table class=\"table table-hover\"><thead><tr>"
-						+ "<th>Course ID</th>"
-						+ "<th>Subject</th>"
-						+ "<th>Credit Hours</th>"
-						+ "<th>Department</th>"
-						+ "</tr></thead><tbody>";
-				for(int i=0;i<courseList.size();i++){
-					fullList += "<tr><td>"+courseList.get(i).getCourseId()
-							 +"</td><td>"+courseList.get(i).getSubject()
-							 +"</td><td>"+courseList.get(i).getCreditHours()
-							 +"</td><td>"+courseList.get(i).getHdepartment().getName()+"</td></tr>";
-				}
-				fullList += "</tbody></table>";
+				deptList = q.getResultList();
+			fullList = "<ul>";
+			for(int i=0;i<deptList.size();i++){
+				fullList +="<li><a href=\"GetDepartmentCourse?departmentName="+deptList.get(i)+"\">"+deptList.get(i)+"</a></li>";
 			}
-	//7. Get all majors in a department		
-		}else if(action.equalsIgnoreCase("GetMajorDepartment")){
-			String departmentID = request.getParameter("department");
-			TypedQuery<Hmajor> q = DBUtil.createQuery("SELECT h FROM Hmajor h where h.hdepartment.departmentId = ?1",Hmajor.class)
-					.setParameter(1, departmentID);
-			List<Hmajor> majorList;
-			if(q.getResultList().isEmpty()){
-				alert = "You don't have any class for the criteria!";
-			}else{
-				majorList = q.getResultList();
-				fullList = "<table class=\"table table-hover\"><thead><tr>"
-						+ "<th>Major ID</th>"
-						+ "<th>Name</th>"
-						+ "<th>Department</th>"
-						+ "<th>Enabled</th>"
-						+ "</tr></thead><tbody>";
-				for(int i=0;i<majorList.size();i++){
-					fullList += "<tr><td>"+majorList.get(i).getMajorId()
-							 +"</td><td>"+majorList.get(i).getName()
-							 +"</td><td>"+majorList.get(i).getHdepartment().getName()
-							 +"</td><td>"+majorList.get(i).getEnabled()+"</td></tr>";
+			fullList += "</ul>";
+		}
+	//7. Get current classes from a department (Only the student can see the classes of a department so that they can log in)
+			}else if(action.equalsIgnoreCase("GetClassDepartment")){
+				TypedQuery<String> q = DBUtil.createQuery("SELECT distinct (h.hcours.hdepartment.name) FROM Hclass h where h.semester = ?1 and h.year = ?2",String.class)
+						.setParameter(1, currentSemester).setParameter(2, currentYear);
+				List<String> deptList;
+				if(q.getResultList().isEmpty()){
+					alert = "No department in database!";
+				}else{
+					deptList = q.getResultList();
+				fullList = "<ul>";
+				for(int i=0;i<deptList.size();i++){
+					fullList +="<li><a href=\"GetDepartmentClass?departmentName="+deptList.get(i)+"\">"+deptList.get(i)+"</a></li>";
 				}
-				fullList += "</tbody></table>";
+				fullList += "</ul>";
+			}
+
+	//8. Get all majors in a department		
+		}else if(action.equalsIgnoreCase("GetMajorDepartment")){
+			TypedQuery<Hdepartment> q = DBUtil.createQuery("SELECT h FROM Hdepartment h",Hdepartment.class);
+			List<Hdepartment> deptList;
+			if(q.getResultList().isEmpty()){
+				alert = "No department in database!";
+			}else{
+				deptList = q.getResultList();
+			fullList = "<ul>";
+			for(int i=0;i<deptList.size();i++){
+				fullList +="<li><a href=\"GetDepartmentMajor?departmentId="+deptList.get(i).getDepartmentId()+"\">"+deptList.get(i).getName()+"</a></li>";
+			}
+			fullList += "</ul>";
 			}
 		}
-		
+				
 
 		// Set response content type
 		response.setContentType("text/html");
@@ -278,8 +237,9 @@ public class GetCourses extends HttpServlet {
 		getServletContext().getRequestDispatcher("/ViewList.jsp").forward(
 				request, response);
 		fullList = "";
-
 	}
+
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
