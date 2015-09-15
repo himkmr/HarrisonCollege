@@ -1,4 +1,4 @@
-package testBrandon;
+package brandonTests;
 
 import static org.junit.Assert.*;
 import model.*;
