@@ -208,16 +208,10 @@ public class TestAdmin {
 	//	Admin.addInstructorToClass(hclass, instructor);
 	}
 
-	@Test
-	public void testChangeUserType() {
-		//TODO
-	//	Admin.changeUserType(instructor, "advisor");
-	}
 
 	@Test
 	public void testOverrideEnrollment() {
-		//TODO
-		fail("Not yet implemented");
+	//	Admin.overrideEnrollment(hclass, 25);
 	}
 
 	@Test

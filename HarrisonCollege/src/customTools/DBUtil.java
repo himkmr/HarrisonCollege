@@ -36,6 +36,11 @@ public class DBUtil {
 		TypedQuery<T> tQuery = em.createQuery(q, className);
 		return tQuery;
 	}
+	
+	public static <T> T find(long pk, Class<T> className){
+		EntityManager em = emf.createEntityManager();
+		return em.find(className, pk);
+	}
 
 	public static <T> void updateDB(Object T) {
 		EntityManager em = emf.createEntityManager();

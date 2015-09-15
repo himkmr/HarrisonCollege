@@ -22,6 +22,11 @@ public class Admin {
 		course.setEnabled("yes");
 		DBUtil.addToDB(course);
 	}
+	
+	public static List<Hpendingadmission> getPendingAdmissions(){
+		String q = "select h from Hpendingadmission h";
+		return DBUtil.createQuery(q,Hpendingadmission.class).getResultList();
+	}
 
 	public static void acceptAdmission(Hpendingadmission admission){
 		String[] info = admission.getMessage().split(",");
@@ -249,8 +254,7 @@ public class Admin {
 		DBUtil.addToDB(hclass);
 	}
 
-	// test for using Object as generic. If working change other updates to
-	// match this
+	// update class based on day,endtime,starttime,classroom,course,semester,year
 	public static void updateClass(Hclass hclass, String parameter, Object value) {
 
 		switch (parameter.toLowerCase()) {
@@ -282,14 +286,12 @@ public class Admin {
 		DBUtil.updateDB(hclass);
 	}
 
-	// change a new users type to(student, instructor advisor or administrator)
-	public static void changeUserType(Huser user, String permission) {
-		// TODO
-	}
 
-	// override maximum enrollment hold
-	public static void overrideEnrollment() {
-		// TODO
+	// override maximum enrollment hold 
+	public static void overrideEnrollment(Hclass hclass, int max) {
+		Hclassroom classroom = hclass.getHclassroom();
+		classroom.setCapacity(max);
+		DBUtil.updateDB(classroom);
 	}
 
 	// view a list of all students taught by an instructor
