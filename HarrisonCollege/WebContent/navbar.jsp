@@ -5,8 +5,9 @@
 <li><a href="#"></a></li>
 <li><a href="#"></a></li>
 <li><a href="#"></a></li>
-<li><a href="index.html"><b>HOME</b></a></li>
-<li><a href="SignIn.html"><b>Sign In</b></a></li>
+<li><a href="index.jsp"><b>HOME</b></a></li>
+<li><a href="NewUser.jsp"><b>Sign Up</b></a></li>
+<li><a href="SignIn.jsp"><b>Sign In</b></a></li>
 </ul>
 </div>
 </div>

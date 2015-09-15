@@ -8,18 +8,9 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <title>Welcome to Himanshu's Shopping Cart</title>
 </head>
-<body  style="background-image:url(back.jpg);  background-position:100px 100px; background-repeat:no-repeat;">
-<nav class="navbar navbar-inverse">
-<div class="container">
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<ul class="nav navbar-nav">
-<li><a href="index.html"><b>HOME</b></a></li>
-</ul>
-</div>
-</div>
-</nav>
+<body>
+<jsp:include page="/navbar.jsp"/>
 <div align="center">
-
 <form style="width:40%;" action="SignUp" id="myform">
 <div class="form-group" >
     <label for="name">Full Name</label>

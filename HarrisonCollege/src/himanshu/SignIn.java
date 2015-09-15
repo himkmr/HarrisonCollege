@@ -35,15 +35,6 @@ public class SignIn extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
 		
 		String userid = request.getParameter("userid");
 		String password = request.getParameter("password");
@@ -59,10 +50,19 @@ public class SignIn extends HttpServlet {
 		}
 		else	//Redirect to Login Page
 		{
-			request.getServletContext().getRequestDispatcher("/SignIn")
+			request.getServletContext().getRequestDispatcher("/SignIn.jsp")
 			.forward(request, response);
 		}
 		
+	
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+	}
 }

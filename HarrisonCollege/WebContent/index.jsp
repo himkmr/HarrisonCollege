@@ -9,20 +9,6 @@
 <title>Welcome to Harrison Collge</title>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-<div class="container">
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<ul class="nav navbar-nav">
-<li><a href="#"></a></li>
-<li><a href="#"></a></li>
-<li><a href="#"></a></li>
-<li><a href="index.html"><b>HOME</b></a></li>
-<li><a href="#">Departments</a></li>
-<li><a href="NewUser.html"><b>Sign Up</b></a></li>
-<li><a href="SignIn.html"><b>Sign In</b></a></li>
-</ul>
-</div>
-</div>
-</nav>
+<jsp:include page="/navbar.jsp"/>
 </body>
 </html>

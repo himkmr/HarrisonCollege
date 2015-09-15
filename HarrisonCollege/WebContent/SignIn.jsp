@@ -9,19 +9,7 @@
 <title>Welcome to Himanshu's Shopping Cart</title>
 </head>
 <body  style="background-image:url(back.jpg);  background-position:50% -20%; background-repeat:no-repeat;">
-<nav class="navbar navbar-inverse">
-<div class="container">
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-<ul class="nav navbar-nav">
-<li><a href="#"></a></li>
-<li><a href="#"></a></li>
-<li><a href="#"></a></li>
-<li><a href="index.html"><b>HOME</b></a></li>
-
-</ul>
-</div>
-</div>
-</nav>
+<jsp:include page="/navbar.jsp"/>
 <div align="center">
 <form style="width:40%;" action="SignIn" id="myform">
 
