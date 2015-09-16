@@ -350,6 +350,99 @@ public class Admin {
 		return classrooms;
 	}
 	
+	public static List<model.Hofficial> getAllInstructors(){
+		String q = "select h from Hofficial h where h.type like \'instructor\'";
+		return DBUtil.createQuery(q, Hofficial.class).getResultList();
+	}
+	
+	public static List<model.Hstudent> getAllStudents(){
+		String q = "select h from Hstudent h";
+		return DBUtil.createQuery(q, Hstudent.class).getResultList();
+	}
+	
+	public static List<model.Hofficial> getAllAdvisors(){
+		String q = "select h from Hofficial h where h.type like \'advisor\'";
+		return DBUtil.createQuery(q, Hofficial.class).getResultList();
+	}
+	
+	public static List<model.Hdepartment> getAllDepartments(){
+		String q = "select h from Hdepartment h";
+		return DBUtil.createQuery(q, Hdepartment.class).getResultList();
+	}
+	
+	public static List<model.Hcours> getAllCourses(){
+		String q = "select h from Hcours h";
+		return DBUtil.createQuery(q, Hcours.class).getResultList();
+	}
+	
+	public static List<model.Hclass> getAllClasses(){
+		String q = "select h from Hclass h ";
+		return DBUtil.createQuery(q, Hclass.class).getResultList();
+	}
+	
+	public static List<model.Hclassroom> getAllClassrooms(){
+		String q = "select h from Hclassroom h ";
+		return DBUtil.createQuery(q, Hclassroom.class).getResultList();
+	}
+	
+	public static List<model.Hmajor> getAllMajors(){
+		String q = "select h from Hmajor h ";
+		return DBUtil.createQuery(q, Hmajor.class).getResultList();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
