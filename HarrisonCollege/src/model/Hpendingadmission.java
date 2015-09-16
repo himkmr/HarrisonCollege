@@ -15,6 +15,8 @@ public class Hpendingadmission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@SequenceGenerator(name="PENDING_GENERATOR", sequenceName="HPENDINGADMISSIONS_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PENDING_GENERATOR")
 	@Column(name="PENDING_ID")
 	private long pendingId;
 
