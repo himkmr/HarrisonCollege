@@ -70,13 +70,14 @@ public class AdminSearch extends HttpServlet {
 					Long.parseLong(request.getParameter("selCourse")),
 					Hcours.class);
 			System.out.println(request.getParameter("selDay"));
-			Admin.createClass(course, printDays(request),classroom,
+			Admin.createClass(course, printDays(request), classroom,
 					request.getParameter("startTime"),
 					request.getParameter("endTime"),
 					request.getParameter("selSemester"),
 					request.getParameter("year"));
-		} else if (classroomFormAvailable(request)){	
-			Admin.createClassroom(request.getParameter("building"), Integer.parseInt(request.getParameter("capacity")),
+		} else if (classroomFormAvailable(request)) {
+			Admin.createClassroom(request.getParameter("building"),
+					Integer.parseInt(request.getParameter("capacity")),
 					Integer.parseInt(request.getParameter("roomNumber")));
 		}
 		String display = displaySearchList(criteria);
@@ -85,52 +86,74 @@ public class AdminSearch extends HttpServlet {
 		doGet(request, response);
 	}
 
-	protected String displaySearchList(String criteria) {
-
+	protected static String displaySearchList(String criteria) {
+		StringBuilder display = new StringBuilder();
 		switch (criteria) {
 		case ("students"):
-			return displayStudents(Admin.getAllStudents());
+
+			display.append(displayStudents(Admin.getAllStudents()));
+			break;
 		case ("instructors"):
-			return displayInstructors(Admin.getAllInstructors());
+			display.append(displayInstructors(Admin.getAllInstructors()));
+			break;
 		case ("advisors"):
-			return displayAdvisors(Admin.getAllAdvisors());
+			display.append(displayAdvisors(Admin.getAllAdvisors()));
+			break;
 		case ("departments"):
-			return displayDepartments(Admin.getAllDepartments());
+			display.append(departmentCreationForm());
+			display.append(displayDepartments(Admin.getAllDepartments()));
+			break;
 		case ("courses"):
-			return displayCourses(Admin.getAllCourses());
+			display.append(courseCreationForm());
+			display.append(displayCourses(Admin.getAllCourses()));
+			break;
 		case ("majors"):
-			return displayMajors(Admin.getAllMajors());
+			display.append(majorCreationForm());
+			display.append(displayMajors(Admin.getAllMajors()));
+			break;
 		case ("classes"):
-			return displayClasses(Admin.getAllClasses());
+			display.append(classCreationForm());
+			display.append(displayClasses(Admin.getAllClasses()));
+			break;
 		case ("classrooms"):
-			return displayClassrooms(Admin.getAllClassrooms());
+			display.append(classroomCreationForm());
+			display.append(displayClassrooms(Admin.getAllClassrooms()));
+			break;
 		default:
 			return "";
 		}
+		return display.toString();
 	}
 
-	protected String displayStudents(List<Hstudent> students) {
+	protected static String displayStudents(List<Hstudent> students) {
 		StringBuilder display = new StringBuilder();
 		display.append("<div class=\"container\"><h2>Students</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Entry Year</th></tr></thead><tbody>");
 		for (Hstudent s : students) {
-			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+			display.append("<tr class='clickable-row' data-href= \"StudentInfo?id="
+					+ s.getStudentId()
+					+ "\"><td>"
 					+ s.getStudentId()
 					+ "</td><td>"
 					+ s.getHuser().getName()
-					+ "</td><td>" + s.getEntryYear() + "</td></tr>");
+					+ "</td><td>"
+					+ s.getEntryYear()
+				
+					+"</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
 	}
 
-	protected String displayInstructors(List<Hofficial> instructors) {
+	protected static String displayInstructors(List<Hofficial> instructors) {
 		StringBuilder display = new StringBuilder();
 		display.append("<div class=\"container\"><h2>Instructors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Department</th> <th>Office #</th></tr></thead><tbody>");
 
 		for (Hofficial i : instructors) {
-			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+			display.append("<tr class='clickable-row' data-href= \"OfficialInfo?id="
+					+i.getOfficialId()
+					+"\"><td>"
 					+ i.getOfficialId()
 					+ "</td><td>"
 					+ i.getHuser().getName()
@@ -143,7 +166,7 @@ public class AdminSearch extends HttpServlet {
 		return display.toString();
 	}
 
-	protected String displayAdvisors(List<Hofficial> advisors) {
+	protected static String displayAdvisors(List<Hofficial> advisors) {
 		StringBuilder display = new StringBuilder();
 		display.append("<div class=\"container\"><h2>Advisors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Department</th> <th>Office #</th></tr></thead><tbody>");
@@ -162,22 +185,25 @@ public class AdminSearch extends HttpServlet {
 		return display.toString();
 	}
 
-	protected String displayDepartments(List<Hdepartment> departments) {
+	protected static String displayDepartments(List<Hdepartment> departments) {
 		StringBuilder display = new StringBuilder();
-		display.append(departmentCreationForm());
+
 		display.append("<div class=\"container\"><h2>Departments</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Code</th><th>Name</th></tr></thead><tbody>");
 		for (Hdepartment d : departments) {
 			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
-					+ d.getCode() + "</td><td>" + d.getName() + "</td></tr>");
+					+ d.getCode() + "</td><td>" + d.getName()	+ "</td><td>"
+					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
+					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
 	}
 
-	protected String displayCourses(List<Hcours> courses) {
+	protected static String displayCourses(List<Hcours> courses) {
 		StringBuilder display = new StringBuilder();
-		display.append(courseCreationForm());
+
 		display.append("<div class=\"container\"><h2>Courses</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Subject</th><th>Credit Hours</th></tr></thead><tbody>");
 		for (Hcours c : courses) {
@@ -185,15 +211,18 @@ public class AdminSearch extends HttpServlet {
 					+ c.getSubject()
 					+ "</td><td>"
 					+ c.getCreditHours()
+					+ "</td><td>"
+					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
+					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
 	}
 
-	protected String displayMajors(List<Hmajor> majors) {
+	protected static String displayMajors(List<Hmajor> majors) {
 		StringBuilder display = new StringBuilder();
-		display.append(majorCreationForm());
+
 		display.append("<div class=\"container\"><h2>Majors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>");
 		for (Hmajor m : majors) {
@@ -201,15 +230,18 @@ public class AdminSearch extends HttpServlet {
 					+ m.getName()
 					+ "</td><td>"
 					+ m.getHdepartment().getName()
+					+ "</td><td>"
+					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
+					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
 	}
 
-	protected String displayClasses(List<Hclass> classes) {
+	protected static String displayClasses(List<Hclass> classes) {
 		StringBuilder display = new StringBuilder();
-		display.append(classCreationForm());
+
 		display.append("<div class=\"container\"><h2>Classes</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Subject</th><th>Day</th>"
 				+ "<th>Start Time</th><th>End Time</th><th>Semester</th><th>Year</th></tr></thead><tbody>");
@@ -226,15 +258,19 @@ public class AdminSearch extends HttpServlet {
 					+ c.getEndtime()
 					+ "</td><td>"
 					+ c.getSemester()
-					+ "</td><td>" + c.getYear() + "</td></tr>");
+					+ "</td><td>" + c.getYear()
+					+"</td><td>"
+					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
+					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
 	}
 
-	protected String displayClassrooms(List<Hclassroom> classrooms) {
+	protected static String displayClassrooms(List<Hclassroom> classrooms) {
 		StringBuilder display = new StringBuilder();
-		display.append(classroomCreationForm());
+
 		display.append("<div class=\"container\"><h2>Classrooms</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Room Number</th><th>Building</th><th>Capacity</th></tr></thead><tbody>");
 		for (Hclassroom c : classrooms) {
@@ -242,13 +278,17 @@ public class AdminSearch extends HttpServlet {
 					+ c.getRoomNumber()
 					+ "</td><td>"
 					+ c.getBuilding()
-					+ "</td><td>" + c.getCapacity() + "</td></tr>");
+					+ "</td><td>" + c.getCapacity()
+					+ "</td><td>"
+					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
+					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
 	}
 
-	protected String departmentCreationForm() {
+	protected static String departmentCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 				+ "<div class=\"form-group\"><label for=\"code\">Code:</label><input type=\"text\" class=\"form-control\""
 				+ " id=\"code\" name =\"code\" placeholder=\"Enter Code\"></div><div class=\"form-group\"><label for=\"name\">Name:</label>"
@@ -258,7 +298,7 @@ public class AdminSearch extends HttpServlet {
 
 	}
 
-	protected String courseCreationForm() {
+	protected static String courseCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 				+ "<div class=\"form-group\"><label for=\"subject\">Subject</label>"
 				+ "<input type=\"text\" class=\"form-control\" id=\"subject\" name =\"subject\" placeholder=\"Enter Subject\"></div>"
@@ -273,7 +313,7 @@ public class AdminSearch extends HttpServlet {
 
 	}
 
-	protected String majorCreationForm() {
+	protected static String majorCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 				+ "<div class=\"form-group\"><label for=\"name\">Name</label>"
 				+ "<input type=\"text\" class=\"form-control\" id=\"name\" name =\"name\" placeholder=\"Enter Name\"></div>"
@@ -286,7 +326,7 @@ public class AdminSearch extends HttpServlet {
 
 	}
 
-	protected String classCreationForm() {
+	protected static String classCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 				+ "<div class=\"form-group\"><label for=\"selCours\">Select Course:</label>"
 				+ "<select class=\"form-control\" id=\"selCourse\" name =\"selCourse\">"
@@ -322,7 +362,7 @@ public class AdminSearch extends HttpServlet {
 
 	}
 
-	protected String classroomCreationForm() {
+	protected static String classroomCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 
 				+ "<div class=\"form-group\"><label for=\"building\">Building:</label>"
@@ -339,7 +379,7 @@ public class AdminSearch extends HttpServlet {
 
 	}
 
-	protected String listDepartments() {
+	protected static String listDepartments() {
 		StringBuilder listDepart = new StringBuilder();
 		for (Hdepartment d : Admin.getAllDepartments()) {
 			;
@@ -349,7 +389,7 @@ public class AdminSearch extends HttpServlet {
 		return listDepart.toString();
 	}
 
-	protected String listCourses() {
+	protected static String listCourses() {
 		StringBuilder listCourses = new StringBuilder();
 		for (Hcours d : Admin.getAllCourses()) {
 			;
@@ -359,7 +399,7 @@ public class AdminSearch extends HttpServlet {
 		return listCourses.toString();
 	}
 
-	protected String listClassrooms() {
+	protected static String listClassrooms() {
 		StringBuilder listClassrooms = new StringBuilder();
 		for (Hclassroom d : Admin.getAllClassrooms()) {
 			;
@@ -369,7 +409,7 @@ public class AdminSearch extends HttpServlet {
 		return listClassrooms.toString();
 	}
 
-	protected boolean departmentFormAvailable(HttpServletRequest request) {
+	protected static boolean departmentFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("code") != null
 				&& request.getParameter("name") != null) {
 			System.out.println("departmentForm is available");
@@ -378,7 +418,7 @@ public class AdminSearch extends HttpServlet {
 			return false;
 	}
 
-	protected boolean majorFormAvailable(HttpServletRequest request) {
+	protected static boolean majorFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("name") != null
 				&& request.getParameter("selDepartment") != null) {
 			System.out.println("majorForm is available");
@@ -387,7 +427,7 @@ public class AdminSearch extends HttpServlet {
 			return false;
 	}
 
-	protected boolean courseFormAvailable(HttpServletRequest request) {
+	protected static boolean courseFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("selDepartment") != null
 				&& request.getParameter("subject") != null
 				&& request.getParameter("hours") != null) {
@@ -397,7 +437,7 @@ public class AdminSearch extends HttpServlet {
 			return false;
 	}
 
-	protected boolean classFormAvailable(HttpServletRequest request) {
+	protected static boolean classFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("selCourse") != null
 				&& request.getParameter("selClassroom") != null
 				&& request.getParameter("startTime") != null
@@ -409,8 +449,8 @@ public class AdminSearch extends HttpServlet {
 		} else
 			return false;
 	}
-	
-	protected boolean classroomFormAvailable(HttpServletRequest request) {
+
+	protected static boolean classroomFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("building") != null
 				&& request.getParameter("capacity") != null
 				&& request.getParameter("roomNumber") != null) {
@@ -420,7 +460,7 @@ public class AdminSearch extends HttpServlet {
 			return false;
 	}
 
-	protected String printDays(HttpServletRequest request) {
+	protected static String printDays(HttpServletRequest request) {
 		StringBuilder days = new StringBuilder();
 		if (request.getParameter("monday") != null) {
 			days.append("M");
