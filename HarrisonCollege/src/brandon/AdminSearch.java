@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import customTools.DBUtil;
 import model.*;
 
 /**
@@ -45,8 +46,19 @@ public class AdminSearch extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String criteria = request.getParameter("select");
 		System.out.println(criteria);
+		if (departmentFormAvailable(request)) {
+			Admin.createDepartment(request.getParameter("code"),
+					request.getParameter("name"));
+		}
+		if(courseFormAvailable(request)){
+			Hdepartment department = DBUtil.find(Long.parseLong(request.getParameter("selDepartment")), Hdepartment.class);
+			System.out.println(department.getName());
+			Admin.createCourse(department, 
+					request.getParameter("subject"), Integer.parseInt(request.getParameter("hours")));
+		}
 		String display = displaySearchList(criteria);
 		request.setAttribute("display", display);
+
 		doGet(request, response);
 	}
 
@@ -70,7 +82,7 @@ public class AdminSearch extends HttpServlet {
 		case ("classrooms"):
 			return displayClassrooms(Admin.getAllClassrooms());
 		default:
-			return null;
+			return "";
 		}
 	}
 
@@ -79,9 +91,11 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Students</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Entry Year</th></tr></thead><tbody>");
 		for (Hstudent s : students) {
-			display.append("<tr ><td>" + s.getStudentId() + "</td><td>"
-					+ s.getHuser().getName() + "</td><td>" + s.getEntryYear()
-					+ "</td></tr>");
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ s.getStudentId()
+					+ "</td><td>"
+					+ s.getHuser().getName()
+					+ "</td><td>" + s.getEntryYear() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -91,10 +105,15 @@ public class AdminSearch extends HttpServlet {
 		StringBuilder display = new StringBuilder();
 		display.append("<div class=\"container\"><h2>Instructors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Department</th> <th>Office #</th></tr></thead><tbody>");
-	
+
 		for (Hofficial i : instructors) {
-			display.append("<tr><td>" + i.getOfficialId() + "</td><td>" + i.getHuser().getName()
-					+ "</td><td>" + i.getHdepartment().getName() + "</td><td>"
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ i.getOfficialId()
+					+ "</td><td>"
+					+ i.getHuser().getName()
+					+ "</td><td>"
+					+ i.getHdepartment().getName()
+					+ "</td><td>"
 					+ i.getOfficeNumber() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
@@ -105,10 +124,15 @@ public class AdminSearch extends HttpServlet {
 		StringBuilder display = new StringBuilder();
 		display.append("<div class=\"container\"><h2>Advisors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Department</th> <th>Office #</th></tr></thead><tbody>");
-	
+
 		for (Hofficial a : advisors) {
-			display.append("<tr><td>" + a.getOfficialId() + "</td><td>" + a.getHuser().getName()
-					+ "</td><td>" + a.getHdepartment().getName() + "</td><td>"
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ a.getOfficialId()
+					+ "</td><td>"
+					+ a.getHuser().getName()
+					+ "</td><td>"
+					+ a.getHdepartment().getName()
+					+ "</td><td>"
 					+ a.getOfficeNumber() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
@@ -117,10 +141,12 @@ public class AdminSearch extends HttpServlet {
 
 	protected String displayDepartments(List<Hdepartment> departments) {
 		StringBuilder display = new StringBuilder();
+		display.append(departmentCreationForm());
 		display.append("<div class=\"container\"><h2>Departments</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Code</th><th>Name</th></tr></thead><tbody>");
 		for (Hdepartment d : departments) {
-			display.append("<tr><td>" +d.getCode() + "</td><td>" + d.getName() + "</td></tr>");
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ d.getCode() + "</td><td>" + d.getName() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -128,11 +154,13 @@ public class AdminSearch extends HttpServlet {
 
 	protected String displayCourses(List<Hcours> courses) {
 		StringBuilder display = new StringBuilder();
+		display.append(courseCreationForm());
 		display.append("<div class=\"container\"><h2>Courses</h2>"
-				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Subject</th><th>Credit Hours</th></tr></thead><tbody>");
+				+ "<table class=\"table table-hover\"><thead><tr><th>Subject</th><th>Credit Hours</th></tr></thead><tbody>");
 		for (Hcours c : courses) {
-			display.append("<tr><td>" + c.getCourseId() + "</td><td>" + c.getSubject() + "</td><td>"
-					+ c.getCreditHours() + "</td></tr>");
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ c.getSubject()
+					+ "</td><td>" + c.getCreditHours() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -143,7 +171,11 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Majors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>");
 		for (Hmajor m : majors) {
-			display.append("<tr><td>" +m.getName() + "</td><td>" + m.getHdepartment().getName()+ "</td></tr>");
+			display.append("<tr nclass='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ m.getName()
+					+ "</td><td>"
+					+ m.getHdepartment().getName()
+					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -155,10 +187,19 @@ public class AdminSearch extends HttpServlet {
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Subject</th><th>Day</th>"
 				+ "<th>Start Time</th><th>End Time</th><th>Semester</th><th>Year</th></tr></thead><tbody>");
 		for (Hclass c : classes) {
-			display.append("<tr><td>" +c.getHcours().getCourseId() + "</td><td>"
-					+ c.getHcours().getSubject() + "</td><td>" + c.getDay() + "</td><td>"
-					+ c.getStarttime() + "</td><td>" + c.getEndtime() +"</td><td>"
-					+ c.getSemester() + "</td><td>" + c.getYear()+ "</td></tr>");
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ c.getHcours().getCourseId()
+					+ "</td><td>"
+					+ c.getHcours().getSubject()
+					+ "</td><td>"
+					+ c.getDay()
+					+ "</td><td>"
+					+ c.getStarttime()
+					+ "</td><td>"
+					+ c.getEndtime()
+					+ "</td><td>"
+					+ c.getSemester()
+					+ "</td><td>" + c.getYear() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -169,11 +210,68 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Classrooms</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Room Number</th><th>Building</th><th>Capacity</th></tr></thead><tbody>");
 		for (Hclassroom c : classrooms) {
-			display.append("<tr><td>" +c.getRoomNumber() + "</td><td>" + c.getBuilding() + "</td><td>"
-					+ c.getCapacity()+ "</td></tr>");
+			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+					+ c.getRoomNumber()
+					+ "</td><td>"
+					+ c.getBuilding()
+					+ "</td><td>" + c.getCapacity() + "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
+	}
+
+	protected String departmentCreationForm() {
+		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
+				+ "<div class=\"form-group\"><label for=\"code\">Code:</label><input type=\"text\" class=\"form-control\""
+				+ " id=\"code\" name =\"code\" placeholder=\"Enter Code\"></div><div class=\"form-group\"><label for=\"name\">Name:</label>"
+				+ "<input type=\"text\" class=\"form-control\" id=\"name\" name =\"name\" placeholder=\"Enter Name\"></div>"
+				+ "<input type=\"hidden\" name=\"select\" value=\"departments\"/>"
+				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
+
+	}
+
+	protected String courseCreationForm() {
+		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
+				+ "<div class=\"form-group\"><label for=\"subject\">Subject</label>"
+				+ "<input type=\"text\" class=\"form-control\" id=\"subject\" name =\"subject\" placeholder=\"Enter Subject\"></div>"
+				+ "<div class=\"form-group\"><label for=\"hours\">Credit Hours:</label>"
+				+ "<input type=\"number\" class=\"form-control\" id=\"hours\" name =\"hours\" placeholder=\"Enter Credit Hours\"></div>"
+				+ "<div class=\"form-group\"><label for=\"selDepartment\">Select Department:</label>"
+				+ "<select class=\"form-control\" id=\"selDepartment\" name =\"selDepartment\">"
+				+ listDepartments()
+				+ "</select></div>"
+				+ "<input type=\"hidden\" name=\"select\" value=\"courses\"/>"
+				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
+
+	}
+
+	protected String listDepartments() {
+		StringBuilder listDepart = new StringBuilder();
+		for (Hdepartment d : Admin.getAllDepartments()) {
+			;
+			listDepart.append("<option value= " + d.getDepartmentId() + ">"
+					+ d.getCode() + " " + d.getName() + "</option>");
+		}
+		return listDepart.toString();
+	}
+
+	protected boolean departmentFormAvailable(HttpServletRequest request) {
+		if (request.getParameter("code") != null
+				&& request.getParameter("name") != null) {
+			System.out.println("departmentForm is available");
+			return true;
+		} else
+			return false;
+	}
+
+	protected boolean courseFormAvailable(HttpServletRequest request) {
+		if ( request.getParameter("selDepartment") != null
+				&& request.getParameter("subject") != null
+				&& request.getParameter("hours") != null) {
+			System.out.println("courseForm is available");
+			return true;
+		} else
+			return false;
 	}
 
 }

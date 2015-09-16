@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -17,6 +19,8 @@ public class Hdepartment implements Serializable {
 
 	@Id
 	@Column(name="DEPARTMENT_ID")
+	@SequenceGenerator(name="DEPARTMENTS_GENERATOR", sequenceName="HDEPARTMENTS_SEQ", allocationSize = 1, initialValue = 400, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DEPARTMENTS_GENERATOR")
 	private long departmentId;
 
 	private String code;

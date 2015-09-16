@@ -12,11 +12,10 @@ import model.*;
 public class Admin {
 
 	// create, update, list or disable a course
-	public static void createCourse(long id, Hdepartment deparment,
+	public static void createCourse(Hdepartment department,
 			String subject, int hours) {
 		Hcours course = new Hcours();
-		course.setCourseId(id);
-		course.setHdepartment(deparment);
+		course.setHdepartment(department);
 		course.setSubject(subject);
 		course.setCreditHours(hours);
 		course.setEnabled("yes");
@@ -150,9 +149,8 @@ public class Admin {
 	}
 
 	// create a department
-	public static void createDepartment(long id, String code, String name) {
+	public static void createDepartment(String code, String name) {
 		model.Hdepartment department = new model.Hdepartment();
-		department.setDepartmentId(id);
 		department.setCode(code);
 		department.setName(name);
 		department.setEnabled("yes");
@@ -389,60 +387,4 @@ public class Admin {
 		String q = "select h from Hmajor h ";
 		return DBUtil.createQuery(q, Hmajor.class).getResultList();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-	
-	
-
-
-	
-	
-	
-
-
-	
-	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }
