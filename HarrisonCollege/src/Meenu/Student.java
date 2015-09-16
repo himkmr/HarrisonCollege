@@ -31,9 +31,12 @@ public class Student {
 	public static void dropClass(Hclassenrollment student){
 			EntityManager em = DBUtil.getEmFactory().createEntityManager();
 			EntityTransaction trans = em.getTransaction();
+			Hclassenrollment drop = new Hclassenrollment();
 			trans.begin();
 			try {
-				em.merge(student);
+				drop.setGrade("W");
+				drop.setEnrolled("no");
+				em.merge(drop);
 				trans.commit();
 			} catch (Exception e) {
 				System.out.println(e);
@@ -44,10 +47,19 @@ public class Student {
 		}
 	
 	
+	public static List<Hclassenrollment> getSchedule(String studentID){
+		//EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes'";
+		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, getStudent(studentID));
+		List<Hclassenrollment> myclasses = bq.getResultList();
+		return myclasses;
+	}
+	
+	
 	public static Hstudent getStudent(String studentID){
-		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		//EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String q = "SELECT h FROM Hstudent h where h.studentId =" +studentID;
-		TypedQuery<Hstudent> bq = em.createQuery(q, Hstudent.class);
+		TypedQuery<Hstudent> bq = DBUtil.createQuery(q, Hstudent.class);
 		Hstudent student = bq.getSingleResult();
 		return student;
 	}
@@ -60,8 +72,7 @@ public class Student {
 		return Class;
 	}
 	
-	
-	
+
 	public static boolean checkschedule(String studentID, String classID, int capacity, int stime, int etime){
 		boolean check = false;
 		int dbstime =0;
