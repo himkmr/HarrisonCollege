@@ -51,13 +51,39 @@ public class SignIn extends HttpServlet {
 				sem = "spring";
 			else
 				sem= "fall";
-			request.getSession().setAttribute("currentYear", currentYear);	
+			request.getSession().setAttribute("usertype", success.getPermissions());	
+			request.getSession().setAttribute("currentYear", currentYear+"");	
 			request.getSession().setAttribute("currentSemester", sem);	
 			request.getSession().setAttribute("User", success);	
-			String message = "Succesfully Signed In!";
-			request.setAttribute("message", message);
-			request.getServletContext().getRequestDispatcher("/Success.jsp")
-			.forward(request, response);
+			
+			if(success.getPermissions().equalsIgnoreCase("Admin"))
+			{	
+			request.getServletContext().getRequestDispatcher("/AdminPendingRequest").forward(request, response);}
+			else if(success.getPermissions().equalsIgnoreCase("Student"))
+			{
+				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
+			}
+			else if(success.getPermissions().equalsIgnoreCase("Instructor"))
+			{
+				System.out.println("Redirecting Instructor");
+				request.getServletContext().getRequestDispatcher("/InstructorFirstPage").forward(request, response);
+			}
+			else if(success.getPermissions().equalsIgnoreCase("Advisor"))
+			{
+				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
+			}
+			else if(success.getPermissions().equalsIgnoreCase("Intructor_Advisor"))
+			{
+				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
+			}
+			else
+			{
+				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
+				
+			}
+			
+		
+			
 		}
 		else	//Redirect to Login Page
 		{

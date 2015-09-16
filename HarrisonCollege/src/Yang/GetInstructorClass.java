@@ -39,8 +39,7 @@ public class GetInstructorClass extends HttpServlet {
 		String currentSemester = (String) session.getAttribute("currentSemester");
 		String instructorName = request.getParameter("instructorName");
 		String alert = "";
-		currentYear="2014";
-		currentSemester="fall";
+		
 
 	// Get Current Class in a subject			
 				TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.semester = ?1 and h.year = ?2 and h.hofficial.huser.name = ?3",Hclass.class)
