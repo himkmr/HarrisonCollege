@@ -36,7 +36,7 @@ public class Hofficial implements Serializable {
 
 	//bi-directional one-to-one association to Huser
 	@OneToOne
-	@JoinColumn(name="OFFICIAL_ID")
+	@PrimaryKeyJoinColumn(name="OFFICIAL_ID")
 	private Huser huser;
 
 	public Hofficial() {

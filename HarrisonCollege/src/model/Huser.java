@@ -29,10 +29,6 @@ public class Huser implements Serializable {
 	@OneToOne(mappedBy="huser")
 	private Hofficial hofficial;
 
-	//bi-directional many-to-one association to Hpendingadmission
-	@OneToMany(mappedBy="huser")
-	private List<Hpendingadmission> hpendingadmissions;
-
 	//bi-directional one-to-one association to Hstudent
 	@OneToOne(mappedBy="huser")
 	private Hstudent hstudent;
@@ -78,28 +74,6 @@ public class Huser implements Serializable {
 
 	public void setHofficial(Hofficial hofficial) {
 		this.hofficial = hofficial;
-	}
-
-	public List<Hpendingadmission> getHpendingadmissions() {
-		return this.hpendingadmissions;
-	}
-
-	public void setHpendingadmissions(List<Hpendingadmission> hpendingadmissions) {
-		this.hpendingadmissions = hpendingadmissions;
-	}
-
-	public Hpendingadmission addHpendingadmission(Hpendingadmission hpendingadmission) {
-		getHpendingadmissions().add(hpendingadmission);
-		hpendingadmission.setHuser(this);
-
-		return hpendingadmission;
-	}
-
-	public Hpendingadmission removeHpendingadmission(Hpendingadmission hpendingadmission) {
-		getHpendingadmissions().remove(hpendingadmission);
-		hpendingadmission.setHuser(null);
-
-		return hpendingadmission;
 	}
 
 	public Hstudent getHstudent() {

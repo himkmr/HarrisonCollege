@@ -30,7 +30,7 @@ public class Hstudent implements Serializable {
 
 	//bi-directional one-to-one association to Huser
 	@OneToOne
-	@JoinColumn(name="STUDENT_ID")
+	@PrimaryKeyJoinColumn(name="STUDENT_ID")
 	private Huser huser;
 
 	public Hstudent() {
