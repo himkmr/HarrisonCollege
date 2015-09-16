@@ -12,11 +12,10 @@ import model.*;
 public class Admin {
 
 	// create, update, list or disable a course
-	public static void createCourse(long id, Hdepartment deparment,
+	public static void createCourse(Hdepartment department,
 			String subject, int hours) {
 		Hcours course = new Hcours();
-		course.setCourseId(id);
-		course.setHdepartment(deparment);
+		course.setHdepartment(department);
 		course.setSubject(subject);
 		course.setCreditHours(hours);
 		course.setEnabled("yes");
@@ -105,10 +104,9 @@ public class Admin {
 	}
 
 	// create a classroom
-	public static void createClassroom(long id, String building, int cap,
+	public static void createClassroom(String building, int cap,
 			int roomNum) {
 		Hclassroom classroom = new Hclassroom();
-		classroom.setClassroomId(id);
 		classroom.setBuilding(building);
 		classroom.setCapacity(cap);
 		classroom.setRoomNumber(roomNum);
@@ -150,9 +148,8 @@ public class Admin {
 	}
 
 	// create a department
-	public static void createDepartment(long id, String code, String name) {
+	public static void createDepartment(String code, String name) {
 		model.Hdepartment department = new model.Hdepartment();
-		department.setDepartmentId(id);
 		department.setCode(code);
 		department.setName(name);
 		department.setEnabled("yes");
@@ -189,12 +186,11 @@ public class Admin {
 	}
 
 	// create a major
-	public static void createMajor(long id, Hdepartment department, String name) {
+	public static void createMajor(Hdepartment department, String name) {
 		model.Hmajor major = new model.Hmajor();
 		major.setHdepartment(department);
 		major.setName(name);
 		major.setEnabled("yes");
-		major.setMajorId(id);
 		DBUtil.addToDB(major);
 	}
 
@@ -228,12 +224,12 @@ public class Admin {
 	}
 
 	// create a new class
-	public static void createClass(long id, Hcours course, String day,
+	public static void createClass(Hcours course, String day, Hclassroom classroom,
 			String starttime, String endtime, String semester, String year) {
 		Hclass newClass = new Hclass();
-		newClass.setClassId(id);
 		newClass.setDay(day);
 		newClass.setEnabled("yes");
+		newClass.setHclassroom(classroom);
 		newClass.setEndtime(endtime);
 		newClass.setHcours(course);
 		newClass.setSemester(semester);
@@ -389,60 +385,4 @@ public class Admin {
 		String q = "select h from Hmajor h ";
 		return DBUtil.createQuery(q, Hmajor.class).getResultList();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-	
-	
-
-
-	
-	
-	
-
-
-	
-	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

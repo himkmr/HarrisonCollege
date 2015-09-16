@@ -91,6 +91,7 @@ public class GetCurrentSchedule extends HttpServlet {
 					}
 				}
 				fullList += "</tbody></table>";
+				fullList +="<br><a href=\"ViewCurrentClasses\">Schedule Detail</a>";
 				System.out.println(fullList);
 			}
 		} else {

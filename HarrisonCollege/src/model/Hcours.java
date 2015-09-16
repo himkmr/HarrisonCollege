@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -17,6 +19,9 @@ public class Hcours implements Serializable {
 
 	@Id
 	@Column(name="COURSE_ID")
+	@SequenceGenerator(name="COURSE_GENERATOR", sequenceName="HCOURSES_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="COURSE_GENERATOR")
+
 	private long courseId;
 
 	@Column(name="CREDIT_HOURS")
