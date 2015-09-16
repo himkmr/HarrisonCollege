@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -16,6 +17,8 @@ public class Hmajor implements Serializable {
 
 	@Id
 	@Column(name="MAJOR_ID")
+	@SequenceGenerator(name="MAJORS_GENERATOR", sequenceName="HMAJORS_SEQ", allocationSize = 1, initialValue = 400, schema="TESTDB")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="MAJORS_GENERATOR")
 	private long majorId;
 
 	private String enabled;

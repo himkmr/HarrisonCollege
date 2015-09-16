@@ -187,12 +187,11 @@ public class Admin {
 	}
 
 	// create a major
-	public static void createMajor(long id, Hdepartment department, String name) {
+	public static void createMajor(Hdepartment department, String name) {
 		model.Hmajor major = new model.Hmajor();
 		major.setHdepartment(department);
 		major.setName(name);
 		major.setEnabled("yes");
-		major.setMajorId(id);
 		DBUtil.addToDB(major);
 	}
 
@@ -226,10 +225,9 @@ public class Admin {
 	}
 
 	// create a new class
-	public static void createClass(long id, Hcours course, String day,
+	public static void createClass(Hcours course, String day,
 			String starttime, String endtime, String semester, String year) {
 		Hclass newClass = new Hclass();
-		newClass.setClassId(id);
 		newClass.setDay(day);
 		newClass.setEnabled("yes");
 		newClass.setEndtime(endtime);

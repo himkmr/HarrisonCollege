@@ -50,11 +50,23 @@ public class AdminSearch extends HttpServlet {
 			Admin.createDepartment(request.getParameter("code"),
 					request.getParameter("name"));
 		}
-		if(courseFormAvailable(request)){
+		else if(courseFormAvailable(request)){
 			Hdepartment department = DBUtil.find(Long.parseLong(request.getParameter("selDepartment")), Hdepartment.class);
 			System.out.println(department.getName());
 			Admin.createCourse(department, 
 					request.getParameter("subject"), Integer.parseInt(request.getParameter("hours")));
+		}
+		else if(majorFormAvailable(request)){
+			Hdepartment department = DBUtil.find(Long.parseLong(request.getParameter("selDepartment")), Hdepartment.class);
+			System.out.println(department.getName());
+			Admin.createMajor(department, request.getParameter("name"));
+		}
+		else if(classFormAvailable(request)){
+			Hclassroom classroom = DBUtil.find(Long.parseLong(request.getParameter("selClassroom")), Hclassroom.class);
+			Hcours course = DBUtil.find(Long.parseLong(request.getParameter("selCourse")), Hcours.class);
+			System.out.println(request.getParameter("selDay"));
+			Admin.createClass(course, printDays(request), request.getParameter("startTime"), request.getParameter("endTime")
+					, request.getParameter("selSemester"), request.getParameter("year"));
 		}
 		String display = displaySearchList(criteria);
 		request.setAttribute("display", display);
@@ -168,6 +180,7 @@ public class AdminSearch extends HttpServlet {
 
 	protected String displayMajors(List<Hmajor> majors) {
 		StringBuilder display = new StringBuilder();
+		display.append(majorCreationForm());
 		display.append("<div class=\"container\"><h2>Majors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>");
 		for (Hmajor m : majors) {
@@ -183,6 +196,7 @@ public class AdminSearch extends HttpServlet {
 
 	protected String displayClasses(List<Hclass> classes) {
 		StringBuilder display = new StringBuilder();
+		display.append(classCreationForm());
 		display.append("<div class=\"container\"><h2>Classes</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Subject</th><th>Day</th>"
 				+ "<th>Start Time</th><th>End Time</th><th>Semester</th><th>Year</th></tr></thead><tbody>");
@@ -244,6 +258,58 @@ public class AdminSearch extends HttpServlet {
 				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
 
 	}
+	
+
+	protected String majorCreationForm() {
+		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
+				+ "<div class=\"form-group\"><label for=\"name\">Name</label>"
+				+ "<input type=\"text\" class=\"form-control\" id=\"name\" name =\"name\" placeholder=\"Enter Name\"></div>"
+				+ "<div class=\"form-group\"><label for=\"selDepartment\">Select Department:</label>"
+				+ "<select class=\"form-control\" id=\"selDepartment\" name =\"selDepartment\">"
+				+ listDepartments()
+				+ "</select></div>"
+				+ "<input type=\"hidden\" name=\"select\" value=\"majors\"/>"
+				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
+
+	}
+	
+	protected String classCreationForm() {
+		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
+				+ "<div class=\"form-group\"><label for=\"selCours\">Select Course:</label>"
+				+ "<select class=\"form-control\" id=\"selCourse\" name =\"selCourse\">"
+				+ listCourses()
+				+ "</select></div>"
+				
+				+ "<div class=\"form-group\"><label for=\"selClassroom\">Select Classroom:</label>"
+				+ "<select class=\"form-control\" id=\"selClassroom\" name =\"selClassroom\">"
+				+ listClassrooms()
+				+ "</select></div>"
+				
+				+"<div class =\"form-group\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"monday\" value=\"M\">M</label>"
+				+"<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"tuesday\" value=\"T\">T</label><label class=\"checkbox-inline\">"
+				+"<input type=\"checkbox\" name=\"wednesday\" value=\"W\">W</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"thursday\" value=\"H\">H"
+				+"</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"friday\" value=\"F\">F</label></div>"
+				
+				+ "<div class=\"form-group\"><label for=\"startTime\">Start Time:</label>"
+				+ "<input type=\"text\" class=\"form-control\" id=\"startTime\" name =\"startTime\" placeholder=\"Enter Start Time\"></div>"
+				
+				+ "<div class=\"form-group\"><label for=\"endTime\">End Time:</label>"
+				+ "<input type=\"text\" class=\"form-control\" id=\"endTime\" name =\"endTime\" placeholder=\"Enter End Time\"></div>"
+				
+				+ "<div class=\"form-group\"><label for=\"selSemester\">Select Semester:</label>"
+				+ "<select class=\"form-control\" id=\"selSemester\" name =\"selSemester\">"
+				+ "<option value =\"Fall\">Fall</option><option value =\"Spring\">Spring</option>"
+				+ "</select></div>"
+				
+				+ "<div class=\"form-group\"><label for=\"year\">Year:</label>"
+				+ "<input type=\"number\" class=\"form-control\" id=\"year\" name =\"year\" min =\"2015\" max = \"2070\" value=\"2015\"></div>"
+
+				+ "<input type=\"hidden\" name=\"select\" value=\"classes\"/>"
+				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
+
+	}
+	
+
 
 	protected String listDepartments() {
 		StringBuilder listDepart = new StringBuilder();
@@ -254,11 +320,40 @@ public class AdminSearch extends HttpServlet {
 		}
 		return listDepart.toString();
 	}
+	
+	protected String listCourses() {
+		StringBuilder listCourses = new StringBuilder();
+		for (Hcours d : Admin.getAllCourses()) {
+			;
+			listCourses.append("<option value= " + d.getCourseId() + ">"
+					+ d.getSubject() + "</option>");
+		}
+		return listCourses.toString();
+	}
+	
+	protected String listClassrooms() {
+		StringBuilder listClassrooms = new StringBuilder();
+		for (Hclassroom d : Admin.getAllClassrooms()) {
+			;
+			listClassrooms.append("<option value= " + d.getClassroomId() + ">"
+					+ d.getBuilding() + " " + d.getRoomNumber() +"</option>");
+		}
+		return listClassrooms.toString();
+	}
 
 	protected boolean departmentFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("code") != null
 				&& request.getParameter("name") != null) {
 			System.out.println("departmentForm is available");
+			return true;
+		} else
+			return false;
+	}
+	
+	protected boolean majorFormAvailable(HttpServletRequest request) {
+		if (request.getParameter("name") != null
+				&& request.getParameter("selDepartment") != null) {
+			System.out.println("majorForm is available");
 			return true;
 		} else
 			return false;
@@ -272,6 +367,39 @@ public class AdminSearch extends HttpServlet {
 			return true;
 		} else
 			return false;
+	}
+	
+	protected boolean classFormAvailable(HttpServletRequest request) {
+		if (request.getParameter("selCourse") != null
+				&& request.getParameter("selClassroom") != null
+				&& request.getParameter("startTime") != null
+				&& request.getParameter("endTime") != null
+				&& request.getParameter("selSemester") != null
+				&& request.getParameter("year") != null) {
+			System.out.println("classForm is available");
+			return true;
+		} else
+			return false;
+	}
+	
+	protected String printDays(HttpServletRequest request){
+		StringBuilder days = new StringBuilder();
+		if(request.getParameter("monday")!=null){
+			days.append("M");
+		}
+		if(request.getParameter("tuesday")!=null){
+			days.append("T");
+		}
+		if(request.getParameter("wednesday")!=null){
+			days.append("W");
+		}
+		if(request.getParameter("thursday")!=null){
+			days.append("H");
+		}
+		if(request.getParameter("friday")!=null){
+			days.append("F");
+		}
+		return days.toString();
 	}
 
 }
