@@ -15,7 +15,7 @@
 </head>
 <body>
 	<div class="container">
-		<form role="form" method="POST" action="GetClassTime">
+		<form role="form" method="GET" action="GetClassTime">
 			<div class="form-group">
 				<label for="selectedTime">Please select the start time of a class:</label> 
 			</div>
