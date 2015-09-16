@@ -27,7 +27,7 @@
   <li>Address: <%=address%></li>
   <li>Card#: <%=card%></li>
   <li>Copies: <%=copies%></li>
-  <li>Price: <%=price%></li>
+  <li>Price: $<%=price%></li>
 </ul>  
 </body>
 </html>
