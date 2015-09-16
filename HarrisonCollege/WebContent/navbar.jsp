@@ -8,6 +8,8 @@
 <li><a href="index.jsp"><b>HOME</b></a></li>
 <li><a href="NewUser.jsp"><b>Sign Up</b></a></li>
 <li><a href="SignIn.jsp"><b>Sign In</b></a></li>
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">View<span class="caret"></span></a>
  <ul class="dropdown-menu">
 <li><form name="1" action="GetCourses" method="get">
 <input type="hidden" name="action" value="GetAllCourses">
