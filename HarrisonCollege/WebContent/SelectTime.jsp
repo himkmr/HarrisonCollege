@@ -14,6 +14,7 @@
 <title>Select time</title>
 </head>
 <body>
+<jsp:include page="/navbar.jsp"/>
 	<div class="container">
 		<form role="form" method="GET" action="GetClassTime">
 			<div class="form-group">
