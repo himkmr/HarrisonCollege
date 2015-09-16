@@ -67,7 +67,7 @@ public class GetStudentInfo extends HttpServlet {
 								 +classList.get(i).getStudentId()
 								 +"\">Transcript</a><br><a href=\"EnrollThisStudent?studentId="
 								 +classList.get(i).getStudentId()
-								 +"\">Enroll</a><br><a href=\"DropThisStudent?studnetId="
+								 +"\">Enroll</a><br><a href=\"DropThisStudent?studentId="
 								 +classList.get(i).getStudentId()
 								 +"\">Drop</a>"
 								 +"</td></tr>";
