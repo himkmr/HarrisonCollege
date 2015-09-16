@@ -28,7 +28,7 @@ public class Student {
 	}
 	
 	
-	public static void dropClass(String studentID, String classID){
+	public static void dropClass(long studentID, String classID){
 			EntityManager em = DBUtil.getEmFactory().createEntityManager();
 			String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes' and h.hclass=?2";
 			TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, getStudent(studentID)).setParameter(2, getClass(classID));
@@ -49,7 +49,29 @@ public class Student {
 		}
 	
 	
-	public static List<Hclassenrollment> getSchedule(String studentID){
+	public static void enrollAgain(long studentID, String classID){
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes' and h.hclass=?2";
+		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, getStudent(studentID)).setParameter(2, getClass(classID));
+		Hclassenrollment thisclass = bq.getSingleResult();
+		EntityTransaction trans = em.getTransaction();
+		trans.begin();
+		try {
+			thisclass.setEnrolled("yes");
+			em.merge(thisclass);
+			trans.commit();
+		} catch (Exception e) {
+			System.out.println(e);
+			trans.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
+	
+	
+	public static List<Hclassenrollment> getSchedule(long studentID){
 		//EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes'";
 		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, getStudent(studentID));
@@ -58,7 +80,7 @@ public class Student {
 	}
 	
 	
-	public static Hstudent getStudent(String studentID){
+	public static Hstudent getStudent(long studentID){
 		//EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		String q = "SELECT h FROM Hstudent h where h.studentId =" +studentID;
 		TypedQuery<Hstudent> bq = DBUtil.createQuery(q, Hstudent.class);
@@ -75,7 +97,7 @@ public class Student {
 	}
 	
 
-	public static boolean checkschedule(String studentID, String classID, int capacity, int stime, int etime){
+	public static boolean checkschedule(long studentID, String classID, int capacity, int stime, int etime){
 		boolean check = false;
 		int dbstime =0;
 		int dbetime =0;
@@ -85,6 +107,17 @@ public class Student {
 		String q = "SELECT h FROM Hclassenrollment h where h.hclass = ?1 and h.hstudent = ?2";
 		TypedQuery<Hclassenrollment> bq = em.createQuery(q, Hclassenrollment.class).setParameter(1, getClass(classID)).setParameter(2, getStudent(studentID));
 		List<Hclassenrollment> list = bq.getResultList();
+		
+		if(!bq.getResultList().isEmpty())
+		{
+			for(Hclassenrollment temp: list)
+			{
+				if(temp.getEnrolled().equalsIgnoreCase("no"));
+				enrollAgain(studentID, classID);
+				
+			}
+		}
+		
 		if(list.isEmpty())
 		{
 			//if they have not signed up for the class, we will check the capacity
@@ -116,6 +149,7 @@ public class Student {
 			
 		}
 		else{
+			
 			check = false;
 		}
 		

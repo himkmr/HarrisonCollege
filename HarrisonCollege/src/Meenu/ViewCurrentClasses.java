@@ -9,11 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import customTools.DBUtil;
 import model.Hclass;
 import model.Hclassenrollment;
 import model.Hstudent;
+import model.Huser;
 
 /**
  * Servlet implementation class ViewCurrentClasses
@@ -35,15 +37,17 @@ public class ViewCurrentClasses extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-    	long studentID = 2;
+    
     	String alert = "";
     	String fullList = "";
-    	TypedQuery<Hstudent> q111 = DBUtil.createQuery("SELECT h FROM Hstudent h where h.studentId = ?1",Hstudent.class)
-				.setParameter(1, studentID);
-    	Hstudent thisStudent = q111.getSingleResult();
-    	
-    	String q = "SELECT h FROM Hclassenrollment h where h.hstudent=?1 and h.enrolled = 'yes'";
-		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, thisStudent);
+    	 
+    	HttpSession session = request.getSession(true);
+    	Huser thisUser = (Huser) session.getAttribute("User");
+		long studentID = thisUser.getHstudent().getStudentId();
+    	String currentYear = (String) session.getAttribute("currentYear");
+		String currentSemester = (String) session.getAttribute("currentSemester");	
+    	String q = "SELECT h FROM Hclassenrollment h where h.hstudent=?1 and h.enrolled = 'yes' and h.hclass.semester= ?2 and h.hclass.year = ?3";
+		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, Student.getStudent(studentID)).setParameter(2, currentSemester).setParameter(3, currentYear);
 		System.out.println("111");
 		List<Hclassenrollment> classList = bq.getResultList();
 		

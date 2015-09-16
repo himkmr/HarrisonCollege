@@ -9,9 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Hclass;
 import model.Hclassenrollment;
+import model.Huser;
 import customTools.DBUtil;
 
 /**
@@ -35,12 +37,15 @@ public class DropClass extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String fullList = "";
-		/*
+		HttpSession session = request.getSession(true);
+		Huser thisUser = (Huser) session.getAttribute("User");
+		long studentID = thisUser.getHstudent().getStudentId();
+		if(thisUser.getPermissions().equalsIgnoreCase("advisor"))
+			studentID = Long.parseLong(request.getParameter("studentID"));
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
-		String departmentName = request.getParameter("departmentName");*/
+		String departmentName = request.getParameter("departmentName");
 		String alert = "";
-		String studentID = "2";
 		String classID = request.getParameter("classID");
 		Student.dropClass(studentID, classID);
 		System.out.println("dropped class");
