@@ -33,9 +33,15 @@ public class AdminSearch extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		String criteria = (String) request.getAttribute("select");
+		String display="";
+		System.out.println("CRITERIA " + criteria);
+		if(criteria!=null){
+		display = displaySearchList(criteria);
+		}
+		request.setAttribute("display", display);
+		getServletContext().getRequestDispatcher("/AdminSearch.jsp").forward(request, response);
 
-		getServletContext().getRequestDispatcher("/AdminSearch.jsp").forward(
-				request, response);
 	}
 
 	/**
@@ -45,6 +51,7 @@ public class AdminSearch extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String criteria = request.getParameter("select");
+		String display="";
 		System.out.println(criteria);
 		if (departmentFormAvailable(request)) {
 			Admin.createDepartment(request.getParameter("code"),
@@ -80,10 +87,12 @@ public class AdminSearch extends HttpServlet {
 					Integer.parseInt(request.getParameter("capacity")),
 					Integer.parseInt(request.getParameter("roomNumber")));
 		}
-		String display = displaySearchList(criteria);
+		if(criteria!=null){
+		display = displaySearchList(criteria);
+		}
 		request.setAttribute("display", display);
 
-		doGet(request, response);
+		getServletContext().getRequestDispatcher("/AdminSearch.jsp").forward(request, response);
 	}
 
 	protected static String displaySearchList(String criteria) {
@@ -138,8 +147,8 @@ public class AdminSearch extends HttpServlet {
 					+ s.getHuser().getName()
 					+ "</td><td>"
 					+ s.getEntryYear()
-				
-					+"</td></tr>");
+
+					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -152,8 +161,8 @@ public class AdminSearch extends HttpServlet {
 
 		for (Hofficial i : instructors) {
 			display.append("<tr class='clickable-row' data-href= \"OfficialInfo?id="
-					+i.getOfficialId()
-					+"\"><td>"
+					+ i.getOfficialId()
+					+ "\"><td>"
 					+ i.getOfficialId()
 					+ "</td><td>"
 					+ i.getHuser().getName()
@@ -191,14 +200,39 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Departments</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Code</th><th>Name</th></tr></thead><tbody>");
 		for (Hdepartment d : departments) {
-			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
-					+ d.getCode() + "</td><td>" + d.getName()	+ "</td><td>"
-					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
-					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
-					+ "</td></tr>");
+
+			if (d.getEnabled().equals("yes")) {
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\">");
+				display.append("<td>"
+						+ d.getCode()
+						+ "</td><td>"
+						+ d.getName()
+						+ "</td><td>"
+						+ "<a href=\"Enable?todo=enable&type=department&id="
+						+ d.getDepartmentId()
+						+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+						+ "<a href=\"Enable?todo=disable&type=department&id="
+						+ d.getDepartmentId()
+						+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
+						+ "</td></tr>");
+			} else {
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\">");
+				display.append("<td>"
+						+ d.getCode()
+						+ "</td><td>"
+						+ d.getName()
+						+ "</td><td>"
+						+ "<a href=\"Enable?todo=enable&type=department&id="
+						+ d.getDepartmentId()
+						+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+						+ "<a href=\"Enable?todo=disable&type=department&id="
+						+ d.getDepartmentId()
+						+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
+						+ "</td></tr>");
+			}
 		}
-		display.append("</tbody></table></div>");
-		return display.toString();
+			display.append("</tbody></table></div>");
+			return display.toString();
 	}
 
 	protected static String displayCourses(List<Hcours> courses) {
@@ -212,8 +246,12 @@ public class AdminSearch extends HttpServlet {
 					+ "</td><td>"
 					+ c.getCreditHours()
 					+ "</td><td>"
-					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
-					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ "<a href=\"Enable?todo=enable&type=course&id="
+					+ c.getCourseId()
+					+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+					+ "<a href=\"Enable?todo=disable&type=course&id="
+					+ c.getCourseId()
+					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
@@ -231,8 +269,12 @@ public class AdminSearch extends HttpServlet {
 					+ "</td><td>"
 					+ m.getHdepartment().getName()
 					+ "</td><td>"
-					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
-					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ "<a href=\"Enable?todo=enable&type=major&id="
+					+ m.getMajorId()
+					+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+					+ "<a href=\"Enable?todo=disable&type=major&id="
+					+ m.getMajorId()
+					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
@@ -258,10 +300,15 @@ public class AdminSearch extends HttpServlet {
 					+ c.getEndtime()
 					+ "</td><td>"
 					+ c.getSemester()
-					+ "</td><td>" + c.getYear()
-					+"</td><td>"
-					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
-					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ "</td><td>"
+					+ c.getYear()
+					+ "</td><td>"
+					+ "<a href=\"Enable?todo=enable&type=class&id="
+					+ c.getClassId()
+					+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+					+ "<a href=\"Enable?todo=disable&type=class&id="
+					+ c.getClassId()
+					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
@@ -278,10 +325,15 @@ public class AdminSearch extends HttpServlet {
 					+ c.getRoomNumber()
 					+ "</td><td>"
 					+ c.getBuilding()
-					+ "</td><td>" + c.getCapacity()
 					+ "</td><td>"
-					+"<button type=\"button\" class=\"btn btn-success\">Enable</button>"
-					+"<button type=\"button\" class=\"btn btn-danger\">Disable</button>"
+					+ c.getCapacity()
+					+ "</td><td>"
+					+ "<a href=\"Enable?todo=enable&type=classroom&id="
+					+ c.getClassroomId()
+					+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+					+ "<a href=\"Enable?todo=disable&type=classroom&id="
+					+ c.getClassroomId()
+					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
