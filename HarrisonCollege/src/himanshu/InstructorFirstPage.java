@@ -37,8 +37,8 @@ public class InstructorFirstPage extends HttpServlet {
 				.getAllClassesinCurrSem(userid);
 
 		String message = "";
-		message += "<div align=\"center\"><h4>Classes in Current Semester</h4>";
-		message += "<table class=\"table table-hover\" style=\"width:60%\" align=\"center\"><tr bgcolor=\"#C0C0C0\"><td><b>Course Name</td><td><b>Class Id </td><td><b>Days</td><td><b>Start time</td><td><b>End time</td></tr>";
+		message += "<div class=\"container\" align=\"center\"><b>Classes in Current Semester</b>";
+		message += "<table class=\"table table-hover\" align=\"center\"><tr bgcolor=\"#e6e6e6\"><td><b>Course Name</td><td><b>Class Id </td><td><b>Days</td><td><b>Start time</td><td><b>End time</td></tr>";
 		for (model.Hclass temp : classes_in_cur_sem) {
 			message += "<td>" + temp.getHcours().getSubject() + "</td><td><a href=\"GetStudentsInClass?classid="+temp.getClassId()+"\">"
 					+ temp.getClassId() + "</a></td><td>" + temp.getDay()
@@ -47,7 +47,8 @@ public class InstructorFirstPage extends HttpServlet {
 		}
 
 		message += "</table>";
-		message += "<div align=\"center\"><h4> <a href=\"ViewAllClasses?userid="+userid+"\">View All Classes in Previous Semesters</a></h4>";
+		message += "<div align=\"left\"><ul><li><b> <a href=\"ViewAllClassesofInst?userid="+userid+"\">View All Classes in Previous Semesters</a></li><b>";
+		message += "<li><b><a href=\"ViewGradeSheets?userid="+userid+"\">View GradeSheets</a><b></li></ul>";
 		request.setAttribute("message", message);
 		request.getServletContext().getRequestDispatcher("/i_output.jsp")
 				.forward(request, response);

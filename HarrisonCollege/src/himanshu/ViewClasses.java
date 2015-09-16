@@ -128,6 +128,23 @@ public class ViewClasses {
 					enrollment.getGrade();
 	}
 
+	public static List<Hclass> getAllClassAllSemesters(long userid) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		Hofficial official = em.find(Hofficial.class, userid);
+		if(official==null)
+				return null;
+		
+		String q = "select t from Hclass t where t.hofficial=:official order by t.year";
+		
+		TypedQuery<Hclass> tq = DBUtil.createQuery(q, Hclass.class).setParameter("official", official);
+		
+		List<Hclass> list = tq.getResultList();
+		for(Hclass temp: list)
+			System.out.println(temp.getClassId());
+		
+		return list;
+	}
+
 	
 	
 }
