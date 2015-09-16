@@ -45,12 +45,12 @@ public class AdminSearch extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String criteria = request.getParameter("select");
 		System.out.println(criteria);
-		String display = getSearchList(criteria);
+		String display = displaySearchList(criteria);
 		request.setAttribute("display", display);
 		doGet(request, response);
 	}
 
-	protected String getSearchList(String criteria) {
+	protected String displaySearchList(String criteria) {
 
 		switch (criteria) {
 		case ("students"):
@@ -79,7 +79,7 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Students</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Entry Year</th></tr></thead><tbody>");
 		for (Hstudent s : students) {
-			display.append("<tr><td>" + s.getStudentId() + "</td><td>"
+			display.append("<tr ><td>" + s.getStudentId() + "</td><td>"
 					+ s.getHuser().getName() + "</td><td>" + s.getEntryYear()
 					+ "</td></tr>");
 		}
