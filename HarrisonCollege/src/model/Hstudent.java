@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -22,7 +24,9 @@ public class Hstudent implements Serializable {
 	@Column(name="ENTRY_YEAR")
 	private String entryYear;
 
-	private String major;
+	@ManyToOne
+	@JoinColumn(name="MAJOR")
+	private Hmajor major;
 
 	//bi-directional many-to-one association to Hclassenrollment
 	@OneToMany(mappedBy="hstudent")
@@ -52,11 +56,11 @@ public class Hstudent implements Serializable {
 		this.entryYear = entryYear;
 	}
 
-	public String getMajor() {
+	public Hmajor getMajor() {
 		return this.major;
 	}
 
-	public void setMajor(String major) {
+	public void setMajor(Hmajor major) {
 		this.major = major;
 	}
 

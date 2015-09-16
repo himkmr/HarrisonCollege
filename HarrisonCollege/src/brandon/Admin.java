@@ -2,6 +2,7 @@ package brandon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.TypedQuery;
 
@@ -21,7 +22,57 @@ public class Admin {
 		course.setEnabled("yes");
 		DBUtil.addToDB(course);
 	}
+	
+	public static List<Hpendingadmission> getPendingAdmissions(){
+		String q = "select h from Hpendingadmission h";
+		return DBUtil.createQuery(q,Hpendingadmission.class).getResultList();
+	}
 
+	public static void acceptAdmission(Hpendingadmission admission){
+		String[] info = admission.getMessage().split(",");
+		Huser user = new Huser();
+		user.setName(info[0]);
+		user.setPassword(info[1]);
+		user.setPermissions(admission.getPermissions());
+		user.setUserId(admission.getUserid());
+		DBUtil.addToDB(user);
+		String permission = user.getPermissions().toLowerCase();
+				
+		if(permission.equals("student")){ 
+			System.out.println(permission);
+			Hstudent student = new Hstudent();
+			System.out.println(user.getUserId());
+			student.setStudentId(user.getUserId());
+			System.out.println(info[2]);
+			student.setMajor(getMajor(info[2]));
+			
+			student.setEntryYear(info[3]);
+			DBUtil.addToDB(student);
+		}
+		else{ 
+			Hofficial official = new Hofficial();
+			official.setOfficialId(user.getUserId());
+			official.setHdepartment(getDepartment(info[2]));
+			official.setType(permission);
+			DBUtil.addToDB(official);
+		}
+	}
+	
+	public static void deletePending(Hpendingadmission admission){
+		DBUtil.delete(admission);
+	}
+	
+	public static Hdepartment getDepartment(String name){
+		String q = "select h from Hdepartment h where h.name like :name";
+		return DBUtil.createQuery(q,Hdepartment.class).setParameter("name", name).getSingleResult();
+	}
+	
+	public static Hmajor getMajor(String name){
+		String q = "select h from Hmajor h where h.name like :name";
+		return DBUtil.createQuery(q,Hmajor.class).setParameter("name", name).getSingleResult();
+	}
+	
+	
 	// update credit hours for course
 	public static void updateCourse(Hcours course, int hours) {
 		course.setCreditHours(hours);
@@ -206,8 +257,7 @@ public class Admin {
 		DBUtil.addToDB(hclass);
 	}
 
-	// test for using Object as generic. If working change other updates to
-	// match this
+	// update class based on day,endtime,starttime,classroom,course,semester,year
 	public static void updateClass(Hclass hclass, String parameter, Object value) {
 
 		switch (parameter.toLowerCase()) {
@@ -239,14 +289,12 @@ public class Admin {
 		DBUtil.updateDB(hclass);
 	}
 
-	// change a new users type to(student, instructor advisor or administrator)
-	public static void changeUserType(Huser user, String permission) {
-		// TODO
-	}
 
-	// override maximum enrollment hold
-	public static void overrideEnrollment() {
-		// TODO
+	// override maximum enrollment hold 
+	public static void overrideEnrollment(Hclass hclass, int max) {
+		Hclassroom classroom = hclass.getHclassroom();
+		classroom.setCapacity(max);
+		DBUtil.updateDB(classroom);
 	}
 
 	// view a list of all students taught by an instructor
@@ -301,5 +349,100 @@ public class Admin {
 		}
 		return classrooms;
 	}
+	
+	public static List<model.Hofficial> getAllInstructors(){
+		String q = "select h from Hofficial h where h.type like \'instructor\'";
+		return DBUtil.createQuery(q, Hofficial.class).getResultList();
+	}
+	
+	public static List<model.Hstudent> getAllStudents(){
+		String q = "select h from Hstudent h";
+		return DBUtil.createQuery(q, Hstudent.class).getResultList();
+	}
+	
+	public static List<model.Hofficial> getAllAdvisors(){
+		String q = "select h from Hofficial h where h.type like \'advisor\'";
+		return DBUtil.createQuery(q, Hofficial.class).getResultList();
+	}
+	
+	public static List<model.Hdepartment> getAllDepartments(){
+		String q = "select h from Hdepartment h";
+		return DBUtil.createQuery(q, Hdepartment.class).getResultList();
+	}
+	
+	public static List<model.Hcours> getAllCourses(){
+		String q = "select h from Hcours h";
+		return DBUtil.createQuery(q, Hcours.class).getResultList();
+	}
+	
+	public static List<model.Hclass> getAllClasses(){
+		String q = "select h from Hclass h ";
+		return DBUtil.createQuery(q, Hclass.class).getResultList();
+	}
+	
+	public static List<model.Hclassroom> getAllClassrooms(){
+		String q = "select h from Hclassroom h ";
+		return DBUtil.createQuery(q, Hclassroom.class).getResultList();
+	}
+	
+	public static List<model.Hmajor> getAllMajors(){
+		String q = "select h from Hmajor h ";
+		return DBUtil.createQuery(q, Hmajor.class).getResultList();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
