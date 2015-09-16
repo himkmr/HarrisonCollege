@@ -40,7 +40,10 @@ public class DropClass extends HttpServlet {
 		String currentSemester = (String) session.getAttribute("currentSemester");
 		String departmentName = request.getParameter("departmentName");*/
 		String alert = "";
-	System.out.println("got to dropclass");
+		String studentID = "2";
+		String classID = request.getParameter("classID");
+		Student.dropClass(studentID, classID);
+		System.out.println("dropped class");
 		//Use the department name
 	/*	TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.hcours.hdepartment.name = ?1 and h.semester = ?2 and h.year = ?3",Hclass.class)
 				.setParameter(1, departmentName).setParameter(2, currentSemester).setParameter(3, currentYear);*/
@@ -54,6 +57,7 @@ public class DropClass extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 	

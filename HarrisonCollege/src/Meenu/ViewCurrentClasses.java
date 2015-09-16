@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import customTools.DBUtil;
 import model.Hclass;
 import model.Hclassenrollment;
+import model.Hstudent;
 
 /**
  * Servlet implementation class ViewCurrentClasses
@@ -34,16 +35,21 @@ public class ViewCurrentClasses extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-    	String studentID = "2";
+    	long studentID = 2;
     	String alert = "";
     	String fullList = "";
+    	TypedQuery<Hstudent> q111 = DBUtil.createQuery("SELECT h FROM Hstudent h where h.studentId = ?1",Hstudent.class)
+				.setParameter(1, studentID);
+    	Hstudent thisStudent = q111.getSingleResult();
+    	
     	String q = "SELECT h FROM Hclassenrollment h where h.hstudent=?1 and h.enrolled = 'yes'";
-		TypedQuery<Hclass> bq = DBUtil.createQuery(q, Hclass.class).setParameter(1, Student.getStudent(studentID));
-		List<Hclass> classList;
+		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, thisStudent);
+		System.out.println("111");
+		List<Hclassenrollment> classList = bq.getResultList();
+		
 		if(bq.getResultList().isEmpty()){
 			alert = "No current class!";
 		}else{
-			classList=bq.getResultList();
 		fullList = "<table class=\"table table-hover\"><thead><tr>"
 				+ "<th>Course</th>"
 				+ "<th>Instructor</th>"
@@ -51,23 +57,21 @@ public class ViewCurrentClasses extends HttpServlet {
 				+ "<th>Semester</th>"
 				+ "<th>Year</th>"
 				+ "<th>Day</th>"
-				+ "<th>Start Time</th>"
-				+ "<th>End Time</th>"
+				+ "<th>Class Time</th>"
 				+ "<th>Enabled</th>"
 				+ "<th>Other</th>"
 				+ "</tr></thead><tbody>";
-		for(int i=0;i<classList.size();i++){
-			fullList += "<tr><td>"+classList.get(i).getHcours().getSubject()
-					 +"</td><td>"+classList.get(i).getHofficial().getHuser().getName()
-					 +"</td><td>"+classList.get(i).getHclassroom().getBuilding()+"\t"+classList.get(i).getHclassroom().getRoomNumber()
-					 +"</td><td>"+classList.get(i).getSemester()
-					 +"</td><td>"+classList.get(i).getYear()
-					 +"</td><td>"+classList.get(i).getDay()
-					 +"</td><td>"+getTime(classList.get(i).getStarttime())
-					 +"</td><td>"+getTime(classList.get(i).getEndtime())
-					 +"</td><td>"+classList.get(i).getEnabled()+"</td>";
+		for(Hclassenrollment temp : classList){
+			fullList += "<tr><td>"+temp.getHclass().getHcours().getSubject()
+					 +"</td><td>"+temp.getHclass().getHofficial().getHuser().getName()
+					 +"</td><td>"+temp.getHclass().getHclassroom().getBuilding()+" "+temp.getHclass().getHclassroom().getRoomNumber()
+					 +"</td><td>"+temp.getHclass().getSemester()
+					 +"</td><td>"+temp.getHclass().getYear()
+					 +"</td><td>"+temp.getHclass().getDay()
+					 +"</td><td>"+getTime(temp.getHclass().getStarttime())+" -"+getTime(temp.getHclass().getEndtime())
+					 +"</td><td>"+temp.getHclass().getEnabled()+"</td>";
 			//if(user.getPermissions().equalsIgnoreCase("student")){
-				fullList += "<td><a href=\"DropClass?classID="
+				fullList += "<td><a href=\"DropClass?classID="+temp.getHclass().getClassId()
 						+"\">DROP</a></td>";
 			}
 			fullList += "</tr>";

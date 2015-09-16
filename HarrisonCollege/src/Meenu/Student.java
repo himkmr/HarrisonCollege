@@ -28,15 +28,17 @@ public class Student {
 	}
 	
 	
-	public static void dropClass(Hclassenrollment student){
+	public static void dropClass(String studentID, String classID){
 			EntityManager em = DBUtil.getEmFactory().createEntityManager();
+			String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes' and h.hclass=?2";
+			TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, getStudent(studentID)).setParameter(2, getClass(classID));
+			Hclassenrollment thisclass = bq.getSingleResult();
 			EntityTransaction trans = em.getTransaction();
-			Hclassenrollment drop = new Hclassenrollment();
 			trans.begin();
 			try {
-				drop.setGrade("W");
-				drop.setEnrolled("no");
-				em.merge(drop);
+				thisclass.setGrade("W");
+				thisclass.setEnrolled("no");
+				em.merge(thisclass);
 				trans.commit();
 			} catch (Exception e) {
 				System.out.println(e);
