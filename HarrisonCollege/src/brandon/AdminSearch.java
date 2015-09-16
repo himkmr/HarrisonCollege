@@ -367,7 +367,6 @@ public class AdminSearch extends HttpServlet {
 					+ c.getClassId()
 					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
-				
 			}
 		}
 		display.append("</tbody></table></div>");
