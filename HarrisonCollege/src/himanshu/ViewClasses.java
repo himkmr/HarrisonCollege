@@ -115,9 +115,19 @@ public class ViewClasses {
 		}
 		return student_list;
 	}
-	
-	
-	
+	public static String getStudentsGrade(Hclass class_obj, Hstudent hstudent)
+	{
+			String q = "select t from Hclassenrollment t where t.hstudent=:hstudent and t.hclass=:hclass";		
+			System.out.println(q);
+			TypedQuery<Hclassenrollment> tq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter("hclass", class_obj).setParameter("hstudent", hstudent);
+			Hclassenrollment enrollment = tq.getSingleResult();
+			if(enrollment==null)
+				return null;
+			else
+				return 
+					enrollment.getGrade();
+	}
+
 	
 	
 }
