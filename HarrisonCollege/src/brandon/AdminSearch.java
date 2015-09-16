@@ -241,6 +241,7 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Courses</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Subject</th><th>Credit Hours</th></tr></thead><tbody>");
 		for (Hcours c : courses) {
+			if(c.getEnabled().equals("yes")){
 			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
 					+ c.getSubject()
 					+ "</td><td>"
@@ -253,6 +254,21 @@ public class AdminSearch extends HttpServlet {
 					+ c.getCourseId()
 					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
+			}
+			else{
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>"
+						+ c.getSubject()
+						+ "</td><td>"
+						+ c.getCreditHours()
+						+ "</td><td>"
+						+ "<a href=\"Enable?todo=enable&type=course&id="
+						+ c.getCourseId()
+						+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+						+ "<a href=\"Enable?todo=disable&type=course&id="
+						+ c.getCourseId()
+						+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
+						+ "</td></tr>");
+			}
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -264,6 +280,7 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Majors</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>");
 		for (Hmajor m : majors) {
+			if(m.getEnabled().equals("yes")){
 			display.append("<tr nclass='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
 					+ m.getName()
 					+ "</td><td>"
@@ -276,6 +293,21 @@ public class AdminSearch extends HttpServlet {
 					+ m.getMajorId()
 					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
+			}
+			else{
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>"
+						+ m.getName()
+						+ "</td><td>"
+						+ m.getHdepartment().getName()
+						+ "</td><td>"
+						+ "<a href=\"Enable?todo=enable&type=major&id="
+						+ m.getMajorId()
+						+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+						+ "<a href=\"Enable?todo=disable&type=major&id="
+						+ m.getMajorId()
+						+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
+						+ "</td></tr>");
+			}
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -288,7 +320,8 @@ public class AdminSearch extends HttpServlet {
 				+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Subject</th><th>Day</th>"
 				+ "<th>Start Time</th><th>End Time</th><th>Semester</th><th>Year</th></tr></thead><tbody>");
 		for (Hclass c : classes) {
-			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
+			if(c.getEnabled().equals("yes")){
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
 					+ c.getHcours().getCourseId()
 					+ "</td><td>"
 					+ c.getHcours().getSubject()
@@ -310,6 +343,32 @@ public class AdminSearch extends HttpServlet {
 					+ c.getClassId()
 					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
+			}
+			else{
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>"
+					+ c.getHcours().getCourseId()
+					+ "</td><td>"
+					+ c.getHcours().getSubject()
+					+ "</td><td>"
+					+ c.getDay()
+					+ "</td><td>"
+					+ c.getStarttime()
+					+ "</td><td>"
+					+ c.getEndtime()
+					+ "</td><td>"
+					+ c.getSemester()
+					+ "</td><td>"
+					+ c.getYear()
+					+ "</td><td>"
+					+ "<a href=\"Enable?todo=enable&type=class&id="
+					+ c.getClassId()
+					+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+					+ "<a href=\"Enable?todo=disable&type=class&id="
+					+ c.getClassId()
+					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
+					+ "</td></tr>");
+				
+			}
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -321,6 +380,7 @@ public class AdminSearch extends HttpServlet {
 		display.append("<div class=\"container\"><h2>Classrooms</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Room Number</th><th>Building</th><th>Capacity</th></tr></thead><tbody>");
 		for (Hclassroom c : classrooms) {
+			if(c.getEnabled().equals("yes")){
 			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
 					+ c.getRoomNumber()
 					+ "</td><td>"
@@ -335,6 +395,23 @@ public class AdminSearch extends HttpServlet {
 					+ c.getClassroomId()
 					+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
 					+ "</td></tr>");
+			}
+			else{
+				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>"
+						+ c.getRoomNumber()
+						+ "</td><td>"
+						+ c.getBuilding()
+						+ "</td><td>"
+						+ c.getCapacity()
+						+ "</td><td>"
+						+ "<a href=\"Enable?todo=enable&type=classroom&id="
+						+ c.getClassroomId()
+						+ "\" class=\"btn btn-success\" role=\"button\">Enable</button>"
+						+ "<a href=\"Enable?todo=disable&type=classroom&id="
+						+ c.getClassroomId()
+						+ "\" class=\"btn btn-danger\" role=\"button\">Disable</button>"
+						+ "</td></tr>");
+			}
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
