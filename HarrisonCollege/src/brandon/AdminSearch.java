@@ -49,24 +49,35 @@ public class AdminSearch extends HttpServlet {
 		if (departmentFormAvailable(request)) {
 			Admin.createDepartment(request.getParameter("code"),
 					request.getParameter("name"));
-		}
-		else if(courseFormAvailable(request)){
-			Hdepartment department = DBUtil.find(Long.parseLong(request.getParameter("selDepartment")), Hdepartment.class);
+		} else if (courseFormAvailable(request)) {
+			Hdepartment department = DBUtil.find(
+					Long.parseLong(request.getParameter("selDepartment")),
+					Hdepartment.class);
 			System.out.println(department.getName());
-			Admin.createCourse(department, 
-					request.getParameter("subject"), Integer.parseInt(request.getParameter("hours")));
-		}
-		else if(majorFormAvailable(request)){
-			Hdepartment department = DBUtil.find(Long.parseLong(request.getParameter("selDepartment")), Hdepartment.class);
+			Admin.createCourse(department, request.getParameter("subject"),
+					Integer.parseInt(request.getParameter("hours")));
+		} else if (majorFormAvailable(request)) {
+			Hdepartment department = DBUtil.find(
+					Long.parseLong(request.getParameter("selDepartment")),
+					Hdepartment.class);
 			System.out.println(department.getName());
 			Admin.createMajor(department, request.getParameter("name"));
-		}
-		else if(classFormAvailable(request)){
-			Hclassroom classroom = DBUtil.find(Long.parseLong(request.getParameter("selClassroom")), Hclassroom.class);
-			Hcours course = DBUtil.find(Long.parseLong(request.getParameter("selCourse")), Hcours.class);
+		} else if (classFormAvailable(request)) {
+			Hclassroom classroom = DBUtil.find(
+					Long.parseLong(request.getParameter("selClassroom")),
+					Hclassroom.class);
+			Hcours course = DBUtil.find(
+					Long.parseLong(request.getParameter("selCourse")),
+					Hcours.class);
 			System.out.println(request.getParameter("selDay"));
-			Admin.createClass(course, printDays(request), request.getParameter("startTime"), request.getParameter("endTime")
-					, request.getParameter("selSemester"), request.getParameter("year"));
+			Admin.createClass(course, printDays(request),classroom,
+					request.getParameter("startTime"),
+					request.getParameter("endTime"),
+					request.getParameter("selSemester"),
+					request.getParameter("year"));
+		} else if (classroomFormAvailable(request)){	
+			Admin.createClassroom(request.getParameter("building"), Integer.parseInt(request.getParameter("capacity")),
+					Integer.parseInt(request.getParameter("roomNumber")));
 		}
 		String display = displaySearchList(criteria);
 		request.setAttribute("display", display);
@@ -172,7 +183,9 @@ public class AdminSearch extends HttpServlet {
 		for (Hcours c : courses) {
 			display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>"
 					+ c.getSubject()
-					+ "</td><td>" + c.getCreditHours() + "</td></tr>");
+					+ "</td><td>"
+					+ c.getCreditHours()
+					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
 		return display.toString();
@@ -221,6 +234,7 @@ public class AdminSearch extends HttpServlet {
 
 	protected String displayClassrooms(List<Hclassroom> classrooms) {
 		StringBuilder display = new StringBuilder();
+		display.append(classroomCreationForm());
 		display.append("<div class=\"container\"><h2>Classrooms</h2>"
 				+ "<table class=\"table table-hover\"><thead><tr><th>Room Number</th><th>Building</th><th>Capacity</th></tr></thead><tbody>");
 		for (Hclassroom c : classrooms) {
@@ -258,7 +272,6 @@ public class AdminSearch extends HttpServlet {
 				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
 
 	}
-	
 
 	protected String majorCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
@@ -272,35 +285,35 @@ public class AdminSearch extends HttpServlet {
 				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
 
 	}
-	
+
 	protected String classCreationForm() {
 		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 				+ "<div class=\"form-group\"><label for=\"selCours\">Select Course:</label>"
 				+ "<select class=\"form-control\" id=\"selCourse\" name =\"selCourse\">"
 				+ listCourses()
 				+ "</select></div>"
-				
+
 				+ "<div class=\"form-group\"><label for=\"selClassroom\">Select Classroom:</label>"
 				+ "<select class=\"form-control\" id=\"selClassroom\" name =\"selClassroom\">"
 				+ listClassrooms()
 				+ "</select></div>"
-				
-				+"<div class =\"form-group\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"monday\" value=\"M\">M</label>"
-				+"<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"tuesday\" value=\"T\">T</label><label class=\"checkbox-inline\">"
-				+"<input type=\"checkbox\" name=\"wednesday\" value=\"W\">W</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"thursday\" value=\"H\">H"
-				+"</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"friday\" value=\"F\">F</label></div>"
-				
+
+				+ "<div class =\"form-group\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"monday\" value=\"M\">M</label>"
+				+ "<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"tuesday\" value=\"T\">T</label><label class=\"checkbox-inline\">"
+				+ "<input type=\"checkbox\" name=\"wednesday\" value=\"W\">W</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"thursday\" value=\"H\">H"
+				+ "</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"friday\" value=\"F\">F</label></div>"
+
 				+ "<div class=\"form-group\"><label for=\"startTime\">Start Time:</label>"
 				+ "<input type=\"text\" class=\"form-control\" id=\"startTime\" name =\"startTime\" placeholder=\"Enter Start Time\"></div>"
-				
+
 				+ "<div class=\"form-group\"><label for=\"endTime\">End Time:</label>"
 				+ "<input type=\"text\" class=\"form-control\" id=\"endTime\" name =\"endTime\" placeholder=\"Enter End Time\"></div>"
-				
+
 				+ "<div class=\"form-group\"><label for=\"selSemester\">Select Semester:</label>"
 				+ "<select class=\"form-control\" id=\"selSemester\" name =\"selSemester\">"
 				+ "<option value =\"Fall\">Fall</option><option value =\"Spring\">Spring</option>"
 				+ "</select></div>"
-				
+
 				+ "<div class=\"form-group\"><label for=\"year\">Year:</label>"
 				+ "<input type=\"number\" class=\"form-control\" id=\"year\" name =\"year\" min =\"2015\" max = \"2070\" value=\"2015\"></div>"
 
@@ -308,8 +321,23 @@ public class AdminSearch extends HttpServlet {
 				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
 
 	}
-	
 
+	protected String classroomCreationForm() {
+		return "<div class=\"container\"><form class=\"form-inline\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
+
+				+ "<div class=\"form-group\"><label for=\"building\">Building:</label>"
+				+ "<input type=\"text\" class=\"form-control\" id=\"building\" name =\"building\" placeholder=\"Enter Building\"></div>"
+
+				+ "<div class=\"form-group\"><label for=\"capacity\">Capacity:</label>"
+				+ "<input type=\"number\" class=\"form-control\" id=\"capacity\" name =\"capacity\" min =\"0\" value=\"0\"></div>"
+
+				+ "<div class=\"form-group\"><label for=\"roomNumber\">Room Number:</label>"
+				+ "<input type=\"number\" class=\"form-control\" id=\"roomNumber\" min =\"100\" value=\"100\" name =\"roomNumber\"></div>"
+
+				+ "<input type=\"hidden\" name=\"select\" value=\"classrooms\"/>"
+				+ "<button type=\"submit\" class=\"btn btn-default\">Add</button></form></div>";
+
+	}
 
 	protected String listDepartments() {
 		StringBuilder listDepart = new StringBuilder();
@@ -320,7 +348,7 @@ public class AdminSearch extends HttpServlet {
 		}
 		return listDepart.toString();
 	}
-	
+
 	protected String listCourses() {
 		StringBuilder listCourses = new StringBuilder();
 		for (Hcours d : Admin.getAllCourses()) {
@@ -330,13 +358,13 @@ public class AdminSearch extends HttpServlet {
 		}
 		return listCourses.toString();
 	}
-	
+
 	protected String listClassrooms() {
 		StringBuilder listClassrooms = new StringBuilder();
 		for (Hclassroom d : Admin.getAllClassrooms()) {
 			;
 			listClassrooms.append("<option value= " + d.getClassroomId() + ">"
-					+ d.getBuilding() + " " + d.getRoomNumber() +"</option>");
+					+ d.getBuilding() + " " + d.getRoomNumber() + "</option>");
 		}
 		return listClassrooms.toString();
 	}
@@ -349,7 +377,7 @@ public class AdminSearch extends HttpServlet {
 		} else
 			return false;
 	}
-	
+
 	protected boolean majorFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("name") != null
 				&& request.getParameter("selDepartment") != null) {
@@ -360,7 +388,7 @@ public class AdminSearch extends HttpServlet {
 	}
 
 	protected boolean courseFormAvailable(HttpServletRequest request) {
-		if ( request.getParameter("selDepartment") != null
+		if (request.getParameter("selDepartment") != null
 				&& request.getParameter("subject") != null
 				&& request.getParameter("hours") != null) {
 			System.out.println("courseForm is available");
@@ -368,7 +396,7 @@ public class AdminSearch extends HttpServlet {
 		} else
 			return false;
 	}
-	
+
 	protected boolean classFormAvailable(HttpServletRequest request) {
 		if (request.getParameter("selCourse") != null
 				&& request.getParameter("selClassroom") != null
@@ -382,21 +410,31 @@ public class AdminSearch extends HttpServlet {
 			return false;
 	}
 	
-	protected String printDays(HttpServletRequest request){
+	protected boolean classroomFormAvailable(HttpServletRequest request) {
+		if (request.getParameter("building") != null
+				&& request.getParameter("capacity") != null
+				&& request.getParameter("roomNumber") != null) {
+			System.out.println("classroomForm is available");
+			return true;
+		} else
+			return false;
+	}
+
+	protected String printDays(HttpServletRequest request) {
 		StringBuilder days = new StringBuilder();
-		if(request.getParameter("monday")!=null){
+		if (request.getParameter("monday") != null) {
 			days.append("M");
 		}
-		if(request.getParameter("tuesday")!=null){
+		if (request.getParameter("tuesday") != null) {
 			days.append("T");
 		}
-		if(request.getParameter("wednesday")!=null){
+		if (request.getParameter("wednesday") != null) {
 			days.append("W");
 		}
-		if(request.getParameter("thursday")!=null){
+		if (request.getParameter("thursday") != null) {
 			days.append("H");
 		}
-		if(request.getParameter("friday")!=null){
+		if (request.getParameter("friday") != null) {
 			days.append("F");
 		}
 		return days.toString();

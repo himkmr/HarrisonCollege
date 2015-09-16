@@ -19,7 +19,7 @@ public class Hclassroom implements Serializable {
 
 	@Id
 	@Column(name="CLASSROOM_ID")
-	@SequenceGenerator(name="CLASSROOM_GENERATOR", sequenceName="HCLASSROOM_SEQ", allocationSize = 1, initialValue = 100, schema="TESTDB")
+	@SequenceGenerator(name="CLASSROOM_GENERATOR", sequenceName="HCLASSROOMS_SEQ", allocationSize = 1, initialValue = 1, schema="TESTDB")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CLASSROOM_GENERATOR")
 	private long classroomId;
 

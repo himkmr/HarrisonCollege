@@ -104,10 +104,9 @@ public class Admin {
 	}
 
 	// create a classroom
-	public static void createClassroom(long id, String building, int cap,
+	public static void createClassroom(String building, int cap,
 			int roomNum) {
 		Hclassroom classroom = new Hclassroom();
-		classroom.setClassroomId(id);
 		classroom.setBuilding(building);
 		classroom.setCapacity(cap);
 		classroom.setRoomNumber(roomNum);
@@ -225,11 +224,12 @@ public class Admin {
 	}
 
 	// create a new class
-	public static void createClass(Hcours course, String day,
+	public static void createClass(Hcours course, String day, Hclassroom classroom,
 			String starttime, String endtime, String semester, String year) {
 		Hclass newClass = new Hclass();
 		newClass.setDay(day);
 		newClass.setEnabled("yes");
+		newClass.setHclassroom(classroom);
 		newClass.setEndtime(endtime);
 		newClass.setHcours(course);
 		newClass.setSemester(semester);
