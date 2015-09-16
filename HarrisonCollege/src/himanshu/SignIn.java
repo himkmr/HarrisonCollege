@@ -51,6 +51,7 @@ public class SignIn extends HttpServlet {
 				sem = "spring";
 			else
 				sem= "fall";
+			request.getSession().setAttribute("usertype", success.getPermissions());	
 			request.getSession().setAttribute("currentYear", currentYear+"");	
 			request.getSession().setAttribute("currentSemester", sem);	
 			request.getSession().setAttribute("User", success);	

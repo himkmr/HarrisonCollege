@@ -10,5 +10,6 @@
 </head>
 <body>
 <jsp:include page="/navbar.jsp"/>
+${message}
 </body>
 </html>
