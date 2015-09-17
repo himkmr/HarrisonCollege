@@ -1,6 +1,7 @@
 package Yang;
 import java.io.IOException;
 import java.util.List;
+
 import javax.persistence.TypedQuery;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,21 +9,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import model.Hclass;
+import model.Hclassenrollment;
 import model.Huser;
 import customTools.DBUtil;
 
 /**
  * Servlet implementation class AddComment
  */
-@WebServlet("/EnrollThisStudent")
-public class EnrollThisStudent extends HttpServlet {
+@WebServlet("/StudentSelfEnroll")
+public class StudentSelfEnroll extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public EnrollThisStudent() {
+	public StudentSelfEnroll() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -39,13 +42,14 @@ public class EnrollThisStudent extends HttpServlet {
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
 		String alert = "";
-
-		
-//Only For advisors		
-		if(user.getPermissions().equalsIgnoreCase("advisor")){
+		long classId = Long.parseLong(request.getParameter("classID"));
+		int stime = Integer.parseInt(request.getParameter("stime"));
+		int etime = Integer.parseInt(request.getParameter("etime"));
+		int rcap = Integer.parseInt(request.getParameter("rcap"));
+		if(user.getPermissions().equalsIgnoreCase("instructor")){
 	// Get Current Class			
-			TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.semester = ?1 and h.year = ?2",Hclass.class)
-					.setParameter(1, currentSemester).setParameter(2, currentYear);
+			TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h.hclass FROM Hclassenrollment h where h.hclass.semester = ?1 and h.hclass.year = ?2 and h.hstudent.studentId = ?3",Hclass.class)
+					.setParameter(1, currentSemester).setParameter(2, currentYear).setParameter(3, studentId);
 			List<Hclass> classList;
 			if(q.getResultList().isEmpty()){
 				alert = "You don't have any class for now!";
@@ -75,15 +79,12 @@ public class EnrollThisStudent extends HttpServlet {
 							 +"</td><td>"+classList.get(i).getEnabled()
 							 +"</td><td><a href=\"Classenrollment?studentID="+studentId
 							 +"&classID="+classList.get(i).getClassId()
-							 +"&stime="+classList.get(i).getStarttime()
-							 +"&etime="+classList.get(i).getEndtime()
-							 +"&rcap="+classList.get(i).getHclassroom().getCapacity()
-							 +"\">Enroll</a></td></tr>";
+							 +"\">Drop</a></td></tr>";
 				}
 				fullList += "</tbody></table>";
 			}
 		}else{
-			alert = "Please log in as an advisor...";
+			alert = "Please log in as an instructor...";
 		}
 		// Set response content type
 		response.setContentType("text/html");

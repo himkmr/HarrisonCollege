@@ -73,7 +73,8 @@ public class GetDepartmentClass extends HttpServlet {
 						 +"</td><td>"+classList.get(i).getEndtime()
 						 +"</td><td>"+classList.get(i).getEnabled()+"</td>";
 				if(user.getPermissions().equalsIgnoreCase("student")){
-					fullList += "<td><a href=\"Classenrollment?classID="
+					//fullList += "<td><a href=\"Classenrollment?classID="
+					fullList += "<td><a href=\"StudentSelfEnroll?classID="
 							 +classList.get(i).getClassId()
 							 +"&rcap="+classList.get(i).getHclassroom().getCapacity()
 							 +"&stime="+classList.get(i).getStarttime()

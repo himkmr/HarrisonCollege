@@ -42,12 +42,10 @@ public class DropThisStudent extends HttpServlet {
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
 		String alert = "";
-		currentYear="2014";
-		currentSemester="fall";
-		if(1==1){
-		//if(user.getPermissions().equalsIgnoreCase("instructor")){
+//Only for advisors		
+		if(user.getPermissions().equalsIgnoreCase("advisor")){
 	// Get Current Class			
-			TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h.hclass FROM Hclassenrollment h where h.hclass.semester = ?1 and h.hclass.year = ?2 and h.hstudent.studentId = ?3",Hclass.class)
+			TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h.hclass FROM Hclassenrollment h where h.hclass.semester = ?1 and h.hclass.year = ?2 and h.hstudent.studentId = ?3 and h.enrolled = 'yes'",Hclass.class)
 					.setParameter(1, currentSemester).setParameter(2, currentYear).setParameter(3, studentId);
 			List<Hclass> classList;
 			if(q.getResultList().isEmpty()){
@@ -76,14 +74,14 @@ public class DropThisStudent extends HttpServlet {
 							 +"</td><td>"+classList.get(i).getStarttime()
 							 +"</td><td>"+classList.get(i).getEndtime()
 							 +"</td><td>"+classList.get(i).getEnabled()
-							 +"</td><td><a href=\"Classenrollment?studentID="+studentId
+							 +"</td><td><a href=\"DropClass?studentID="+studentId
 							 +"&classID="+classList.get(i).getClassId()
 							 +"\">Drop</a></td></tr>";
 				}
 				fullList += "</tbody></table>";
 			}
 		}else{
-			alert = "Please log in as an instructor...";
+			alert = "Please log in as an advisor...";
 		}
 		// Set response content type
 		response.setContentType("text/html");
