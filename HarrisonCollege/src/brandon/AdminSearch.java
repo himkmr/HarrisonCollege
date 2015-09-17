@@ -176,10 +176,10 @@ public class AdminSearch extends HttpServlet {
 		for (Hdepartment d : departments) {
 
 			if (d.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\">");
+				display.append("<tr class='clickable-row' data-href= \"#\">");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\">");
+				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\">");
 			}
 			display.append("<td>"
 					+ d.getCode()
@@ -208,9 +208,9 @@ public class AdminSearch extends HttpServlet {
 				+ "<table class=\"table table-hover\"><thead><tr><th>Subject</th><th>Credit Hours</th></tr></thead><tbody>");
 		for (Hcours c : courses) {
 			if (c.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\"><td>");
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\"><td>");
 			}
 			display.append(c.getSubject()
 					+ "</td><td>"
@@ -239,10 +239,10 @@ public class AdminSearch extends HttpServlet {
 				+ "<table class=\"table table-hover\"><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>");
 		for (Hmajor m : majors) {
 			if (m.getEnabled().equals("yes")) {
-				display.append("<tr nclass='clickable-row' data-href= \"AdminCreate.jsp\"><td>");
+				display.append("<tr nclass='clickable-row' data-href= \"#\"><td>");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\"><td>");
 			}
 			display.append(m.getName()
 					+ "</td><td>"
@@ -272,10 +272,10 @@ public class AdminSearch extends HttpServlet {
 				+ "<th>Start Time</th><th>End Time</th><th>Semester</th><th>Year</th></tr></thead><tbody>");
 		for (Hclass c : classes) {
 			if (c.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\"><td>");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\"><td>");
 			}
 			display.append(c.getHcours().getCourseId()
 					+ "</td><td>"
@@ -313,10 +313,10 @@ public class AdminSearch extends HttpServlet {
 				+ "<table class=\"table table-hover\"><thead><tr><th>Room Number</th><th>Building</th><th>Capacity</th></tr></thead><tbody>");
 		for (Hclassroom c : classrooms) {
 			if (c.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\"><td>");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"AdminCreate.jsp\" style=\"color: #fff; background: black;\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\"><td>");
 			}
 			display.append(c.getRoomNumber()
 					+ "</td><td>"
