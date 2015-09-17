@@ -58,7 +58,7 @@ public class SignIn extends HttpServlet {
 			
 			if(success.getPermissions().equalsIgnoreCase("Admin"))
 			{	
-			request.getServletContext().getRequestDispatcher("/AdminPendingRequest").forward(request, response);}
+				request.getServletContext().getRequestDispatcher("/AdminPendingRequest").forward(request, response);}
 			else if(success.getPermissions().equalsIgnoreCase("Student"))
 			{
 				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
