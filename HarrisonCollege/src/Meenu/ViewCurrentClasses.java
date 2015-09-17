@@ -41,11 +41,14 @@ public class ViewCurrentClasses extends HttpServlet {
     	String alert = "";
     	String fullList = "";
     	 
-    	HttpSession session = request.getSession(true);
+    	/*HttpSession session = request.getSession(true);
     	Huser thisUser = (Huser) session.getAttribute("User");
-		long studentID = thisUser.getHstudent().getStudentId();
-    	String currentYear = (String) session.getAttribute("currentYear");
-		String currentSemester = (String) session.getAttribute("currentSemester");	
+		long studentID = thisUser.getHstudent().getStudentId();*/
+    	long studentID = 2;
+    	/*String currentYear = (String) session.getAttribute("currentYear");
+		String currentSemester = (String) session.getAttribute("currentSemester");	*/
+    	String currentYear = "2015";
+    	String currentSemester = "SPRING";
     	String q = "SELECT h FROM Hclassenrollment h where h.hstudent=?1 and h.enrolled = 'yes' and h.hclass.semester= ?2 and h.hclass.year = ?3";
 		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, Student.getStudent(studentID)).setParameter(2, currentSemester).setParameter(3, currentYear);
 		System.out.println("111");

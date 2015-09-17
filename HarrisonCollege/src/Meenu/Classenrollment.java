@@ -31,11 +31,13 @@ public class Classenrollment extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(true);
+		/*HttpSession session = request.getSession(true);
 		Huser thisUser = (Huser) session.getAttribute("User");
-		long studentID = thisUser.getHstudent().getStudentId();
-		if(thisUser.getPermissions().equalsIgnoreCase("advisor"))
-			studentID = Long.parseLong(request.getParameter("studentID"));
+		long studentID = thisUser.getHstudent().getStudentId();*/
+		long studentID = 2;
+		String message = "";
+		/*if(thisUser.getPermissions().equalsIgnoreCase("advisor"))
+			studentID = Long.parseLong(request.getParameter("studentID"));*/
 		String classID = request.getParameter("classID");
 		String starttime = request.getParameter("stime");
 		String endtime = request.getParameter("etime");
@@ -43,16 +45,30 @@ public class Classenrollment extends HttpServlet {
 		int etime = Integer.parseInt(endtime);
 		int capacity = Integer.parseInt(request.getParameter("rcap"));
 		Hclassenrollment student = new Hclassenrollment();
-		if(Student.checkschedule(studentID, classID, capacity, stime, etime)==true){
-			System.out.println("adding student");
+		System.out.println("Checking schedule");
+		System.out.println("check is "+Student.checkschedule(studentID, classID, capacity, stime, etime));
+		if(Student.checkschedule(studentID, classID, capacity, stime, etime)==0)
+		{
+			Student.enrollAgain(studentID, classID);
+			System.out.println("enrolled again");
+		}
+		else if(Student.checkschedule(studentID, classID, capacity, stime, etime)==1)
+		{
 			student.setEnrolled("yes");
 			student.setGrade("W");
 			student.setHclass(Student.getClass(classID));
 			student.setHstudent(Student.getStudent(studentID));
 			Student.addClass(student);
-			System.out.println("Added student");
+			System.out.println("Added student");	
+		}
+		else
+		{
+			message = "Cannot add";
+		System.out.println(message);
 		}
 		
+		getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
+				request, response);
 	}
 
 	/**
