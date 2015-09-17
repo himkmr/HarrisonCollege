@@ -37,8 +37,10 @@ public class StudentInfo extends HttpServlet {
 		Hstudent student = DBUtil.find(Long.parseLong(request.getParameter("id")), Hstudent.class);
 		String info = displayStudentInfo(student);
 		String classes = Display.displayClasses(Admin.classesByStudent(student));
+		String classrooms = Display.displayClassrooms(Admin.classroomsByStudent(student));
 		request.setAttribute("info",info);
 		request.setAttribute("classes",classes);
+		request.setAttribute("classrooms",classrooms);
 		getServletContext().getRequestDispatcher("/StudentInfo.jsp").forward(request, response);
 	}
 

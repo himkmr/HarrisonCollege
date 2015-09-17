@@ -27,5 +27,19 @@
 			</tbody>
 		</table>
 	</div>
+	<div class="container">
+		<h2>Classrooms</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Room Number</th>
+					<th>Building</th>
+					<th>Capacity</th>
+				</tr>
+			</thead>
+			<tbody>${classrooms}
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
