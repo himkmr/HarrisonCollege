@@ -357,6 +357,14 @@ public class Admin {
 		}
 		return classrooms;
 	}
+	
+	public static List<model.Hclass> classesByStudent(Hstudent student) {
+		List<Hclass> classes = new ArrayList<Hclass>();
+		for (Hclassenrollment h : student.getHclassenrollments()) {
+			classes.add(h.getHclass());
+		}
+		return classes;
+	}
 
 	public static List<model.Hofficial> getAllInstructors() {
 		String q = "select h from Hofficial h where h.type like \'instructor\'";

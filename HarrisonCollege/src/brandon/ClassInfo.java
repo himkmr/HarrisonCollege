@@ -1,7 +1,5 @@
 package brandon;
 
-import himanshu.ViewClasses;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.*;
-import customTools.DBUtil;
+import model.Hclass;
+import model.Hcours;
 
 /**
- * Servlet implementation class StudentInfo
+ * Servlet implementation class ClassInfo
  */
-@WebServlet("/StudentInfo")
-public class StudentInfo extends HttpServlet {
+@WebServlet("/ClassInfo")
+public class ClassInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public StudentInfo() {
+    public ClassInfo() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,12 +32,7 @@ public class StudentInfo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Hstudent student = DBUtil.find(Long.parseLong(request.getParameter("id")), Hstudent.class);
-		String info = displayStudentInfo(student);
-		String classes = Display.displayClasses(Admin.classesByStudent(student));
-		request.setAttribute("info",info);
-		request.setAttribute("classes",classes);
-		getServletContext().getRequestDispatcher("/StudentInfo.jsp").forward(request, response);
+		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -48,14 +41,13 @@ public class StudentInfo extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
-	
-	protected String displayStudentInfo(Hstudent student){
+
+
+	protected static String displayClassInfo(Hclass hclass){
 		StringBuilder display = new StringBuilder();
-		display.append("<div class=\"container\">"+student.getStudentId() + " " + student.getHuser().getName() + " " + student.getEntryYear() + " " + student.getMajor().getName() + "</div>");
+		List<Hclass> classes = new ArrayList<Hclass>();
+		Display.displayClasses(classes);
 		return display.toString();
 	}
 	
-	
-
-
 }

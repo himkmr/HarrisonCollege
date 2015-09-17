@@ -45,7 +45,7 @@ public class OfficialInfo extends HttpServlet {
 		request.setAttribute("classrooms", classrooms);
 		request.setAttribute("currentClasses", currentClasses);
 		request.setAttribute("students", students);
-		getServletContext().getRequestDispatcher("/AdminInfo.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/OfficialInfo.jsp").forward(request, response);
 	}
 
 	/**
