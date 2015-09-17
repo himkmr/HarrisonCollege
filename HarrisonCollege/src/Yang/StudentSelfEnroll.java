@@ -1,4 +1,5 @@
 package Yang;
+import Meenu.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class StudentSelfEnroll extends HttpServlet {
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
 		String alert = "";
-		long classId = Long.parseLong(request.getParameter("classID"));
+		String classId = request.getParameter("classID");
 		int stime = Integer.parseInt(request.getParameter("stime"));
 		int etime = Integer.parseInt(request.getParameter("etime"));
 		int rcap = Integer.parseInt(request.getParameter("rcap"));
