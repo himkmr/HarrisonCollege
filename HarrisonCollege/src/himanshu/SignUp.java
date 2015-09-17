@@ -1,6 +1,7 @@
 package himanshu;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -90,17 +91,13 @@ public class SignUp extends HttpServlet implements Servlet {
 			String q1 = "select t from Hmajor t";
 			TypedQuery<Hmajor> tq2 = DBUtil.createQuery(q1, model.Hmajor.class);
 			List<Hmajor> mlist = tq2.getResultList();
-			String departments[] = new String[100];
-			String majors[] = new String[100];
-			int index = 0;
+			List <String> marray = new ArrayList<String>();
+
 			for (Hmajor temp : mlist) {
-				majors[index] = temp.getName();
-				System.out.println(temp.getName());
-				index++;
+				marray.add(temp.getName());
 			}
 
-			request.setAttribute("darray", departments);
-			request.setAttribute("marray", majors);
+			request.setAttribute("marray", marray);
 
 			request.getServletContext()
 					.getRequestDispatcher("/StudentSignUp.jsp")
@@ -122,14 +119,11 @@ public class SignUp extends HttpServlet implements Servlet {
 			TypedQuery<Hdepartment> tq = DBUtil.createQuery(q,
 					model.Hdepartment.class);
 			List<Hdepartment> dlist = tq.getResultList();
-			String departments[] = new String[100];
-			int index = 0;
+			List <String> departments =new ArrayList<String>();
+
 			for (Hdepartment temp : dlist) {
-				departments[index] = temp.getName();
-				System.out.println(temp.getName());
-				index++;
+				departments.add(temp.getName());
 			}
-			index = 0;
 			request.setAttribute("darray", departments);
 			request.getServletContext()
 					.getRequestDispatcher("/OfficialSignUp.jsp")

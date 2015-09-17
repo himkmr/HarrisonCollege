@@ -11,7 +11,6 @@
 <body>
 <jsp:include page="/navbar.jsp"/>
 <div align="center">
-
 <form id="bootstrapSelectForm"  style="width:40%"  class="form-horizontal" action="CalculateRevenue" >
     <div class="form-group">
         <label class="col-xs-3 control-label">Department</label>
