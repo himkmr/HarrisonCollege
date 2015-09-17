@@ -78,7 +78,8 @@ public class AdminUpdate extends HttpServlet {
 				+ "<div class=\"form-group\"><label for=\"hours\">Credit Hours:</label>"
 				+ "<input type=\"number\" class=\"form-control\" id=\"hours\" name =\"hours\" min = \"0\" placeholder=\""+c.getCreditHours()+"\"></div>"
 				+ "<div class=\"form-group\"><label for=\"selDepartment\">Select Department:</label>"
-				+ "<select class=\"form-control\" id=\"selDepartment\" name =\"selDepartment\" placeholder =" + c.getHdepartment().getName()+">"
+				+ "<select class=\"form-control placeholder\" id=\"selDepartment\" name =\"selDepartment\">"
+				+"<option value = \"\">" + c.getHdepartment().getName()+"</option>"
 				+ AdminSearch.listDepartments()
 				+ "</select></div>"
 				+ "<input type=\"hidden\" name=\"select\" value=\"course\"/>"
@@ -89,12 +90,14 @@ public class AdminUpdate extends HttpServlet {
 		Hclass c = DBUtil.find(id,Hclass.class);
 		return "<div class=\"container\"><form class=\"form-vertical\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
 				+ "<div class=\"form-group\"><label for=\"selCours\">Select Course:</label>"
-				+ "<select class=\"form-control\" id=\"selCourse\" name =\"selCourse\" placeholder = \"" + c.getHcours().getSubject()+"\">"
+				+ "<select class=\"form-control placeholder\" id=\"selCourse\" name =\"selCourse\" >"
+				+"<option value = \"\">"+c.getHcours().getSubject()+"</option>"
 				+ AdminSearch.listCourses()
 				+ "</select></div>"
 
 				+ "<div class=\"form-group\"><label for=\"selClassroom\">Select Classroom:</label>"
-				+ "<select class=\"form-control\" id=\"selClassroom\" name =\"selClassroom\" placeholder =\"" + c.getHclassroom().getRoomNumber() + " " + c.getHclassroom().getBuilding() + "\">"
+				+ "<select class=\"form-control placeholder\" id=\"selClassroom\" name =\"selClassroom\" >"
+				+"<option value = \"\">"+ c.getHclassroom().getBuilding() + " " + c.getHclassroom().getRoomNumber() +  "</option>"
 				+ AdminSearch.listClassrooms()
 				+ "</select></div>"
 
@@ -110,7 +113,8 @@ public class AdminUpdate extends HttpServlet {
 				+ "<input type=\"text\" class=\"form-control\" id=\"endTime\" name =\"endTime\" placeholder=\""+c.getEndtime()+"\"></div>"
 
 				+ "<div class=\"form-group\"><label for=\"selSemester\">Select Semester:</label>"
-				+ "<select class=\"form-control\" id=\"selSemester\" name =\"selSemester\">"
+				+ "<select class=\"form-control placeholder\" id=\"selSemester\" name =\"selSemester\">"
+				+"<option value = \"\">"+c.getSemester()+"</option>"
 				+ "<option value =\"Fall\">Fall</option><option value =\"Spring\">Spring</option>"
 				+ "</select></div>"
 
@@ -144,7 +148,8 @@ public class AdminUpdate extends HttpServlet {
 				+ "<div class=\"form-group\"><label for=\"name\">Name</label>"
 				+ "<input type=\"text\" class=\"form-control\" id=\"name\" name =\"name\" placeholder=\""+m.getName()+"\"></div>"
 				+ "<div class=\"form-group\"><label for=\"selDepartment\">Select Department:</label>"
-				+ "<select class=\"form-control\" id=\"selDepartment\" name =\"selDepartment\" placeholder=\""+m.getHdepartment().getName()+"\">"
+				+ "<select class=\"form-control placeholder\" id=\"selDepartment\" name =\"selDepartment\" >"
+				+"<option value = \"\">"+m.getHdepartment().getName()+"</option>"
 				+ AdminSearch.listDepartments()
 				+ "</select></div>"
 				+ "<input type=\"hidden\" name=\"select\" value=\"major\"/>"
