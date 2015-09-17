@@ -53,7 +53,9 @@ public class DropClass extends HttpServlet {
 				.setParameter(1, departmentName).setParameter(2, currentSemester).setParameter(3, currentYear);*/
 	
 		
-		
+
+		getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
+				request, response);
 	}
 
 	/**

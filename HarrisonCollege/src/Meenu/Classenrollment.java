@@ -52,7 +52,9 @@ public class Classenrollment extends HttpServlet {
 			Student.addClass(student);
 			System.out.println("Added student");
 		}
-		
+
+		getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
+				request, response);
 	}
 
 	/**

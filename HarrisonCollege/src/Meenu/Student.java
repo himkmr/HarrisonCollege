@@ -51,9 +51,10 @@ public class Student {
 	
 	public static void enrollAgain(long studentID, String classID){
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes' and h.hclass=?2";
+		String q = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='no' and h.hclass=?2";
 		TypedQuery<Hclassenrollment> bq = DBUtil.createQuery(q, Hclassenrollment.class).setParameter(1, getStudent(studentID)).setParameter(2, getClass(classID));
 		Hclassenrollment thisclass = bq.getSingleResult();
+		System.out.println(thisclass.getHclass().getClassId());
 		EntityTransaction trans = em.getTransaction();
 		trans.begin();
 		try {
@@ -108,7 +109,7 @@ public class Student {
 		TypedQuery<Hclassenrollment> bq = em.createQuery(q, Hclassenrollment.class).setParameter(1, getClass(classID)).setParameter(2, getStudent(studentID));
 		List<Hclassenrollment> list = bq.getResultList();
 		
-		if(!bq.getResultList().isEmpty())
+		if(list!=null && !list.isEmpty())
 		{
 			for(Hclassenrollment temp: list)
 			{
@@ -129,20 +130,26 @@ public class Student {
 			if(count<capacity)
 			{
 				//if there is room in the classroom, now check the students schedule
-				String q2 = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1";
+				String q2 = "SELECT h FROM Hclassenrollment h where h.hstudent = ?1 and h.enrolled ='yes'";
 				TypedQuery<Hclassenrollment> bq2 = em.createQuery(q2, Hclassenrollment.class).setParameter(1, getStudent(studentID));	
 				List<Hclassenrollment> list1 = bq2.getResultList();
 				for(Hclassenrollment temp: list1)
 				{
 					dbstime = Integer.parseInt(temp.getHclass().getStarttime());
+					System.out.println(dbstime);
 					dbetime = Integer.parseInt(temp.getHclass().getEndtime());
-					if(stime>=(dbetime+20) || etime<=(dbstime-20))
+					System.out.println(dbetime);
+					System.out.println(stime);
+					System.out.println(etime);
+					if(stime>=(dbetime+20) || etime<=(dbstime-60))
 					{
 						x=0;
 					}
-					else
+					else{
 						x=1;
-				}
+						break;
+					}
+						}
 				if(x==0)
 					check = true;
 			}

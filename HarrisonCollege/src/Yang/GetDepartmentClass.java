@@ -40,11 +40,10 @@ public class GetDepartmentClass extends HttpServlet {
 		String fullList = "";
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
-		String departmentName = request.getParameter("departmentName");
 		String alert = "";
 		//Use the department name
-		TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.hcours.hdepartment.name = ?1 and h.semester = ?2 and h.year = ?3",Hclass.class)
-				.setParameter(1, departmentName).setParameter(2, currentSemester).setParameter(3, currentYear);
+		TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.semester = ?1 and h.year = ?2",Hclass.class)
+				.setParameter(1, currentSemester).setParameter(2, currentYear);
 		List<Hclass> classList;
 		if(q.getResultList().isEmpty()){
 			alert = "No current class!";
