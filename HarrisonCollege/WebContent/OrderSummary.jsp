@@ -8,6 +8,7 @@
 <title>Order Summary</title>
 </head>
 <body>
+<jsp:include page="/navbar.jsp"/>
 <h3>Order Summary</h3>
 <%! public String firstname=""; %>
 <%! public String lastname=""; %>

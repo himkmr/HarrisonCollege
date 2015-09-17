@@ -69,8 +69,8 @@ public class GetClassTime extends HttpServlet {
 								 +"</td><td>"+classList.get(i).getSemester()
 								 +"</td><td>"+classList.get(i).getYear()
 								 +"</td><td>"+classList.get(i).getDay()
-								 +"</td><td>"+classList.get(i).getStarttime()
-								 +"</td><td>"+classList.get(i).getEndtime()
+								 +"</td><td>"+getTime(classList.get(i).getStarttime())
+								 +"</td><td>"+getTime(classList.get(i).getEndtime())
 								 +"</td><td>"+classList.get(i).getEnabled()
 								 +"</td></tr>";
 					}
@@ -98,7 +98,7 @@ public class GetClassTime extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 	
-	public String getTime(String time){
+	public static  String getTime(String time){
 		String Stime = "";
 		for(int i = 0; i < time.length(); i++)
 		{

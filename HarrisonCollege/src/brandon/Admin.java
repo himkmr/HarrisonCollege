@@ -12,23 +12,22 @@ import model.*;
 public class Admin {
 
 	// create, update, list or disable a course
-	public static void createCourse(long id, Hdepartment deparment,
-			String subject, int hours) {
+	public static void createCourse(Hdepartment department, String subject,
+			int hours) {
 		Hcours course = new Hcours();
-		course.setCourseId(id);
-		course.setHdepartment(deparment);
+		course.setHdepartment(department);
 		course.setSubject(subject);
 		course.setCreditHours(hours);
 		course.setEnabled("yes");
 		DBUtil.addToDB(course);
 	}
-	
-	public static List<Hpendingadmission> getPendingAdmissions(){
+
+	public static List<Hpendingadmission> getPendingAdmissions() {
 		String q = "select h from Hpendingadmission h";
-		return DBUtil.createQuery(q,Hpendingadmission.class).getResultList();
+		return DBUtil.createQuery(q, Hpendingadmission.class).getResultList();
 	}
 
-	public static void acceptAdmission(Hpendingadmission admission){
+	public static void acceptAdmission(Hpendingadmission admission) {
 		String[] info = admission.getMessage().split(",");
 		Huser user = new Huser();
 		user.setName(info[0]);
@@ -37,19 +36,18 @@ public class Admin {
 		user.setUserId(admission.getUserid());
 		DBUtil.addToDB(user);
 		String permission = user.getPermissions().toLowerCase();
-				
-		if(permission.equals("student")){ 
+
+		if (permission.equals("student")) {
 			System.out.println(permission);
 			Hstudent student = new Hstudent();
 			System.out.println(user.getUserId());
 			student.setStudentId(user.getUserId());
 			System.out.println(info[2]);
 			student.setMajor(getMajor(info[2]));
-			
+
 			student.setEntryYear(info[3]);
 			DBUtil.addToDB(student);
-		}
-		else{ 
+		} else {
 			Hofficial official = new Hofficial();
 			official.setOfficialId(user.getUserId());
 			official.setHdepartment(getDepartment(info[2]));
@@ -57,22 +55,23 @@ public class Admin {
 			DBUtil.addToDB(official);
 		}
 	}
-	
-	public static void deletePending(Hpendingadmission admission){
+
+	public static void deletePending(Hpendingadmission admission) {
 		DBUtil.delete(admission);
 	}
-	
-	public static Hdepartment getDepartment(String name){
+
+	public static Hdepartment getDepartment(String name) {
 		String q = "select h from Hdepartment h where h.name like :name";
-		return DBUtil.createQuery(q,Hdepartment.class).setParameter("name", name).getSingleResult();
+		return DBUtil.createQuery(q, Hdepartment.class)
+				.setParameter("name", name).getSingleResult();
 	}
-	
-	public static Hmajor getMajor(String name){
+
+	public static Hmajor getMajor(String name) {
 		String q = "select h from Hmajor h where h.name like :name";
-		return DBUtil.createQuery(q,Hmajor.class).setParameter("name", name).getSingleResult();
+		return DBUtil.createQuery(q, Hmajor.class).setParameter("name", name)
+				.getSingleResult();
 	}
-	
-	
+
 	// update credit hours for course
 	public static void updateCourse(Hcours course, int hours) {
 		course.setCreditHours(hours);
@@ -105,10 +104,8 @@ public class Admin {
 	}
 
 	// create a classroom
-	public static void createClassroom(long id, String building, int cap,
-			int roomNum) {
+	public static void createClassroom(String building, int cap, int roomNum) {
 		Hclassroom classroom = new Hclassroom();
-		classroom.setClassroomId(id);
 		classroom.setBuilding(building);
 		classroom.setCapacity(cap);
 		classroom.setRoomNumber(roomNum);
@@ -136,7 +133,6 @@ public class Admin {
 		DBUtil.updateDB(classroom);
 	}
 
-
 	// disable classroom
 	public static void disableClassroom(Hclassroom classroom) {
 		classroom.setEnabled("no");
@@ -150,9 +146,8 @@ public class Admin {
 	}
 
 	// create a department
-	public static void createDepartment(long id, String code, String name) {
+	public static void createDepartment(String code, String name) {
 		model.Hdepartment department = new model.Hdepartment();
-		department.setDepartmentId(id);
 		department.setCode(code);
 		department.setName(name);
 		department.setEnabled("yes");
@@ -188,13 +183,24 @@ public class Admin {
 		DBUtil.updateDB(department);
 	}
 
+	// disable class
+	public static void disableClass(Hclass hclass) {
+		hclass.setEnabled("no");
+		DBUtil.updateDB(hclass);
+	}
+
+	// enable class
+	public static void enableClass(Hclass hclass) {
+		hclass.setEnabled("yes");
+		DBUtil.updateDB(hclass);
+	}
+
 	// create a major
-	public static void createMajor(long id, Hdepartment department, String name) {
+	public static void createMajor(Hdepartment department, String name) {
 		model.Hmajor major = new model.Hmajor();
 		major.setHdepartment(department);
 		major.setName(name);
 		major.setEnabled("yes");
-		major.setMajorId(id);
 		DBUtil.addToDB(major);
 	}
 
@@ -202,7 +208,8 @@ public class Admin {
 	public static void updateMajor(Hmajor major, String parameter, Object value) {
 		switch (parameter.toLowerCase()) {
 		case ("department"):
-			major.setHdepartment((Hdepartment)value);;
+			major.setHdepartment((Hdepartment) value);
+			;
 			break;
 		case ("name"):
 			major.setName((String) value);
@@ -213,7 +220,6 @@ public class Admin {
 		}
 		DBUtil.updateDB(major);
 	}
-
 
 	// disable major
 	public static void disableMajor(Hmajor major) {
@@ -228,12 +234,13 @@ public class Admin {
 	}
 
 	// create a new class
-	public static void createClass(long id, Hcours course, String day,
-			String starttime, String endtime, String semester, String year) {
+	public static void createClass(Hcours course, String day,
+			Hclassroom classroom, String starttime, String endtime,
+			String semester, String year) {
 		Hclass newClass = new Hclass();
-		newClass.setClassId(id);
 		newClass.setDay(day);
 		newClass.setEnabled("yes");
+		newClass.setHclassroom(classroom);
 		newClass.setEndtime(endtime);
 		newClass.setHcours(course);
 		newClass.setSemester(semester);
@@ -243,21 +250,23 @@ public class Admin {
 	}
 
 	// add previous class to a new semester
-	public static void addClasstoSemester(Hclass hclass, String semester, String year) {
+	public static void addClasstoSemester(Hclass hclass, String semester,
+			String year) {
 		long classId = 0; // need to decide how to change classId
 		hclass.setClassId(classId);
 		hclass.setSemester(semester);
 		hclass.setYear(year);
 		DBUtil.addToDB(hclass);
 	}
-	
-	//add instructor to class
+
+	// add instructor to class
 	public static void addInstructorToClass(Hclass hclass, Hofficial instructor) {
 		hclass.setHofficial(instructor);
 		DBUtil.addToDB(hclass);
 	}
 
-	// update class based on day,endtime,starttime,classroom,course,semester,year
+	// update class based on
+	// day,endtime,starttime,classroom,course,semester,year
 	public static void updateClass(Hclass hclass, String parameter, Object value) {
 
 		switch (parameter.toLowerCase()) {
@@ -265,7 +274,7 @@ public class Admin {
 			hclass.setDay((String) value);
 			break;
 		case ("endtime"):
-			hclass.setEndtime((String)value);
+			hclass.setEndtime((String) value);
 			break;
 		case ("starttime"):
 			hclass.setStarttime((String) value);
@@ -289,8 +298,7 @@ public class Admin {
 		DBUtil.updateDB(hclass);
 	}
 
-
-	// override maximum enrollment hold 
+	// override maximum enrollment hold
 	public static void overrideEnrollment(Hclass hclass, int max) {
 		Hclassroom classroom = hclass.getHclassroom();
 		classroom.setCapacity(max);
@@ -349,100 +357,44 @@ public class Admin {
 		}
 		return classrooms;
 	}
-	
-	public static List<model.Hofficial> getAllInstructors(){
+
+	public static List<model.Hofficial> getAllInstructors() {
 		String q = "select h from Hofficial h where h.type like \'instructor\'";
 		return DBUtil.createQuery(q, Hofficial.class).getResultList();
 	}
-	
-	public static List<model.Hstudent> getAllStudents(){
+
+	public static List<model.Hstudent> getAllStudents() {
 		String q = "select h from Hstudent h";
 		return DBUtil.createQuery(q, Hstudent.class).getResultList();
 	}
-	
-	public static List<model.Hofficial> getAllAdvisors(){
+
+	public static List<model.Hofficial> getAllAdvisors() {
 		String q = "select h from Hofficial h where h.type like \'advisor\'";
 		return DBUtil.createQuery(q, Hofficial.class).getResultList();
 	}
-	
-	public static List<model.Hdepartment> getAllDepartments(){
+
+	public static List<model.Hdepartment> getAllDepartments() {
 		String q = "select h from Hdepartment h";
 		return DBUtil.createQuery(q, Hdepartment.class).getResultList();
 	}
-	
-	public static List<model.Hcours> getAllCourses(){
+
+	public static List<model.Hcours> getAllCourses() {
 		String q = "select h from Hcours h";
 		return DBUtil.createQuery(q, Hcours.class).getResultList();
 	}
-	
-	public static List<model.Hclass> getAllClasses(){
+
+	public static List<model.Hclass> getAllClasses() {
 		String q = "select h from Hclass h ";
 		return DBUtil.createQuery(q, Hclass.class).getResultList();
 	}
-	
-	public static List<model.Hclassroom> getAllClassrooms(){
+
+	public static List<model.Hclassroom> getAllClassrooms() {
 		String q = "select h from Hclassroom h ";
 		return DBUtil.createQuery(q, Hclassroom.class).getResultList();
 	}
-	
-	public static List<model.Hmajor> getAllMajors(){
+
+	public static List<model.Hmajor> getAllMajors() {
 		String q = "select h from Hmajor h ";
 		return DBUtil.createQuery(q, Hmajor.class).getResultList();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-	
-	
-
-
-	
-	
-	
-
-
-	
-	
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }
