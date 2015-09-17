@@ -44,7 +44,18 @@
         <%
 			}else if(((String)request.getSession().getAttribute("usertype")).equalsIgnoreCase("Admin")){
 		%>
-		<li><a href="AdminSearch">Search</a></li>
+		 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Search<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="AdminSearch?select=student">Students</a></li>
+       	 	<li><a href="AdminSearch?select=instructor">Instructors</a></li>
+       		<li><a href="AdminSearch?select=advisor">Advisors</a></li>
+       		<li><a href="AdminSearch?select=department">Departments</a></li>
+        	<li><a href="AdminSearch?select=course">Courses</a></li>
+        	<li><a href="AdminSearch?select=major">Majors</a></li>
+        	<li><a href="AdminSearch?select=class">Classes</a></li>
+        	<li><a href="AdminSearch?select=classroom">Classrooms</a></li>
+          </ul>
+        </li>
 		<li><a href="AdminPendingRequest">Pending Approvals</a></li>
 		<li><a href="AdminGetRevenue">Manage/ View Revenue</a></li>
         	<li><a href="SignOut">Sign Out</a></li>

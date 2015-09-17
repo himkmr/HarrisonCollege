@@ -15,7 +15,7 @@ import model.Hclass;
 import model.Hclassenrollment;
 import model.Huser;
 import customTools.DBUtil;
-
+/*
 /**
  * Servlet implementation class AddComment
  */
@@ -160,5 +160,5 @@ public class StudentSelfEnroll extends HttpServlet {
 		}
 		return dow;
 	}
-
+*/
 }
