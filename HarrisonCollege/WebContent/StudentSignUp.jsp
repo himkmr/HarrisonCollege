@@ -10,21 +10,25 @@
 </head>
 <body>
 <jsp:include page="/navbar.jsp"/>
-<form style="width:40%; align:center" action="SignUpStudent" id="myform">
-<div class="form-control" align="center" >
-    <label for="text"> 	Majors:</label>
-     	<select  name="majors">
+<div align="center">
+<form id="bootstrapSelectForm"  style="width:40%"  class="form-horizontal"  action="SignUpStudent">
+<div class="form-group">
+    <label class="col-xs-3 control-label"> Select Major</label>
+          <div class="col-xs-5 selectContainer">
+     	<select  name="majors" class="form-control">
         <c:forEach var="major" items="${marray}">
             <option value="${major}">
                 <c:out value="${major}"/>
             </option>
         </c:forEach>
-    </select></div>
-  <div class="form-group" align="center">
-    <label for="text">Enrollment Year</label>
-    <input type="text" class="form-control" name="year">
-  </div>
+    </select></div></div>
+  <div class="form-group">
+    <label  class="col-xs-3 control-label">Enrollment Year</label>
+     <div class="col-xs-5 inputContainer">
+    <input type="text"  name="year">
+  </div></div>
 <button type="submit" class="btn btn-default">SignUp</button>
 </form>
+</div>
 </body>
 </html>

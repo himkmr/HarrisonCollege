@@ -10,19 +10,19 @@
 </head>
 <body>
 <jsp:include page="/navbar.jsp"/>
-<form style="width:40%;" action="SignUpOfficial" id="myform">
-<div class="form-group" align="center" >
-   <label for="sel1"> 	Departments: </label>
-		<select  name="departments" id="sel1">
+<div align="center">
+<form id="bootstrapSelectForm"  style="width:40%"  class="form-horizontal" action="SignUpOfficial">
+<div class="form-group">
+   <label class="col-xs-3 control-label"> 	Select Department: </label>
+     <div class="col-xs-5 selectContainer">
+		<select  name="departments" class="form-control">
         <c:forEach var="deparment" items="${darray}">
             <option value="${deparment}">
                 <c:out value="${deparment}"/>
             </option>
         </c:forEach>
-        </select></div>
-  <div class="form-group">
-  </div>
-  <button type="submit" class="btn btn-default">SignUp</button>
-</form>
+        </select></div></div>
+  <button type="submit" class="btn btn-default">Submit Request</button>
+</form></div>
 </body>
 </html>
