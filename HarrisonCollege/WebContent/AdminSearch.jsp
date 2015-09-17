@@ -7,21 +7,21 @@
 <title>Search</title>
 </head>
 <body>
-	<jsp:include page="/navbar.jsp" />
+	<jsp:include page="/navbar.jsp"/>
 
 	<div class="container" s>
 		<form role="form" method="POST" action="AdminSearch">
 			<div class="form-group">
 				<label for="selct">Select:</label> <select class="form-control"
 					id="select" name ="select">
-					<option value="students">Students</option>
-					<option value="instructors">Instructors</option>
-					<option value="advisors">Advisors</option>
-					<option value="departments">Departments</option>
-					<option value="courses">Courses</option>
-					<option value="majors">Majors</option>
-					<option value="classes">Classes</option>
-					<option value="classrooms">Classrooms</option>
+					<option value="student">Students</option>
+					<option value="instructor">Instructors</option>
+					<option value="advisor">Advisors</option>
+					<option value="department">Departments</option>
+					<option value="course">Courses</option>
+					<option value="major">Majors</option>
+					<option value="class">Classes</option>
+					<option value="classroom">Classrooms</option>
 				</select>
 				<input type="submit" class="btn btn-info">
 			</div>
