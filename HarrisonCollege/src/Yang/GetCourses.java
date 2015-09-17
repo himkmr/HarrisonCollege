@@ -53,8 +53,13 @@ public class GetCourses extends HttpServlet {
 		String fullList = "";
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
-		//currentYear="2014";
-		//currentSemester="fall";
+		if(currentYear==null || currentSemester==null){
+			currentYear = "2015";
+			currentSemester = "fall";
+			session.setAttribute("currentYear", currentYear);
+			session.setAttribute("currentSemester", currentSemester);
+		}
+		
 		String alert="";
 		
 	//1. Get All Courses
@@ -116,7 +121,7 @@ public class GetCourses extends HttpServlet {
 				}
 	//3. Get current class of a specific subject			
 			}else if(action.equalsIgnoreCase("GetCurrentClassSubject")){
-				TypedQuery<Hcours> q = DBUtil.createQuery("SELECT h.hcours FROM Hclass h where h.semester = ?1 and h.year = ?2",Hcours.class)
+				TypedQuery<Hcours> q = DBUtil.createQuery("SELECT distinct(h.hcours) FROM Hclass h where h.semester = ?1 and h.year = ?2",Hcours.class)
 						.setParameter(1, currentSemester).setParameter(2, currentYear);
 				List<Hcours> courseList;
 				if(q.getResultList().isEmpty()){
