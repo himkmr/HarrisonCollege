@@ -69,7 +69,6 @@ public class AdminCreate extends HttpServlet {
 			Hcours course = DBUtil.find(
 					Long.parseLong(request.getParameter("selCourse")),
 					Hcours.class);
-			System.out.println(request.getParameter("selDay"));
 			Admin.createClass(course, printDays(request), classroom,
 					request.getParameter("startTime"),
 					request.getParameter("endTime"),

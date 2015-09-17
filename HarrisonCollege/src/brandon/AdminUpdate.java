@@ -162,12 +162,54 @@ public class AdminUpdate extends HttpServlet {
 	}
 	
 	private static void updateClassroom(HttpServletRequest request, long id) {
-		// TODO Auto-generated method stub
+		Hclassroom classroom = DBUtil.find(id, Hclassroom.class);
+		String building = request.getParameter("building");
+		String capacity = request.getParameter("capacity");
+		String roomNumber = request.getParameter("roomNumber");
+		if(!building.equals("")){
+			Admin.updateClassroom(classroom, "building", building);
+		}
+		if(!capacity.equals("")){
+			Admin.updateClassroom(classroom, "capacity", Integer.parseInt(capacity));
+		}
+		if(!roomNumber.equals("")){
+			Admin.updateClassroom(classroom, "roomNumber", Integer.parseInt(roomNumber));
+		}
 		
 	}
 
 	private static void updateClass(HttpServletRequest request, long id) {
-		// TODO Auto-generated method stub
+		Hclass hclass = DBUtil.find(id, Hclass.class);
+		String selCourse = request.getParameter("selCourse");
+		String selClassroom = request.getParameter("selClassroom");
+		String days = AdminCreate.printDays(request);
+		String startTime = request.getParameter("startTime");
+		String endTime = request.getParameter("endTime");
+		String semester = request.getParameter("selSemester");
+		String year = request.getParameter("year");
+		if(!selCourse.equals("")){
+			Hcours course = DBUtil.find(Long.parseLong(selCourse),Hcours.class);
+			Admin.updateClass(hclass, "course", course);
+		}
+		if(!selClassroom.equals("")){
+			Hclassroom classroom = DBUtil.find(Long.parseLong(selClassroom),Hclassroom.class);
+			Admin.updateClass(hclass, "classroom", classroom);
+		}
+		if(!days.equals("")){
+			Admin.updateClass(hclass, "days", days);
+		}
+		if(!startTime.equals("")){
+			Admin.updateClass(hclass, "starttime", startTime);
+		}
+		if(!endTime.equals("")){
+			Admin.updateClass(hclass, "endtime",endTime);
+		}
+		if(!semester.equals("")){
+			Admin.updateClass(hclass, "semester", semester);
+		}
+		if(!year.equals("")){
+			Admin.updateClass(hclass, "year", year);
+		}
 		
 	}
 
@@ -202,7 +244,16 @@ public class AdminUpdate extends HttpServlet {
 	}
 	
 	protected static void updateMajor(HttpServletRequest request, long id){
-		
+		Hmajor major = DBUtil.find(id, Hmajor.class);
+		String name = request.getParameter("name");
+		String deptId = request.getParameter("selDepartment");
+		if(!name.equals("")){
+			Admin.updateMajor(major, "name", name);
+		}
+		if(!deptId.equals("")){
+			Hdepartment department = DBUtil.find(Long.parseLong("deptId"),Hdepartment.class);
+			Admin.updateMajor(major, "department", department);
+		}
 	}
 	
 	
