@@ -208,9 +208,9 @@ public class AdminSearch extends HttpServlet {
 				+ "<table class=\"table table-hover\"><thead><tr><th>Subject</th><th>Credit Hours</th></tr></thead><tbody>");
 		for (Hcours c : courses) {
 			if (c.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"#\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"CourseInfo?id="+c.getCourseId()+"\"><td>");
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"CourseInfo?id="+c.getCourseId()+"\" style=\"color: #fff; background: black;\"><td>");
 			}
 			display.append(c.getSubject()
 					+ "</td><td>"

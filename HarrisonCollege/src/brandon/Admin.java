@@ -306,7 +306,7 @@ public class Admin {
 	}
 
 	// view a list of all students taught by an instructor
-	public List<model.Hstudent> studTaughtByInstr(Hofficial instructor) {
+	public static List<model.Hstudent> studTaughtByInstr(Hofficial instructor) {
 		List<Hstudent> students = new ArrayList<Hstudent>();
 		for (Hclass h : instructor.getHclasses()) {
 			for (Hclassenrollment e : h.getHclassenrollments()) {
@@ -317,7 +317,7 @@ public class Admin {
 	}
 
 	// view a list of all instructors that have taught a course
-	public List<model.Hofficial> instrTaughtClass(Hcours course) {
+	public static List<model.Hofficial> instrTaughtClass(Hcours course) {
 		List<Hofficial> instructors = new ArrayList<Hofficial>();
 		for (Hclass h : course.getHclasses()) {
 			instructors.add(h.getHofficial());

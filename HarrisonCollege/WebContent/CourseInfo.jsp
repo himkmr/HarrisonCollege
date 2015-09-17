@@ -4,26 +4,22 @@
 <html>
 <head>
 <jsp:include page="/header.jsp" />
-<title>Info</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<jsp:include page="/navbar.jsp" />
 	${info}
 	<div class="container">
-		<h2>Current Classes</h2>
+		<h2>Classrooms</h2>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>Subject</th>
-					<th>Day</th>
-					<th>Start Time</th>
-					<th>End Time</th>
-					<th>Semester</th>
-					<th>Year</th>
+					<th>Room Number</th>
+					<th>Building</th>
+					<th>Capacity</th>
 				</tr>
 			</thead>
-			<tbody>${currentClasses}
+			<tbody>${classrooms}
 			</tbody>
 		</table>
 	</div>
@@ -43,34 +39,6 @@
 				</tr>
 			</thead>
 			<tbody>${classes}
-			</tbody>
-		</table>
-	</div>
-	<div class="container">
-		<h2>Classrooms</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Room Number</th>
-					<th>Building</th>
-					<th>Capacity</th>
-				</tr>
-			</thead>
-			<tbody>${classrooms}
-			</tbody>
-		</table>
-	</div>
-	<div class="container">
-		<h2>Students</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Name</th>
-					<th>Entry Year</th>
-				</tr>
-			</thead>
-			<tbody>${students}
 			</tbody>
 		</table>
 	</div>

@@ -1,5 +1,7 @@
 package brandon;
 
+import himanshu.ViewClasses;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +36,15 @@ public class OfficialInfo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Hofficial official = DBUtil.find(Long.parseLong(request.getParameter("id")),Hofficial.class);
 		String info = displayOfficialInfo(official);
-		String classes = displayOfficialClasses(official);
+		String classes = Display.displayClasses(ViewClasses.getAllClasses(official.getOfficialId()));
+		String classrooms = Display.displayClassrooms(Admin.classroomsByInstr(official));
+		String currentClasses = Display.displayClasses(ViewClasses.getAllClassesinCurrSem(official.getOfficialId()));
+		String students = Display.displayStudents(Admin.studTaughtByInstr(official));
 		request.setAttribute("info", info);
 		request.setAttribute("classes",classes);
+		request.setAttribute("classrooms", classrooms);
+		request.setAttribute("currentClasses", currentClasses);
+		request.setAttribute("students", students);
 		getServletContext().getRequestDispatcher("/AdminInfo.jsp").forward(request, response);
 	}
 
@@ -53,8 +61,4 @@ public class OfficialInfo extends HttpServlet {
 		return display.toString();
 	}
 	
-	protected static String displayOfficialClasses(Hofficial official){
-		return AdminSearch.displayClasses(official.getHclasses());
-	}
-
 }
