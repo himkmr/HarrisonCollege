@@ -1,10 +1,10 @@
 
 <nav class="navbar navbar-default">
-  <div class="container-fluid" style= "margin-left: 5%;"  >
+  <div class="container-fluid"> <!-- style= "margin-left: 5%;"  --> 
    <ul class="nav navbar-nav">
-    <li><a href="index.jsp"><img src="HarrisonCollege.png" width =80 height = 80></a></li>
-     <li> <a class="navbar-brand" href="index.jsp">Home</a></li>
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">View<span class="caret"></span></a>
+    <li><a href="index.jsp"><img src="HarrisonCollege.png" width =50 height = 50></a></li>
+     <li><a href="index.jsp"><img src="" width =0 height = 50>Home</a></li>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="" width =0 height = 50>View<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="GetCourses?action=GetAllCourses">All Courses</a></li>
        	 	<li><a href="GetCourses?action=GetCurrentClass">All Classes</a></li>
@@ -19,32 +19,32 @@
         <%
 			if(request.getSession().getAttribute("usertype") == null) {
 		%>
-        		<li><a href="SignIn.jsp">Login</a></li>
-				<li><a href="NewUser.jsp">Sign up</a></li>
+        		<li><a href="SignIn.jsp"><img src="" width =0 height = 50>Login</a></li>
+				<li><a href="NewUser.jsp"><img src="" width =0 height = 50>Sign up</a></li>
         <%
 			}else if(((String)request.getSession().getAttribute("usertype")).equalsIgnoreCase("Student")){
 		%>
-        		<li><a href="GetDepartmentClass">Enroll</a></li>
-        		<li><a href="GetCurrentSchedule">My Schedule</a></li>
-        		<li><a href="GetStudentTranscript">My Transcript</a></li>
-        		<li><a href="SignOut">Sign Out</a></li>
+        		<li><a href="GetDepartmentClass"><img src="" width =0 height = 50>Enroll</a></li>
+        		<li><a href="GetCurrentSchedule"><img src="" width =0 height = 50>My Schedule</a></li>
+        		<li><a href="GetStudentTranscript"><img src="" width =0 height = 50>My Transcript</a></li>
+        		<li><a href="SignOut"><img src="" width =0 height = 50>Sign Out</a></li>
         <%
 			}else if(((String)request.getSession().getAttribute("usertype")).equalsIgnoreCase("Instructor")){
 		%>
-				<li><a href="InstructorFirstPage">My Classes</a></li>
-				<li><a href="SignOut">Sign Out</a></li>
+				<li><a href="InstructorFirstPage"><img src="" width =0 height = 50>My Classes</a></li>
+				<li><a href="SignOut"><img src="" width =0 height = 50>Sign Out</a></li>
         
         
         <%
 			}else if(((String)request.getSession().getAttribute("usertype")).equalsIgnoreCase("Advisor")){
 		%>
-       			<li><a href="GetStudentInfo">Student Info</a></li>
-       			<li><a href="SignOut">Sign Out</a></li>
+       			<li><a href="GetStudentInfo"><img src="" width =0 height = 50>Student Info</a></li>
+       			<li><a href="SignOut"><img src="" width =0 height = 50>Sign Out</a></li>
         
         <%
 			}else if(((String)request.getSession().getAttribute("usertype")).equalsIgnoreCase("Admin")){
 		%>
-		 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Search<span class="caret"></span></a>
+		 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="" width =0 height = 50>Search<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="AdminSearch?select=student">Students</a></li>
        	 	<li><a href="AdminSearch?select=instructor">Instructors</a></li>
@@ -56,9 +56,9 @@
         	<li><a href="AdminSearch?select=classroom">Classrooms</a></li>
           </ul>
         </li>
-		<li><a href="AdminPendingRequest">Pending Approvals</a></li>
-		<li><a href="AdminGetRevenue">Manage/ View Revenue</a></li>
-        	<li><a href="SignOut">Sign Out</a></li>
+		<li><a href="AdminPendingRequest"><img src="" width =0 height = 50>Pending Approvals</a></li>
+		<li><a href="AdminGetRevenue"><img src="" width =0 height = 50>Manage/ View Revenue</a></li>
+        	<li><a href="SignOut"><img src="" width =0 height = 50>Sign Out</a></li>
         
         <%
 			}

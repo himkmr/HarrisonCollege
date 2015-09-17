@@ -33,9 +33,18 @@ public class Classenrollment extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
 		Huser thisUser = (Huser) session.getAttribute("User");
-		long studentID = thisUser.getHstudent().getStudentId();
-		if(thisUser.getPermissions().equalsIgnoreCase("advisor"))
-			studentID = Long.parseLong(request.getParameter("studentID"));
+		long studentID=0;
+		if(thisUser.getPermissions().equalsIgnoreCase("advisor")){
+			 studentID = Long.parseLong(request.getParameter("studentID"));
+		}else{
+			studentID = thisUser.getHstudent().getStudentId();
+		}
+		
+		String currentYear = (String) session.getAttribute("currentYear");
+		String currentSemester = (String) session.getAttribute("currentSemester");
+		//long studentID = 2;
+		String message = "";
+			
 		String classID = request.getParameter("classID");
 		String starttime = request.getParameter("stime");
 		String endtime = request.getParameter("etime");
@@ -43,18 +52,37 @@ public class Classenrollment extends HttpServlet {
 		int etime = Integer.parseInt(endtime);
 		int capacity = Integer.parseInt(request.getParameter("rcap"));
 		Hclassenrollment student = new Hclassenrollment();
-		if(Student.checkschedule(studentID, classID, capacity, stime, etime)==true){
-			System.out.println("adding student");
+		System.out.println("Checking schedule");
+		System.out.println("check is "+Student.checkschedule(studentID, classID, capacity, stime, etime, currentYear, currentSemester));
+		if(Student.checkschedule(studentID, classID, capacity, stime, etime, currentYear, currentSemester)==0)
+		{
+			Student.enrollAgain(studentID, classID);
+			System.out.println("enrolled again");
+		}
+		else if(Student.checkschedule(studentID, classID, capacity, stime, etime, currentYear, currentSemester)==1)
+		{
 			student.setEnrolled("yes");
 			student.setGrade("W");
 			student.setHclass(Student.getClass(classID));
 			student.setHstudent(Student.getStudent(studentID));
 			Student.addClass(student);
-			System.out.println("Added student");
+			System.out.println("Added student");	
 		}
-
-		getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
-				request, response);
+		else
+		{
+			message = "Cannot add";
+		System.out.println(message);
+		}
+		
+		if(thisUser.getPermissions().equalsIgnoreCase("advisor")){
+			getServletContext().getRequestDispatcher("/GetStudentInfo").forward(
+					request, response);
+		}
+		else{
+			getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
+					request, response);
+		}
+		
 	}
 
 	/**

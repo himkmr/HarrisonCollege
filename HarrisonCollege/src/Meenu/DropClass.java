@@ -38,9 +38,13 @@ public class DropClass extends HttpServlet {
 		String fullList = "";
 		HttpSession session = request.getSession(true);
 		Huser thisUser = (Huser) session.getAttribute("User");
-		long studentID = thisUser.getHstudent().getStudentId();
-		if(thisUser.getPermissions().equalsIgnoreCase("advisor"))
-			studentID = Long.parseLong(request.getParameter("studentID"));
+		long studentID = 0;
+		if(thisUser.getPermissions().equalsIgnoreCase("advisor")){
+			 studentID = Long.parseLong(request.getParameter("studentID"));
+		}else{
+			studentID = thisUser.getHstudent().getStudentId();
+		}
+		
 		String currentYear = (String) session.getAttribute("currentYear");
 		String currentSemester = (String) session.getAttribute("currentSemester");
 		String departmentName = request.getParameter("departmentName");
@@ -48,14 +52,20 @@ public class DropClass extends HttpServlet {
 		String classID = request.getParameter("classID");
 		Student.dropClass(studentID, classID);
 		System.out.println("dropped class");
+		
 		//Use the department name
 	/*	TypedQuery<Hclass> q = DBUtil.createQuery("SELECT h FROM Hclass h where h.hcours.hdepartment.name = ?1 and h.semester = ?2 and h.year = ?3",Hclass.class)
 				.setParameter(1, departmentName).setParameter(2, currentSemester).setParameter(3, currentYear);*/
 	
 		
-
-		getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
-				request, response);
+		if(thisUser.getPermissions().equalsIgnoreCase("advisor")){
+			getServletContext().getRequestDispatcher("/GetStudentInfo").forward(
+					request, response);
+		}
+		else{
+			getServletContext().getRequestDispatcher("/GetCurrentSchedule").forward(
+					request, response);
+		}
 	}
 
 	/**
@@ -69,5 +79,3 @@ public class DropClass extends HttpServlet {
 	
 	
 }
-
-

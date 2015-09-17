@@ -5,7 +5,7 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <style type="text/css">
 li {
-    font-size: 200%;
+    font-size: 150%;
   
 }
 .navbar-default {

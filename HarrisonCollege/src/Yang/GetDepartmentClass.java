@@ -71,18 +71,20 @@ public class GetDepartmentClass extends HttpServlet {
 						 +"</td><td>"+classList.get(i).getStarttime()
 						 +"</td><td>"+classList.get(i).getEndtime()
 						 +"</td><td>"+classList.get(i).getEnabled()+"</td>";
-				if(user.getPermissions().equalsIgnoreCase("student")){
-					//fullList += "<td><a href=\"Classenrollment?classID="
-					fullList += "<td><a href=\"StudentSelfEnroll?classID="
+				if(user == null){
+					fullList += "</tr>";
+				}else if(user.getPermissions().equalsIgnoreCase("Student")){
+					fullList += "<td><a href=\"student_self_enrollment?classID="
 							 +classList.get(i).getClassId()
 							 +"&rcap="+classList.get(i).getHclassroom().getCapacity()
 							 +"&stime="+classList.get(i).getStarttime()
 							 +"&etime="+classList.get(i).getEndtime()+"\">Enroll</a></td>";
+				
 				}
-				fullList += "</tr>";
 				}
+		}
 			fullList += "</tbody></table>";
-			}
+			
 			
 
 		// Set response content type
