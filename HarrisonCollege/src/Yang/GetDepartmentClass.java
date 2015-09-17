@@ -74,7 +74,7 @@ public class GetDepartmentClass extends HttpServlet {
 				if(user == null){
 					fullList += "</tr>";
 				}else if(user.getPermissions().equalsIgnoreCase("Student")){
-					fullList += "<td><a href=\"Classenrollment?classID="
+					fullList += "<td><a href=\"student_self_enrollment?classID="
 							 +classList.get(i).getClassId()
 							 +"&rcap="+classList.get(i).getHclassroom().getCapacity()
 							 +"&stime="+classList.get(i).getStarttime()

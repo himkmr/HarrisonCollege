@@ -46,8 +46,8 @@ public class ViewAllClassesofInst extends HttpServlet {
 	}
 
 	message += "</table>";
-	message += "<div align=\"left\"><ul><li><b> <a href=\"InstructorFirstPage\">View Classes in Current Semesters</a></li><b>";
-	message += "<li><b><a href=\"ViewGradeSheets?userid="+userid+"\">View GradeSheets</a><b></li></ul>";
+	message += "<div align=\"left\"><ul><li><b> <a href=\"InstructorFirstPage\"><button type=\"button\" class=\"btn btn-primary\">View Classes in Current Semesters</button></a></li><b>";
+	message += "<li><b><a href=\"ViewGradeSheets?userid="+userid+"\"><button type=\"button\" class=\"btn btn-primary\">View GradeSheets</button></a><b></li></ul>";
 	request.setAttribute("message", message);
 	request.getServletContext().getRequestDispatcher("/i_output.jsp")
 			.forward(request, response);

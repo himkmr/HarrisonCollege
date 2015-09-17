@@ -73,7 +73,7 @@ public class EnrollThisStudent extends HttpServlet {
 							 +"</td><td>"+classList.get(i).getStarttime()
 							 +"</td><td>"+classList.get(i).getEndtime()
 							 +"</td><td>"+classList.get(i).getEnabled()
-							 +"</td><td><a href=\"Classenrollment?studentID="+studentId
+							 +"</td><td><a href=\"student_self_enrollment?studentID="+studentId
 							 +"&classID="+classList.get(i).getClassId()
 							 +"&stime="+classList.get(i).getStarttime()
 							 +"&etime="+classList.get(i).getEndtime()
