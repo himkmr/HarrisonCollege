@@ -79,16 +79,16 @@ public class AdminUpdate extends HttpServlet {
 				+ "<input type=\"number\" class=\"form-control\" id=\"hours\" name =\"hours\" min = \"0\" placeholder=\""+c.getCreditHours()+"\"></div>"
 				+ "<div class=\"form-group\"><label for=\"selDepartment\">Select Department:</label>"
 				+ "<select class=\"form-control placeholder\" id=\"selDepartment\" name =\"selDepartment\">"
-				+"<option value = \"\">" + c.getHdepartment().getName()+"</option>"
 				+ AdminSearch.listDepartments()
 				+ "</select></div>"
-				+ "<input type=\"hidden\" name=\"select\" value=\"course\"/>"
+				+ "<input type=\"hidden\" name=\"selectId\" value=\""+c.getCourseId()+"\"/>"
+				+ "<input type=\"hidden\" name=\"selectType\" value=\"course\"/>"
 				+ "<button type=\"submit\" class=\"btn btn-default\">Update</button></form></div>";
 	}
 
 	protected static String updateClassForm(long id){
 		Hclass c = DBUtil.find(id,Hclass.class);
-		return "<div class=\"container\"><form class=\"form-vertical\" role=\"form\" method=\"post\" action=\"AdminSearch\">"
+		return "<div class=\"container\"><form class=\"form-vertical\" role=\"form\" method=\"post\" action=\"AdminUpdate\">"
 				+ "<div class=\"form-group\"><label for=\"selCours\">Select Course:</label>"
 				+ "<select class=\"form-control placeholder\" id=\"selCourse\" name =\"selCourse\" >"
 				+"<option value = \"\">"+c.getHcours().getSubject()+"</option>"
@@ -100,7 +100,6 @@ public class AdminUpdate extends HttpServlet {
 				+"<option value = \"\">"+ c.getHclassroom().getBuilding() + " " + c.getHclassroom().getRoomNumber() +  "</option>"
 				+ AdminSearch.listClassrooms()
 				+ "</select></div>"
-
 				+ "<div class =\"form-group\"><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"monday\" value=\"M\">M</label>"
 				+ "<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"tuesday\" value=\"T\">T</label><label class=\"checkbox-inline\">"
 				+ "<input type=\"checkbox\" name=\"wednesday\" value=\"W\">W</label><label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"thursday\" value=\"H\">H"
@@ -121,7 +120,8 @@ public class AdminUpdate extends HttpServlet {
 				+ "<div class=\"form-group\"><label for=\"year\">Year:</label>"
 				+ "<input type=\"number\" class=\"form-control\" id=\"year\" name =\"year\" min =\"2015\" max = \"2070\" placeholder=\""+c.getYear()+"\"></div>"
 
-				+ "<input type=\"hidden\" name=\"select\" value=\"class\"/>"
+				+ "<input type=\"hidden\" name=\"selectId\" value=\""+c.getClassId()+"\"/>"
+				+ "<input type=\"hidden\" name=\"selectType\" value=\"class\"/>"
 				+ "<button type=\"submit\" class=\"btn btn-default\">Update</button></form></div>";
 	}
 
@@ -138,7 +138,8 @@ public class AdminUpdate extends HttpServlet {
 				+ "<div class=\"form-group\"><label for=\"roomNumber\">Room Number:</label>"
 				+ "<input type=\"number\" class=\"form-control\" id=\"roomNumber\" min =\"100\" value=\"100\" name =\"roomNumber\" placeholder=\""+c.getRoomNumber()+"\"></div>"
 
-				+ "<input type=\"hidden\" name=\"select\" value=\"classroom\"/>"
+				+ "<input type=\"hidden\" name=\"selectId\" value=\""+c.getClassroomId()+"\"/>"
+				+ "<input type=\"hidden\" name=\"selectType\" value=\"classroom\"/>"
 				+ "<button type=\"submit\" class=\"btn btn-default\">Update</button></form></div>";
 	}
 	
@@ -149,10 +150,11 @@ public class AdminUpdate extends HttpServlet {
 				+ "<input type=\"text\" class=\"form-control\" id=\"name\" name =\"name\" placeholder=\""+m.getName()+"\"></div>"
 				+ "<div class=\"form-group\"><label for=\"selDepartment\">Select Department:</label>"
 				+ "<select class=\"form-control placeholder\" id=\"selDepartment\" name =\"selDepartment\" >"
-				+"<option value = \"\">"+m.getHdepartment().getName()+"</option>"
+				+"<option value = \"\">"+m.getHdepartment().getCode() + " " + m.getHdepartment().getName()+"</option>"
 				+ AdminSearch.listDepartments()
 				+ "</select></div>"
-				+ "<input type=\"hidden\" name=\"select\" value=\"major\"/>"
+				+ "<input type=\"hidden\" name=\"selectId\" value=\""+m.getMajorId()+"\"/>"
+				+ "<input type=\"hidden\" name=\"selectType\" value=\"major\"/>"
 				+ "<button type=\"submit\" class=\"btn btn-default\">Update</button></form></div>";
 	}
 	
@@ -161,7 +163,7 @@ public class AdminUpdate extends HttpServlet {
 		case("department"): updateDepartment(request, id); break;
 		case("course"):	updateCourse(request,id); break;
 		case("class"):	updateClass(request,id); break;
-		case("classrooom"):updateClassroom(request,id);break;
+		case("classroom"):updateClassroom(request,id);break;
 		case("major"):updateMajor(request,id);break;
 		}
 	}
@@ -171,6 +173,7 @@ public class AdminUpdate extends HttpServlet {
 		String building = request.getParameter("building");
 		String capacity = request.getParameter("capacity");
 		String roomNumber = request.getParameter("roomNumber");
+		System.out.println(building + " " + capacity + " " + roomNumber);
 		if(!building.equals("")){
 			Admin.updateClassroom(classroom, "building", building);
 		}
@@ -252,11 +255,12 @@ public class AdminUpdate extends HttpServlet {
 		Hmajor major = DBUtil.find(id, Hmajor.class);
 		String name = request.getParameter("name");
 		String deptId = request.getParameter("selDepartment");
+		System.out.println("DEPTID " + deptId);
 		if(!name.equals("")){
 			Admin.updateMajor(major, "name", name);
 		}
 		if(!deptId.equals("")){
-			Hdepartment department = DBUtil.find(Long.parseLong("deptId"),Hdepartment.class);
+			Hdepartment department = DBUtil.find(Long.parseLong(deptId),Hdepartment.class);
 			Admin.updateMajor(major, "department", department);
 		}
 	}
