@@ -3,13 +3,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<jsp:include page="/header.jsp"/>
-<title>Pending Admissions</title>
+<jsp:include page="/header.jsp" />
+<title>Update</title>
 </head>
 <body>
 <jsp:include page="/navbar.jsp"/>
-   ${pending}
-   ${alert}
-
+${displayForm}
 </body>
 </html>

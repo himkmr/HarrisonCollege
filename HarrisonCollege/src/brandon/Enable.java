@@ -38,14 +38,8 @@ public class Enable extends HttpServlet {
 		else{
 			disableRequest(type, id);
 		}
-		switch(type){
-		case("classroom"): request.setAttribute("select","classrooms"); break;
-		case("course"): request.setAttribute("select","courses"); break;
-		case("department"): request.setAttribute("select","departments"); break;
-		case("major"): request.setAttribute("select","majors"); break;
-		case("class"): request.setAttribute("select","classes"); break;
-		}
-		getServletContext().getRequestDispatcher("/AdminSearch").forward(request, response);
+		
+		getServletContext().getRequestDispatcher("/AdminSearch?select="+type).forward(request, response);
 	}
 
 	/**
