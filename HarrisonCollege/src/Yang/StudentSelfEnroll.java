@@ -47,7 +47,9 @@ public class StudentSelfEnroll extends HttpServlet {
 		int stime = Integer.parseInt(request.getParameter("stime"));
 		int etime = Integer.parseInt(request.getParameter("etime"));
 		int rcap = Integer.parseInt(request.getParameter("rcap"));
-
+		String checkcap;
+		String checkenrolled;
+		String timecheck;
 		
 //check capacity	
 	//Get this student's enrollment(enrolled = yes)
@@ -59,98 +61,176 @@ public class StudentSelfEnroll extends HttpServlet {
 				//if exists-->update
 				//if not exists-->add
 		
-			TypedQuery<Integer> q = DBUtil.createQuery("SELECT count(h) FROM Hclassenrollment h where h.hclass.classId = ?1", Integer.class)
-					.setParameter(1, classId);
-			int count = q.getSingleResult();
-			if(rcap-count>0){
-				TypedQuery<Hclassenrollment> q2 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.hclass.classId = ?2", Hclassenrollment.class)
-						.setParameter(1, user).setParameter(2, classId);
-				if(q2.getSingleResult()!=null){
-					if(q2.getSingleResult().getEnrolled().equalsIgnoreCase("yes")){
-						System.out.println("You are currently enrolled in this class");
-					}else{
-						TypedQuery<Hclassenrollment> q3 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.enrolled = 'yes'", Hclassenrollment.class)
-								.setParameter(1, user);
-						if(q3.getResultList().isEmpty()){
-							Student.enrollAgain(user.getUserId(), classId);
-						}else{
-							List<Hclassenrollment> stuEnrollments = q3.getResultList();
-							for(int i=0;i<stuEnrollments.size();i++){
-								List<String> thisDow = getDay(stuEnrollments.get(i).getHclass().getDay());
-								for(int j=0;j<thisDow.size();j++){
-									int dbstime = Integer.parseInt(stuEnrollments.get(i).getHclass().getStarttime());
-									int dbetime = Integer.parseInt(stuEnrollments.get(i).getHclass().getEndtime());
-									Hclass thisClass = Student.getClass(classId);
-									int thisStime = Integer.parseInt(thisClass.getStarttime());
-									int thisEtime = Integer.parseInt(thisClass.getEndtime());
-									List<String> thisClassDays = getDay(thisClass.getDay());
-									for(int z=0;z<thisClassDays.size();z++){
-										if(thisClassDays.get(z)==thisDow.get(j)){
-											if(thisEtime<=dbstime || thisStime>=dbetime){
-												Student.enrollAgain(user.getUserId(), classId);
-											}else{
-												System.out.println("You have time conflict");
-											}
-										}
-									}
-								}
+		
+		//condition 1 : Check capacity
+		TypedQuery<Integer> q = DBUtil.createQuery("SELECT count(h) FROM Hclassenrollment h where h.hclass.classId = ?1", Integer.class)
+				.setParameter(1, classId);
+		int count = q.getSingleResult();
+		if(rcap-count>0){
+			 checkcap = "pass";
+		}else{
+			 checkcap = "fail";
+		}
+		
+		//condition 2: check if previously enrolled
+		
+		TypedQuery<Hclassenrollment> q2 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.hclass.classId = ?2", Hclassenrollment.class)
+				.setParameter(1, user).setParameter(2, classId);
+		if(q2.getSingleResult()!=null){
+			if(q2.getSingleResult().getEnrolled().equalsIgnoreCase("yes")){
+				 checkenrolled = "currentlyEnrolled";
+			}else{
+				 checkenrolled = "previouslyEnrolled";
+			}
+			
+		}else{
+			 checkenrolled = "neverEnrolled";
+		}
+		
+		//condition 3: check day and time
+		
+		TypedQuery<Hclassenrollment> q3 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.enrolled = 'yes'", Hclassenrollment.class)
+				.setParameter(1, user);
+		if(q3.getResultList().isEmpty()){
+			 timecheck = "pass";
+		}else{
+			List<Hclassenrollment> stuEnrollments = q3.getResultList();
+			for(int i=0;i<stuEnrollments.size();i++){
+				List<String> thisDow = getDay(stuEnrollments.get(i).getHclass().getDay());
+				for(int j=0;j<thisDow.size();j++){
+					int dbstime = Integer.parseInt(stuEnrollments.get(i).getHclass().getStarttime());
+					int dbetime = Integer.parseInt(stuEnrollments.get(i).getHclass().getEndtime());
+					Hclass thisClass = Student.getClass(classId);
+					int thisStime = Integer.parseInt(thisClass.getStarttime());
+					int thisEtime = Integer.parseInt(thisClass.getEndtime());
+					List<String> thisClassDays = getDay(thisClass.getDay());
+					for(int z=0;z<thisClassDays.size();z++){
+						if(thisClassDays.get(z)==thisDow.get(j)){
+							if(thisEtime<=dbstime || thisStime>=dbetime){
+								 timecheck = "pass";
+							}else{
+								 timecheck = "fail";
 							}
-						}
-					}
-				}else{
-					//Not ever enrolled in this class
-					TypedQuery<Hclassenrollment> q5 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.enrolled = 'yes'", Hclassenrollment.class)
-							.setParameter(1, user);
-					if(q5.getResultList().isEmpty()){
-						//Add Enrollment
-					}else{
-						List<Hclassenrollment> stuEnrollments = q5.getResultList();
-						for(int i=0;i<stuEnrollments.size();i++){
-							List<String> thisDow = getDay(stuEnrollments.get(i).getHclass().getDay());
-							for(int j=0;j<thisDow.size();j++){
-								int dbstime = Integer.parseInt(stuEnrollments.get(i).getHclass().getStarttime());
-								int dbetime = Integer.parseInt(stuEnrollments.get(i).getHclass().getEndtime());
-								Hclass thisClass = Student.getClass(classId);
-								int thisStime = Integer.parseInt(thisClass.getStarttime());
-								int thisEtime = Integer.parseInt(thisClass.getEndtime());
-								List<String> thisClassDays = getDay(thisClass.getDay());
-								for(int z=0;z<thisClassDays.size();z++){
-									if(thisClassDays.get(z)==thisDow.get(j)){
-										if(thisEtime<=dbstime || thisStime>=dbetime){
-											//Add enrollment
-										}else{
-											System.out.println("You have time conflict");
-										}
-									}
-								}
-							}
+							}	
 						}
 					}
 				}
-			}else{
-				System.out.println("class reaches max capacity");
 			}
-			
-		// Set response content type
-		response.setContentType("text/html");
-
-		request.setAttribute("fullList", fullList);
-		request.setAttribute("alert", alert);
-
-		getServletContext().getRequestDispatcher("/ViewList.jsp").forward(
-				request, response);
-		fullList = "";
-
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
+		
+		//1. Update
+		
+		if(checkcap.equals("pass") && checkenrolled.equals("previouslyEnrolled") && timecheck.equals("pass")){
+			Student.enrollAgain();
+		}
+		
+		//2. Add
+		if(checkcap.equals("pass") && checkenrolled.equals("neverEnrolled") && timecheck.equals("pass")){
+			addClass;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}	
+		
+//			TypedQuery<Integer> q = DBUtil.createQuery("SELECT count(h) FROM Hclassenrollment h where h.hclass.classId = ?1", Integer.class)
+//					.setParameter(1, classId);
+//			int count = q.getSingleResult();
+//			if(rcap-count>0){
+//				TypedQuery<Hclassenrollment> q2 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.hclass.classId = ?2", Hclassenrollment.class)
+//						.setParameter(1, user).setParameter(2, classId);
+//				if(q2.getSingleResult()!=null){
+//					if(q2.getSingleResult().getEnrolled().equalsIgnoreCase("yes")){
+//						System.out.println("You are currently enrolled in this class");
+//					}else{
+//						TypedQuery<Hclassenrollment> q3 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.enrolled = 'yes'", Hclassenrollment.class)
+//								.setParameter(1, user);
+//						if(q3.getResultList().isEmpty()){
+//							Student.enrollAgain(user.getUserId(), classId);
+//						}else{
+//							List<Hclassenrollment> stuEnrollments = q3.getResultList();
+//							for(int i=0;i<stuEnrollments.size();i++){
+//								List<String> thisDow = getDay(stuEnrollments.get(i).getHclass().getDay());
+//								for(int j=0;j<thisDow.size();j++){
+//									int dbstime = Integer.parseInt(stuEnrollments.get(i).getHclass().getStarttime());
+//									int dbetime = Integer.parseInt(stuEnrollments.get(i).getHclass().getEndtime());
+//									Hclass thisClass = Student.getClass(classId);
+//									int thisStime = Integer.parseInt(thisClass.getStarttime());
+//									int thisEtime = Integer.parseInt(thisClass.getEndtime());
+//									List<String> thisClassDays = getDay(thisClass.getDay());
+//									for(int z=0;z<thisClassDays.size();z++){
+//										if(thisClassDays.get(z)==thisDow.get(j)){
+//											if(thisEtime<=dbstime || thisStime>=dbetime){
+//												Student.enrollAgain(user.getUserId(), classId);
+//											}else{
+//												System.out.println("You have time conflict");
+//											}
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}else{
+//					//Not ever enrolled in this class
+//					TypedQuery<Hclassenrollment> q5 = DBUtil.createQuery("SELECT h FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.enrolled = 'yes'", Hclassenrollment.class)
+//							.setParameter(1, user);
+//					if(q5.getResultList().isEmpty()){
+//						//Add Enrollment
+//					}else{
+//						List<Hclassenrollment> stuEnrollments = q5.getResultList();
+//						for(int i=0;i<stuEnrollments.size();i++){
+//							List<String> thisDow = getDay(stuEnrollments.get(i).getHclass().getDay());
+//							for(int j=0;j<thisDow.size();j++){
+//								int dbstime = Integer.parseInt(stuEnrollments.get(i).getHclass().getStarttime());
+//								int dbetime = Integer.parseInt(stuEnrollments.get(i).getHclass().getEndtime());
+//								Hclass thisClass = Student.getClass(classId);
+//								int thisStime = Integer.parseInt(thisClass.getStarttime());
+//								int thisEtime = Integer.parseInt(thisClass.getEndtime());
+//								List<String> thisClassDays = getDay(thisClass.getDay());
+//								for(int z=0;z<thisClassDays.size();z++){
+//									if(thisClassDays.get(z)==thisDow.get(j)){
+//										if(thisEtime<=dbstime || thisStime>=dbetime){
+//											//Add enrollment
+//										}else{
+//											System.out.println("You have time conflict");
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}else{
+//				System.out.println("class reaches max capacity");
+//			}
+//			
+//		// Set response content type
+//		response.setContentType("text/html");
+//
+//		request.setAttribute("fullList", fullList);
+//		request.setAttribute("alert", alert);
+//
+//		getServletContext().getRequestDispatcher("/ViewList.jsp").forward(
+//				request, response);
+//		fullList = "";
+//
+//	}
+//
+//	/**
+//	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+//	 *      response)
+//	 */
+//	protected void doPost(HttpServletRequest request,
+//			HttpServletResponse response) throws ServletException, IOException {
+//		// TODO Auto-generated method stub
+//	}
 	
 	
 	public static List<String> getDay(String days){
