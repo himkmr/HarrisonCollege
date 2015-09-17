@@ -46,10 +46,22 @@ public class AdminPendingRequest extends HttpServlet {
 	protected String displayPending(){
 		List<Hpendingadmission> admissions = Admin.getPendingAdmissions();
 		StringBuilder pending = new StringBuilder();
+		pending.append("<div class=\"container\"><h2>Pending Admissions</h2><table class=\"table table-striped\"><thead><tr><th>Name</th>"
+		        +"<th>Permission</th><th>Year</th></tr></thead><tbody>");
 		for(Hpendingadmission a : admissions){
+			String[] info = a.getMessage().split(",");
 			System.out.println(a.getMessage());
-			pending.append("<li class=\"list-group-item\">"+ a.getMessage() + "<a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=accept\" class=\"btn btn-info\" role=\"button\">Accept</a><a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=decline\" class=\"btn btn-info\" role=\"button\">Decline</a></li>");
+				pending.append("<tr><td>"
+					+info[0]
+					+"</td><td>"
+					+a.getPermissions()
+					+"</td><td>"
+					+info[2]
+					+"</td><td>"
+					+"<a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=accept\" class=\"btn btn-info\" role=\"button\">Accept</a>"
+					+ "<a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=decline\" class=\"btn btn-info\" role=\"button\">Decline</a></td>");
 		}
+		pending.append("</tbody></table></div>");
 		return pending.toString();
 	}
 

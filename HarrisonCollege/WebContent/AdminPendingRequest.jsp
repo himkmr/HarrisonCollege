@@ -8,13 +8,8 @@
 </head>
 <body>
 <jsp:include page="/navbar.jsp"/>
-<div class="container">
-  <h2>Pending Admissions</h2>
-  <ul class="list-group">
    ${pending}
    ${alert}
-  </ul>
-</div>
 
 </body>
 </html>
