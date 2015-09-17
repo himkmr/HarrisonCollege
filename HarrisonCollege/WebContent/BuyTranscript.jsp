@@ -11,6 +11,7 @@
 <title>Buy Transcript</title>
 </head>
 <body>
+<jsp:include page="/navbar.jsp"/>
 <div class="container">
   <form role="form" method="POST" action="OrderSummary.jsp">
     <div class="form-group">
