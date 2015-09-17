@@ -70,7 +70,7 @@ public class GetCurrentSchedule extends HttpServlet {
 					fullList += "<tr><td>"+weekday+"</td>";
 					TypedQuery<Hclass> q2 = DBUtil
 							.createQuery(
-									"SELECT h.hclass FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.hclass.year = ?2 and h.hclass.semester = ?3 and h.hclass.day like ?4",
+									"SELECT h.hclass FROM Hclassenrollment h where h.hstudent.huser = ?1 and h.hclass.year = ?2 and h.hclass.semester = ?3 and h.hclass.day like ?4 and h.enrolled='yes'",
 									Hclass.class).setParameter(1, user)
 							.setParameter(2, currentYear)
 							.setParameter(3, currentSemester)
