@@ -1,6 +1,7 @@
 package brandon;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,9 +50,9 @@ public class CourseInfo extends HttpServlet {
 	}
 	
 	protected static String displayCourseInfo(Hcours course){
-		StringBuilder display = new StringBuilder();
-		display.append("<div class=\"container\">"+course.getCourseId()+ " " + course.getSubject() + " "+ course.getHdepartment().getName()+ " " + course.getCreditHours()+ "</div>");
-		return display.toString();
+		List<Hcours> courses = new ArrayList<Hcours>();
+		courses.add(course);
+		return Display.displayCourses(courses);
 	}
 	
 	

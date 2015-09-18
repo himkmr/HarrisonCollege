@@ -381,6 +381,17 @@ public class Admin {
 		return DBUtil.createQuery(q, Hofficial.class).getResultList();
 	}
 
+	public static List<Hclass> currentClassesByDepartment(Hdepartment department, String semester){
+		List<Hclass> classes = new ArrayList<Hclass>();
+		for(Hcours c: department.getHcourses()){
+			for(Hclass h : c.getHclasses()){
+				if(h.getSemester().equals(semester))
+					classes.add(h);
+			}
+		}
+		return classes;
+		
+	}
 	public static List<model.Hstudent> getAllStudents() {
 		String q = "select h from Hstudent h";
 		return DBUtil.createQuery(q, Hstudent.class).getResultList();
@@ -414,5 +425,13 @@ public class Admin {
 	public static List<model.Hmajor> getAllMajors() {
 		String q = "select h from Hmajor h ";
 		return DBUtil.createQuery(q, Hmajor.class).getResultList();
+	}
+
+	public static List<Hstudent> studentsInClass(Hclass thisClass) {
+		List<Hstudent> students = new ArrayList<Hstudent>();
+		for(Hclassenrollment e : thisClass.getHclassenrollments()){
+			students.add(e.getHstudent());
+		}
+		return students;
 	}
 }

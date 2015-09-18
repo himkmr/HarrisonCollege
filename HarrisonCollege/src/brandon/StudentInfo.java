@@ -52,9 +52,9 @@ public class StudentInfo extends HttpServlet {
 	}
 	
 	protected String displayStudentInfo(Hstudent student){
-		StringBuilder display = new StringBuilder();
-		display.append("<div class=\"container\">"+student.getStudentId() + " " + student.getHuser().getName() + " " + student.getEntryYear() + " " + student.getMajor().getName() + "</div>");
-		return display.toString();
+		List<Hstudent> students = new ArrayList<Hstudent>();
+		students.add(student);
+		return Display.displayStudents(students);
 	}
 	
 	

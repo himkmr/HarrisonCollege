@@ -8,9 +8,8 @@
 </head>
 <body>
 	<jsp:include page="/navbar.jsp" />
-	${info}
 	<div class="container">
-		<h2>Current Classes</h2>
+		<h2>Class</h2>
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -23,43 +22,45 @@
 					<th>Year</th>
 				</tr>
 			</thead>
-			<tbody>${currentClasses}
+			<tbody>${classInfo}
+			</tbody>
+		</table>
+	</div>
+	<%
+		if (!(Boolean) request.getAttribute("hasInstructor")) {
+	%>
+	<div class="container">
+		<form class="form-horizontal" role="form" method="post"
+			action="ClassInfo">
+			<div class="form-group">
+				<label for="selInstructor">Select Instructor:</label> <select
+					class="form-control" id="selInstructor" name="selInstructor">
+					${instructorList}
+				</select>
+				 <input type="hidden" name="classId" value="${classId}"/>
+				 <button type="submit" class="btn btn-default">Submit</button>
+			</div>
+		</form>
+	</div>
+	<%
+		}
+	%>
+	<div class="container">
+		<h2>Instructor</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Department</th>
+					<th>Office #</th>
+				</tr>
+			</thead>
+			<tbody>${instructor}
 			</tbody>
 		</table>
 	</div>
 
-	<div class="container">
-		<h2>Classes</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Subject</th>
-					<th>Day</th>
-					<th>Start Time</th>
-					<th>End Time</th>
-					<th>Semester</th>
-					<th>Year</th>
-				</tr>
-			</thead>
-			<tbody>${classes}
-			</tbody>
-		</table>
-	</div>
-	<div class="container">
-		<h2>Classrooms</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Room Number</th>
-					<th>Building</th>
-					<th>Capacity</th>
-				</tr>
-			</thead>
-			<tbody>${classrooms}
-			</tbody>
-		</table>
-	</div>
 	<div class="container">
 		<h2>Students</h2>
 		<table class="table table-hover">
