@@ -34,6 +34,7 @@ public class AdminSearch extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String criteria = request.getParameter("select");
+		criteria = criteria.toLowerCase();
 		String display = "";
 		System.out.println("CRITERIA " + criteria);
 		if (criteria != null) {
@@ -68,7 +69,6 @@ public class AdminSearch extends HttpServlet {
 		StringBuilder display = new StringBuilder();
 		switch (criteria) {
 		case ("student"):
-
 			display.append(displayStudents(Admin.getAllStudents()));
 			break;
 		case ("instructor"):

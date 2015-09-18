@@ -367,7 +367,7 @@ public class Admin {
 	}
 
 	public static List<model.Hofficial> getAllInstructors() {
-		String q = "select h from Hofficial h where h.type like \'instructor\'";
+		String q = "select h from Hofficial h where h.type like \'Instructor\'";
 		return DBUtil.createQuery(q, Hofficial.class).getResultList();
 	}
 
@@ -377,7 +377,7 @@ public class Admin {
 	}
 
 	public static List<model.Hofficial> getAllAdvisors() {
-		String q = "select h from Hofficial h where h.type like \'advisor\'";
+		String q = "select h from Hofficial h where h.type like \'Advisor\'";
 		return DBUtil.createQuery(q, Hofficial.class).getResultList();
 	}
 

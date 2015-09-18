@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import customTools.DBUtil;
 import model.Hdepartment;
 import model.Hmajor;
+import model.Hpendingadmission;
 import model.Huser;
 
 /**
@@ -47,10 +48,10 @@ public class SignUp extends HttpServlet implements Servlet {
 		System.out.println(name);
 		System.out.println(password);
 
-		Random r = new Random();
-		int userid = 1 + r.nextInt(99999);
-
+		
 		// need to check if already exists
+		int userid = GetUniqueUserId();
+		
 
 		Huser user = new Huser();
 		user.setName(name);
@@ -68,6 +69,27 @@ public class SignUp extends HttpServlet implements Servlet {
 		{
 			getOfficialData(request, response);
 		}
+	}
+
+	private int GetUniqueUserId() {
+		Random r = new Random();
+		int userid = 1 + r.nextInt(99999);
+		//check in Pending Admissions
+		String q = "select t from Hpendingadmission t  where t.userid="+userid;
+		TypedQuery<Hpendingadmission>  exists1 = DBUtil.createQuery(q, Hpendingadmission.class);
+		List<Hpendingadmission> user1 =exists1.getResultList();
+		
+		//check in Users
+		String q2 = "select t from Huser t  where t.userId="+userid;
+		TypedQuery<Huser>  exists2 = DBUtil.createQuery(q2, Huser.class);
+		List<Huser> user2 =exists2.getResultList();
+		
+		if((user2==null || user2.isEmpty()) && (user1==null || user2.isEmpty()) )
+			return userid;
+		else
+			userid = GetUniqueUserId();
+		
+		return userid;
 	}
 
 	/**
