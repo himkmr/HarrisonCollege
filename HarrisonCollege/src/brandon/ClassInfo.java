@@ -37,11 +37,10 @@ public class ClassInfo extends HttpServlet {
 		String id = "";
 		System.out.println("Class id " +request.getAttribute("classId"));
 		if(request.getAttribute("classId")==null){
-			System.out.println("PARAMETER");
+
 			id=request.getParameter("id");
 		}
 		else{
-			System.out.println("ATTRIBUTE");
 			id=(String)request.getAttribute("classId");
 		}
 		Hclass thisClass = DBUtil.find(Long.parseLong(id), Hclass.class);

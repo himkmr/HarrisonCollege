@@ -8,26 +8,6 @@
 </head>
 <body>
 	<jsp:include page="/navbar.jsp" />
-	${info}
-	<div class="container">
-		<h2>Current Classes</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Id</th>
-					<th>Subject</th>
-					<th>Day</th>
-					<th>Start Time</th>
-					<th>End Time</th>
-					<th>Semester</th>
-					<th>Year</th>
-				</tr>
-			</thead>
-			<tbody>${currentClasses}
-			</tbody>
-		</table>
-	</div>
-
 	<div class="container">
 		<h2>Classes</h2>
 		<table class="table table-hover">
@@ -42,24 +22,44 @@
 					<th>Year</th>
 				</tr>
 			</thead>
-			<tbody>${classes}
+			<tbody>${classInfo}
 			</tbody>
 		</table>
 	</div>
+	<%
+		if (!(Boolean) request.getAttribute("hasInstructor")) {
+	%>
 	<div class="container">
-		<h2>Classrooms</h2>
-		<table class="table table-hover">
+		<form class="form-horizontal" role="form" method="post"
+			action="ClassInfo">
+			<div class="form-group">
+				<label for="selInstructor">Select Instructor:</label> <select
+					class="form-control" id="selInstructor" name="selInstructor">
+					${instructorList}
+				</select>
+			</div>
+		</form>
+	</div>
+	<%
+		}
+	%>
+	<div class="container">
+		<h2>Instructors</h2>
+
+		<table class="tabletable-hover">
 			<thead>
 				<tr>
-					<th>Room Number</th>
-					<th>Building</th>
-					<th>Capacity</th>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Department</th>
+					<th>Office #</th>
 				</tr>
 			</thead>
-			<tbody>${classrooms}
+			<tbody>${instructor}
 			</tbody>
 		</table>
 	</div>
+
 	<div class="container">
 		<h2>Students</h2>
 		<table class="table table-hover">
