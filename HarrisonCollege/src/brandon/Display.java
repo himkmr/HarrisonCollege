@@ -77,12 +77,12 @@ public class Display {
 		return display.toString();
 	}
 	
-	protected static String displayInstructors(List<Hofficial> instructors) {
+	protected static String displayOfficials(List<Hofficial> officials) {
 		StringBuilder display = new StringBuilder();
 		//display.append("<div class=\"container\"><h2>Instructors</h2>"
 		//		+ "<table class=\"table table-hover\"><thead><tr><th>Id</th><th>Name</th><th>Department</th> <th>Office #</th></tr></thead><tbody>");
 
-		for (Hofficial i : instructors) {
+		for (Hofficial i : officials) {
 			display.append("<tr><td>"
 					+ i.getOfficialId()
 					+ "</td><td>"

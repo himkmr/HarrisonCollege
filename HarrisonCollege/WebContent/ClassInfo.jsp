@@ -37,6 +37,8 @@
 					class="form-control" id="selInstructor" name="selInstructor">
 					${instructorList}
 				</select>
+				 <input type="hidden" name="classId" value="${classId}"/>
+				 <button type="submit" class="btn btn-default">Submit</button>
 			</div>
 		</form>
 	</div>

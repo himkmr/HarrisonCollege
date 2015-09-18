@@ -176,10 +176,10 @@ public class AdminSearch extends HttpServlet {
 		for (Hdepartment d : departments) {
 
 			if (d.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"#\">");
+				display.append("<tr class='clickable-row' data-href= \"DepartmentInfo?id="+d.getDepartmentId()+"\">");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\">");
+				display.append("<tr class='clickable-row' data-href= \"DepartmentInfo?id="+d.getDepartmentId()+"\" style=\"color: #fff; background: black;\">");
 			}
 			display.append("<td>"
 					+ d.getCode()

@@ -87,7 +87,7 @@ public class ClassInfo extends HttpServlet {
 	protected static String displayInstructor(Hofficial official){
 		List<Hofficial> instructor = new ArrayList<Hofficial>(); 
 		instructor.add(official);
-		return Display.displayInstructors(instructor);
+		return Display.displayOfficials(instructor);
 	}
 	
 	protected static String instructorList(){

@@ -56,9 +56,9 @@ public class OfficialInfo extends HttpServlet {
 	}
 	
 	protected static String displayOfficialInfo(Hofficial official){
-		StringBuilder display = new StringBuilder();
-		display.append("<div class=\"container\">"+official.getOfficialId() + " " + official.getHuser().getName() + " "+ official.getHdepartment().getName()+ " " + official.getOfficeNumber() + "</div>");
-		return display.toString();
+		List<Hofficial> officials = new ArrayList<Hofficial>();
+		officials.add(official);
+		return Display.displayOfficials(officials);
 	}
 	
 }
