@@ -47,7 +47,7 @@ public class AdminPendingRequest extends HttpServlet {
 		List<Hpendingadmission> admissions = Admin.getPendingAdmissions();
 		StringBuilder pending = new StringBuilder();
 		pending.append("<div class=\"container\"><h2>Pending Admissions</h2><table class=\"table table-striped\"><thead><tr><th>Name</th>"
-		        +"<th>Permission</th><th>Major/Department</th></tr></thead><tbody>");
+		        +"<th>Permission</th><th>Major/Department</th><th>Year</th></tr></thead><tbody>");
 		for(Hpendingadmission a : admissions){
 			String[] info = a.getMessage().split(",");
 			System.out.println(a.getMessage());
@@ -57,6 +57,8 @@ public class AdminPendingRequest extends HttpServlet {
 					+a.getPermissions()
 					+"</td><td>"
 					+info[2]
+					+"</td><td>"
+					+info[3]
 					+"</td><td>"
 					+"<a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=accept\" class=\"btn btn-info\" role=\"button\">Accept</a>"
 					+ "<a href=\"ApproveAdmissions?admisId=" + a.getPendingId() +"&approval=decline\" class=\"btn btn-info\" role=\"button\">Decline</a></td>");
