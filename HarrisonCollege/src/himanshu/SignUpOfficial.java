@@ -54,7 +54,7 @@ public class SignUpOfficial extends HttpServlet {
 				Hpendingadmission padmission = new Hpendingadmission();
 				padmission.setUserid(userid);
 				padmission.setPermissions(permissions);
-				String msg= name+","+password+","+department;
+				String msg= name+","+password+","+department+",2015";
 				padmission.setMessage(msg);
 				
 				DBUtil.addToDB(padmission);

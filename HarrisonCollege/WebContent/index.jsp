@@ -6,5 +6,7 @@
 </head>
 <body>
 <jsp:include page="/navbar.jsp"/>
+<div align ="center">
+<img src="Homepage.png" ></img></div>
 </body>
 </html>
