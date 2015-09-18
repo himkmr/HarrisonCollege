@@ -9,7 +9,7 @@
 <body>
 	<jsp:include page="/navbar.jsp" />
 	<div class="container">
-		<h2>Classes</h2>
+		<h2>Class</h2>
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -44,9 +44,8 @@
 		}
 	%>
 	<div class="container">
-		<h2>Instructors</h2>
-
-		<table class="tabletable-hover">
+		<h2>Instructor</h2>
+		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th>Id</th>
