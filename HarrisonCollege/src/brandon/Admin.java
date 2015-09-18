@@ -252,11 +252,21 @@ public class Admin {
 	// add previous class to a new semester
 	public static void addClasstoSemester(Hclass hclass, String semester,
 			String year) {
-		long classId = 0; // need to decide how to change classId
-		hclass.setClassId(classId);
-		hclass.setSemester(semester);
-		hclass.setYear(year);
-		DBUtil.addToDB(hclass);
+		
+		Hclass newclass = new Hclass();	
+		newclass.setSemester(semester);
+		newclass.setYear(year);
+		newclass.setDay(hclass.getDay());
+		newclass.setEnabled("yes");
+		newclass.setEndtime(hclass.getEndtime());
+		newclass.setStarttime(hclass.getStarttime());
+		newclass.setHclassenrollments(null);
+		newclass.setHcours(hclass.getHcours());
+		newclass.setHclassroom(hclass.getHclassroom());
+		newclass.setHofficial(hclass.getHofficial());
+
+		System.out.println("Adding class");
+		DBUtil.addToDB(newclass);
 	}
 
 	// add instructor to class

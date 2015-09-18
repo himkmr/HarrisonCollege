@@ -34,7 +34,6 @@ public class AdminSearch extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String criteria = request.getParameter("select");
-		criteria = criteria.toLowerCase();
 		String display = "";
 		System.out.println("CRITERIA " + criteria);
 		if (criteria != null) {
@@ -300,6 +299,14 @@ public class AdminSearch extends HttpServlet {
 					+ "<a href=\"AdminUpdate?id=" + c.getClassId()
 					+ "&type=class"
 					+ "\" class=\"btn btn-info\" role=\"button\">Update</a>"
+					+ "</td><td>"
+					+ "<form  action=\"addClassToSemester\" method=\"get\"> <select name=\"semesters\" class=\"form-control\">"
+					+"<option value=\"fall\">Fall</option>"
+					+"<option value=\"spring\">Spring</option>"
+					+"Year: <input type=\"number\" name=\"year\" class=\"form-control\" placeholder=\"Year\" min=2015 max =2017></td><td>"
+					+"<input type=\"submit\" class=\"form-control\" value=\"Add To Semester\"></td>"
+					+"<input type=\"hidden\" name=\"oldclassid\" value="+c.getClassId()+">"
+					+ "</form>"
 					+ "</td></tr>");
 		}
 		display.append("</tbody></table></div>");
