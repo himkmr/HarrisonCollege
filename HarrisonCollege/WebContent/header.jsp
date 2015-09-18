@@ -11,7 +11,12 @@ li {
 .navbar-default {
     background-color: #0A4600;
     border-color: #E7E7E7;
+    
 }
+.navbar-default .navbar-nav > li >a{
+color: #EEE8AA;
+}
+
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
