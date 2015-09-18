@@ -74,7 +74,7 @@ public class GetThisTranscript extends HttpServlet {
 								countCreditHours += theseEnrollments.get(j).getHclass().getHcours().getCreditHours();
 						}
 						fullList += "</tbody></table>";
-						fullList += "<p>GPA: "+totalGrade/countCreditHours+"</p>";
+						fullList += "<p>GPA: "+getGpa(totalGrade/countCreditHours)+"</p>";
 					}
 					totalGrade = 0;
 					countCreditHours = 0;
@@ -97,7 +97,7 @@ public class GetThisTranscript extends HttpServlet {
 								countCreditHours += theseEnrollments.get(j).getHclass().getHcours().getCreditHours();
 						}
 						fullList += "</tbody></table>";
-						fullList += "<p>GPA: "+totalGrade/countCreditHours+"</p>";
+						fullList += "<p>GPA: "+getGpa(totalGrade/countCreditHours)+"</p>";
 					}
 				}
 				fullList += "<a href=\"BuyTranscript.jsp\">Buy</a>";
@@ -141,6 +141,24 @@ public class GetThisTranscript extends HttpServlet {
 			gradeInt=0;
 		}
 		return gradeInt;
+	}
+	
+	public String getGpa(double grade){
+		String gpa = null;
+		if(grade>=95){
+			gpa = "A";
+		}else if(grade>=85 && grade<95){
+			gpa = "B";
+		}else if(grade>=75 && grade<85){
+			gpa = "C";
+		}else if(grade>=65 && grade<75){
+			gpa = "D";
+		}else if(grade>=55 && grade<65){
+			gpa = "E";
+		}else if(grade<55){
+			gpa = "W";
+		}
+		return gpa;
 	}
 
 }

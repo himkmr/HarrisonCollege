@@ -117,10 +117,12 @@ public class student_self_enrollment extends HttpServlet {
 						System.out.println(thisDow.get(j));
 						if((thisClassDays.get(z)).equalsIgnoreCase(thisDow.get(j))){
 							if(thisEtime<=dbstime || thisStime>=dbetime){
-								 timecheck = "pass";
+								timecheck = "pass";
 							}else{
-								 timecheck = "fail";
+								timecheck = "fail";
 							}
+							}else{
+								timecheck = "pass";
 							}	
 						}
 					}
