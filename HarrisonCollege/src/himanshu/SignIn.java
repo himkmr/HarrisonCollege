@@ -61,7 +61,9 @@ public class SignIn extends HttpServlet {
 				request.getServletContext().getRequestDispatcher("/AdminPendingRequest").forward(request, response);}
 			else if(success.getPermissions().equalsIgnoreCase("Student"))
 			{
-				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
+				String message = "Signed In!";
+				request.setAttribute("message", message);
+				request.getServletContext().getRequestDispatcher("/Success_SignIn.jsp").forward(request, response);
 			}
 			else if(success.getPermissions().equalsIgnoreCase("Instructor"))
 			{
@@ -70,15 +72,13 @@ public class SignIn extends HttpServlet {
 			}
 			else if(success.getPermissions().equalsIgnoreCase("Advisor"))
 			{
-				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
-			}
-			else if(success.getPermissions().equalsIgnoreCase("Intructor_Advisor"))
-			{
-				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
-			}
+				String message = "Signed In!";
+				request.setAttribute("message", message);
+				request.getServletContext().getRequestDispatcher("/Success_SignIn.jsp").forward(request, response);
+			}	
 			else
 			{
-				request.getServletContext().getRequestDispatcher("/Success.jsp").forward(request, response);
+				request.getServletContext().getRequestDispatcher("/Error.jsp").forward(request, response);
 				
 			}
 			

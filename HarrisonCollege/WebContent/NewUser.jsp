@@ -22,8 +22,6 @@
     <option>Student</option>
     <option>Instructor</option>
     <option>Advisor</option>
-    <option>Admin</option>
-    <option>Intructor_Advisor</option>
   </select>
   </div>
   <button type="submit" class="btn btn-default">SignUp</button>
