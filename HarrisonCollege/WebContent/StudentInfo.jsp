@@ -8,7 +8,20 @@
 </head>
 <body>
 	<jsp:include page="/navbar.jsp" />
-	${info}
+	<div class="container">
+		<h2>Student</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Name</th>
+					<th>Entry Year</th>
+				</tr>
+			</thead>
+			<tbody>${info}
+			</tbody>
+		</table>
+	</div>
 	<div class="container">
 		<h2>Classes</h2>
 		<table class="table table-hover">

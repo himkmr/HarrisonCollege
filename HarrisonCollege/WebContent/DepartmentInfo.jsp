@@ -3,26 +3,39 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <jsp:include page="/header.jsp" />
-<title>Info</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<jsp:include page="/navbar.jsp" />
 	<div class="container">
-		<h2>Official</h2>
+		<h2>Department</h2>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Id</th>
+					<th>Code</th>
 					<th>Name</th>
-					<th>Department</th>
-					<th>Office #</th>
 				</tr>
 			</thead>
-			<tbody>${info}
+			<tbody>${deptInfo}
 			</tbody>
 		</table>
 	</div>
+	<div class="container">
+		<h2>Courses</h2>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Subject</th>
+					<th>Credit Hours</th>
+				</tr>
+			</thead>
+			<tbody>${courses}
+			</tbody>
+		</table>
+	</div>
+
 	<div class="container">
 		<h2>Current Classes</h2>
 		<table class="table table-hover">
@@ -43,48 +56,15 @@
 	</div>
 
 	<div class="container">
-		<h2>Classes</h2>
+		<h2>Majors</h2>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>Subject</th>
-					<th>Day</th>
-					<th>Start Time</th>
-					<th>End Time</th>
-					<th>Semester</th>
-					<th>Year</th>
-				</tr>
-			</thead>
-			<tbody>${classes}
-			</tbody>
-		</table>
-	</div>
-	<div class="container">
-		<h2>Classrooms</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Room Number</th>
-					<th>Building</th>
-					<th>Capacity</th>
-				</tr>
-			</thead>
-			<tbody>${classrooms}
-			</tbody>
-		</table>
-	</div>
-	<div class="container">
-		<h2>Students</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Id</th>
 					<th>Name</th>
-					<th>Entry Year</th>
+					<th>Department</th>
 				</tr>
 			</thead>
-			<tbody>${students}
+			<tbody>${majors}
 			</tbody>
 		</table>
 	</div>

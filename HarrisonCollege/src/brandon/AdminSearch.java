@@ -176,10 +176,10 @@ public class AdminSearch extends HttpServlet {
 		for (Hdepartment d : departments) {
 
 			if (d.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"#\">");
+				display.append("<tr class='clickable-row' data-href= \"DepartmentInfo?id="+d.getDepartmentId()+"\">");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\">");
+				display.append("<tr class='clickable-row' data-href= \"DepartmentInfo?id="+d.getDepartmentId()+"\" style=\"color: #fff; background: black;\">");
 			}
 			display.append("<td>"
 					+ d.getCode()
@@ -272,10 +272,10 @@ public class AdminSearch extends HttpServlet {
 				+ "<th>Start Time</th><th>End Time</th><th>Semester</th><th>Year</th></tr></thead><tbody>");
 		for (Hclass c : classes) {
 			if (c.getEnabled().equals("yes")) {
-				display.append("<tr class='clickable-row' data-href= \"#\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"ClassInfo?id="+c.getClassId()+"\"><td>");
 
 			} else {
-				display.append("<tr class='clickable-row' data-href= \"#\" style=\"color: #fff; background: black;\"><td>");
+				display.append("<tr class='clickable-row' data-href= \"ClassInfo?id="+c.getClassId()+"\" style=\"color: #fff; background: black;\"><td>");
 			}
 			display.append(c.getHcours().getCourseId()
 					+ "</td><td>"
